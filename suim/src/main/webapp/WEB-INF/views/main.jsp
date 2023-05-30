@@ -17,11 +17,11 @@
                             <div class="search-box">
                                 <!-- 지도 검색 부분 (홍재님) -->
                                 <form method="get" action="list.ho">
-                                    <input type="text" placeholder="지역명, 주변명 입력">
-                                    <button type="submit">
-                                        <i class="fa fa-search" style="color : rgb(249,88,10)"></i>
-                                    </button>
-                                </form>
+                                <input type="text" name="searchKeyword" placeholder="지역명, 주변명 입력">
+                                <button type="submit">
+                                    <i class="fa fa-search" style="color : rgb(249,88,10)"></i>
+                                </button>
+                            </form>
                             </div>
                         </div>
                     </div>

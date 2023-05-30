@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.suim.house.model.dao.ListHouseDao;
 import com.suim.house.model.vo.House;
+import com.suim.house.model.vo.Region;
 
 @Service
 public class ListHouseServiceImpl implements ListHouseService{
@@ -21,6 +22,11 @@ public class ListHouseServiceImpl implements ListHouseService{
 	@Override
 	public ArrayList<House> selectList() {
 		return listHouseDao.selectList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Region> regionSelectList(String searchKeyword) {
+		return listHouseDao.regionSelectList(sqlSession, searchKeyword);
 	}
 	
 	

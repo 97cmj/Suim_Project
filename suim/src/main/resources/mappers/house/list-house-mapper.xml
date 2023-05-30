@@ -22,11 +22,24 @@
 		<result column="MEMBER_ID" property="memberId"/>
 	</resultMap>
 	
+	<resultMap id="regionResultMap" type="com.suim.house.model.vo.Region">
+		<result column="LATITUDE" property="latitude"/>
+		<result column="LONGITUDE" property="longitude"/>
+	</resultMap>
+	
+	
 	<select id="selectList" resultMap="houseResultMap">
 		SELECT *
 		 FROM HOUSE
 		 ORDER BY HOUSE_NO DESC
 	</select>
 	
-  
+	<select id="regionSelectList" resultMap="regionResultMap">
+		SELECT LATITUDE,
+				LONGITUDE
+		FROM REGION
+		WHERE REGION_NAME LIKE '%' || #{searchKeyword} || '%' AND ROWNUM = 1
+
+		
+	</select>
 </mapper>

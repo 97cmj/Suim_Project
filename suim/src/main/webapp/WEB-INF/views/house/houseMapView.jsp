@@ -28,6 +28,11 @@
         <script src="https://cdn.jsdelivr.net/npm/shackless-nouislider@14.1.2/distribute/nouislider.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/shackless-nouislider@14.1.2/distribute/nouislider.min.css" rel="stylesheet">
         
+        <!-- SweetAlert2 -->
+       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+       
+       
+        
         <style>
         .card {
             margin-bottom: 10px;
@@ -162,10 +167,28 @@
 	<script>
 	
 		// 지도 생성
-	   var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
-	        center : new kakao.maps.LatLng(37.534219, 126.901577), // 지도의 중심좌표 
-	        level : 5 // 지도의 확대 레벨 
-	    });
+	    if ("${regionEmpty}" === "true") {
+	    	Swal.fire({
+	    		  title: '검색된 지역 결과가 없습니다.',
+	    		  text: "다시 입력해주세요",
+	    		  confirmButtonColor: 'rgb(250,107,111)',
+	    		  position : 'top',
+	    		  width: 450,
+	    		  confirmButtonText: '확인'
+	    		}).then(function(result) {
+	    		  if (result.isConfirmed) {
+	    		    window.history.back();
+	    		  }
+	    		});	        
+	    } else {
+	        // 지도를 초기화하고 지역 좌표를 사용하여 표시합니다.
+	        var map = new kakao.maps.Map(document.getElementById('map'), {
+	            center: new kakao.maps.LatLng("${region.get(0).latitude}", "${region.get(0).longitude}"),
+	            level: 5
+	        });
+	    }
+			
+	
 	
 		// 주소-좌표 변환 객체 생성합니다
 		var geocoder = new kakao.maps.services.Geocoder();
@@ -473,7 +496,7 @@
                                     <div id="search-detail-text">조건검색</div>
                                 </span>
                             <form method="get" action="list.ho">
-                                <input type="text" placeholder="지역명, 주변명 입력">
+                                <input type="text" name="searchKeyword" placeholder="지역명, 주변명 입력">
                                 <button type="submit">
                                     <i class="fa fa-search" style="color : rgb(249,88,10)"></i>
                                 </button>
