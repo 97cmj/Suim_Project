@@ -2,21 +2,17 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%@ include file="/WEB-INF/views/common/header.jsp"%>
+<%@ include file="/WEB-INF/views/common/include.jsp"%>
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
 <!DOCTYPE html>
 <html>
 <head>
-<!-- 부트스트랩 -->
-<link href="/resources/css/common/styles.css" rel="stylesheet" />
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<title>Airbnb-like Webpage</title>
-
+<title>상세페이지</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
 <link href="/resources/css/house/house.css" rel="stylesheet" />
-
 <!-- Example assets -->
 <link rel="stylesheet" type="text/css"
-	href="/resources/css/house/jcarousel.connected-carousels.css">
+	href="/resources/css/house/jcarousel.connected-carousels.css">'
 
 <script type="text/javascript"
 	src="/resources/js/house/vendor/jquery/jquery.js"></script>
@@ -25,7 +21,6 @@
 
 <script type="text/javascript"
 	src="/resources/js/house/jcarousel.connected-carousels.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3886c3b4f37795f353cee393f9f8f47d&libraries=services,clusterer,drawing"></script>
@@ -69,8 +64,6 @@
 	margin-bottom: 5px;
 }
 </style>
-
-
 </head>
 <body>
 
@@ -136,8 +129,9 @@
 				<div id="btnDiv">
 					<!-- 수정, 삭제는 본인의 글을 볼 경우에만 -->
 					<a id="hEdit" class="white" href="houseEdit?no=${hVO.no }">수정</a> <a
-						class="white" id="houseDel" href="houseEdit?no=${hVO.no }">삭제</a>
-					<a class="reportBtn" id="reportBtn"> <img title="신고" alt="신고"
+						class="white" id="houseDel" href="houseEdit?no=${h.houseNo }"
+						onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</a> <a
+						class="reportBtn" id="reportBtn"> <img title="신고" alt="신고"
 						src="/resources/img/house/ico_report.png">
 					</a>
 				</div>
@@ -226,98 +220,60 @@
 							<button class="q_btn green applyInsert">예약하기</button>
 						</li>
 						<li class="actionButton">
-							<button class="q_btn white likeInsert">
-								<i class="far fa-heart" onclick="heart()"></i>찜하기
-							</button>
+					    <button class="q_btn white likeInsert" onclick="heart(${h.houseNo})">
+					        <i class="fa-regular fa-heart"></i>찜하기
+					    </button>
 						</li>
-
-						<script>
-							$(document)
-									.ready(
-											function() {
-
-												var heartIcon = $(".fa-heart");
-												heartIcon
-														.removeClass(
-																"fa-regular")
-														.addClass(
-																"fa-solid fa-bounce")
-														.css("color", "#ED0707");
-												heartIcon
-														.one(
-																"animationiteration webkitAnimationIteration oanimationiteration",
-																function() {
-																	$(this)
-																			.removeClass(
-																					"fa-bounce");
-																});
-
-											});
-							function heart(menuNo) {
-								var heartIcon = $(".fa-heart");
-								var isLiked = heartIcon.hasClass("fa-solid");
-								var type = isLiked ? "unlike" : "like"; // 하트가 칠해져 있다면 "unlike", 칠해져 있지 않다면 "like" 지정
-
-								$
-										.ajax({
-											url : "heart.mn", // 서블릿으로 전송
-											type : "get",
-											data : {
-												menuNo : menuNo, // 메뉴번호랑 타입(like, unlike) 전달
-												type : type
-											},
-											success : function(response) {
-												if (response.success) {
-													if (isLiked) { // like 상태일 경우 기존 상태를 지우고 unlike 상태로 변환
-														heartIcon
-																.removeClass(
-																		"fa-solid")
-																.addClass(
-																		"fa-regular fa-bounce")
-																.css("color",
-																		"");
-													} else { // unlike 상태일  경우 기존 상태를 지우고 like 상태로 변환
-														heartIcon
-																.removeClass(
-																		"fa-regular")
-																.addClass(
-																		"fa-solid fa-bounce")
-																.css("color",
-																		"#ED0707");
-													} // 애니메이션 효과 멈춤
-													heartIcon
-															.one(
-																	"animationiteration webkitAnimationIteration oanimationiteration",
-																	function() {
-																		$(this)
-																				.removeClass(
-																						"fa-bounce");
-																	}); // 좋아요 수 늘리고 지우기
-													var likeCount = parseInt($(
-															".like-count")
-															.text());
-													$(".like-count")
-															.text(
-																	isLiked ? likeCount - 1
-																			: likeCount + 1);
-												} else {
-													// 에러 처리
-													alert("좋아요 처리에 실패했습니다. 다시 로그인해주세요.");
-												}
-											}
-										});
-							}
-						</script>
-
-
 						<li class="actionButton">
 							<button class="q_btn white" id="shareBtn">소통하기</button>
 						</li>
 					</ul>
 				</div>
+				
+					<script>
+					$(document).ready(function() {
+						  <c:if test="${lo > 0}">
+						    var heartIcon = $(".fa-heart");
+						    heartIcon.removeClass("fa-regular").addClass("fa-solid fa-bounce").css("color", "#ED0707");
+						    heartIcon.one("animationiteration webkitAnimationIteration oanimationiteration", function() {
+				          $(this).removeClass("fa-bounce");
+						    });
+						  </c:if>
+						});
+					function heart(hno) {
+					    var heartIcon = $(".fa-heart");
+					    var isLiked = heartIcon.hasClass("fa-solid");
+					    var type = isLiked ? "unlike" : "like"; // 하트가 칠해져 있다면 "unlike", 칠해져 있지 않다면 "like" 지정
 
-
-
+					    $.ajax({
+					        url: "heart.ho", // 서블릿으로 전송
+					        type: "get",
+					        data: {
+					            hno: hno, // 메뉴번호랑 타입(like, unlike) 전달
+					            type: type
+					        },
+					        success: function(response) {
+					            if (response === "success") { // 성공적인 응답일 경우
+					              if (isLiked) { // like 상태일 경우 기존 상태를 지우고 unlike 상태로 변환
+					                heartIcon.removeClass("fa-solid").addClass("fa-regular fa-bounce").css("color", "");
+					              } else { // unlike 상태일 경우 기존 상태를 지우고 like 상태로 변환
+					                heartIcon.removeClass("fa-regular").addClass("fa-solid fa-bounce").css("color", "#ED0707");
+					              }
+					              heartIcon.one("animationiteration webkitAnimationIteration oanimationiteration", function() {
+					                $(this).removeClass("fa-bounce");
+					              });
+					            }
+					          },
+					          error: function(xhr, status, error) {
+					            if (xhr.status === 401) {
+					              alert("로그인 후 이용해주세요.");
+					            } else {
+					              alert("서버에서 에러가 발생했습니다.");
+					            }
+					          }
+					        });
+					      }
+					      </script>
 			</article>
 		</section>
 
@@ -477,7 +433,10 @@
 								});
 			</script>
 
+
 		</section>
-		<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+	</div>
+
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>
