@@ -9,7 +9,6 @@
 	<typeAliases>
 	<typeAlias type="com.suim.member.model.vo.Member" alias="member" />
 	<typeAlias type="com.suim.house.model.vo.House" alias="house" />
-	<typeAlias type="com.suim.house.model.vo.Wish" alias="wish" />
 	</typeAliases>
 	    
 	    
