@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -98,7 +99,6 @@
         .col-md-6{
             padding-left : 10px;
             display: flex;
-            align-items: center; /* 수직 가운데 정렬 */
             justify-content: center; /* 수평 가운데 정렬 */
         }
         .col-md-5{
@@ -134,8 +134,6 @@
         a {
         text-decoration: none;
         }
-                
-      
       </style>
         
         
@@ -215,7 +213,7 @@
 
 		<c:forEach var="m" items="${ list }">
 		// 주소로 좌표를 검색합니다
-			geocoder.addressSearch('${ m.address }', function(result, status) {
+			geocoder.addressSearch('${ m.houseAddress }', function(result, status) {
 				
 			    // 정상적으로 검색이 완료됐으면 
 			     if (status === kakao.maps.services.Status.OK) {
@@ -235,133 +233,10 @@
 							// 마커를 markers 배열에 추가
 							markers.push(marker);
 							
-							 // 마커 정보를 동적으로 생성하여 HTML에 출력
-		                    var content = document.createElement('div');
-		                    content.id = '${m.houseNo}'; // id 속성값 설정
-		                    content.innerHTML = '이름: ' + '${m.houseName}' + '<br>' +
-		                                       '주소: ' + '${m.address}' + '<br>' +
-		                                       '내용: ' + '${m.houseInfo}';
-		                    document.getElementById('content').appendChild(content);
-			    	}
-			    	
-			     rearrangeDivsById();
-			}
-		});
-		</c:forEach>
-	</script>
-	
-	<script>
-	
-		// 이전에 표시된 마커 삭제하는 함수
-		function clearMarkers() {
-			  for (var i = 0; i < markers.length; i++) {
-			    markers[i].setMap(null); // 해당 마커를 지도에서 제거
-			  }
-			  markers = []; // 배열 초기화
-			}
-		
-		// div 영역 모두 삭제하는 함수
-		function removeDiv() {
-			  var content = document.getElementById('content'); // content 요소 선택
-
-			    // content의 자식 div 요소들을 순회하며 제거
-			    while (content.firstChild) {
-			        content.removeChild(content.firstChild);
-			    }
-		}
-		
-		// id에 따라 중복된 div 제거 함수
-		function removeDuplicateDivsById() {
-		  var parentDiv = document.getElementById('content');
-		  var childDivs = parentDiv.getElementsByTagName('div');
-		  var divIds = {};
-		
-		  // 자식 div들을 순회하면서 ID 값 중복 여부 확인
-		  for (var i = 0; i < childDivs.length; i++) {
-		    var divId = childDivs[i].id;
-		    if (!divIds[divId]) {
-		      divIds[divId] = true;
-		    } else {
-		      parentDiv.removeChild(childDivs[i]);
-		      i--; // div가 삭제되면 인덱스를 조정해야 함
-		    }
-		  }
-		}
-					
-	// id 값에 따라 재배열하는 함수
-      function rearrangeDivsById() {
-    	  
-          // childDivs 배열에 저장된 순서대로 부모 요소에 추가  
-		  var parentDiv = document.getElementById('content'); // div 요소들의 부모 요소
-	      // div 요소들을 모두 선택하여 배열로 저장
-		  var childDivs = Array.from(parentDiv.getElementsByTagName('div'));
-
-      var divs = Array.from(parentDiv.getElementsByTagName('div'));
-
-      // divs 배열을 id 기준으로 역순으로 정렬
-      childDivs.sort(function(a, b) {
-        var idA = parseInt(a.id);
-        var idB = parseInt(b.id);
-        return idB - idA;
-      });
-
-      // divs 배열에 저장된 순서대로 부모 요소에 추가
-      childDivs.forEach(function(div) {
-    	  parentDiv.appendChild(div);
-      });
-    }
-	</script>
-	
-	
-
-	<script>
-	function loadMarkers() {
-		
-		clearMarkers();
-    	removeDiv();
-		
-		// 지도의 현재 영역을 얻어옵니다 
-	    var bounds = map.getBounds();
-		
-	    // 영역의 남서쪽 위도 좌표를 얻어옵니다 
-	    var swLat = bounds.getSouthWest().getLat(); 
-	    
-	    // 영역의 남서쪽 경도 좌표를 얻어옵니다.
-	    var swLng = bounds.getSouthWest().getLng(); 
-	    
-	    // 영역의 북동쪽 위도 좌표를 얻어옵니다 
-	    var neLat = bounds.getNorthEast().getLat(); 
-	    
-	    // 영역의 북동쪽 위도 좌표를 얻어옵니다 
-	    var neLng = bounds.getNorthEast().getLng(); 
-	    
-	    
-	    
-	    var markers = [];
-	      
-	    <c:forEach var="m" items="${ list }">
-		  // 경계 좌표를 기반으로 DB에서 마커 데이터 가져오기 & 가져온 데이터를 기반으로 새로운 마커 생성 및 표시
-		  geocoder.addressSearch('${ m.address }', function(result, status) {
-				
-			    // 정상적으로 검색이 완료됐으면 
-			     if (status === kakao.maps.services.Status.OK) {
-			    	 
-			    	if((swLat<result[0].y)&&(result[0].y<neLat)&&(swLng<result[0].x)&&(result[0].x<neLng)) {
-			    		
-						        
-						        var marker = new kakao.maps.Marker({
-						            position: new kakao.maps.LatLng(result[0].y, result[0].x)
-						        });
-
-						    // 클러스터에 마커 추가
-							clusterer.addMarker(marker);
-
-							// 마커를 markers 배열에 추가
-							markers.push(marker);
-						
 							// 카드를 동적으로 생성하여 id가 "content"인 div에 추가합니다
 		                    var cardDiv = document.createElement('div');
 		                    cardDiv.className = 'col-md-6';
+		                    cardDiv.id = '${m.houseNo}';
 		                    
 		                    var cardLink = document.createElement('a');
 		                    cardLink.href = '';
@@ -400,14 +275,177 @@
 		                    
 		                    var contentDiv = document.getElementById('content');
 		                    contentDiv.appendChild(cardDiv);
-		                    
 			    	}
+			    	
+			    	rearrangeDivsById();
+			
+			}
+		});
+		</c:forEach>
+	</script>
 	
-			    	removeDuplicateDivsById();
+	<script>
+	
+		// 이전에 표시된 마커 삭제하는 함수
+		function clearMarkers() {
+			  for (var i = 0; i < markers.length; i++) {
+			    markers[i].setMap(null); // 해당 마커를 지도에서 제거
+			  }
+			  markers = []; // 배열 초기화
+			}
+		
+		// div 영역 모두 삭제하는 함수
+		function removeDiv() {
+			  var content = document.getElementById('content'); // content 요소 선택
+
+			    // content의 자식 div 요소들을 순회하며 제거
+			    while (content.firstChild) {
+			        content.removeChild(content.firstChild);
+			    }
+		}
+		
+		// id에 따라 중복된 div 제거 함수
+		function removeDuplicateDivsById() {
+		  var parentDiv = document.getElementById('content');
+		  var childDivs = parentDiv.getElementsByTagName('div');
+		  var divIds = {};
+		
+		  // 중복된 ID 값을 가진 div 요소들과 자식 요소들을 삭제
+		  for (var i = 0; i < childDivs.length; i++) {
+		    var divId = childDivs[i].id;
+		    if (!divIds[divId]) {
+		      divIds[divId] = true;
+		    } else {
+		      if (childDivs[i].parentNode === parentDiv) {
+		        // 자식 요소들도 함께 삭제
+		        while (childDivs[i].firstChild) {
+		          childDivs[i].removeChild(childDivs[i].firstChild);
+		        }
+		        parentDiv.removeChild(childDivs[i]);
+		        i--; // div가 삭제되면 인덱스를 조정해야 함
+		      }
+		    }
+		  }
+		}
+					
+	// id 값에 따라 재배열하는 함수
+      function rearrangeDivsById() {
+    	  
+          // childDivs 배열에 저장된 순서대로 부모 요소에 추가  
+		  var parentDiv = document.getElementById('content'); // div 요소들의 부모 요소
+	      // div 요소들을 모두 선택하여 배열로 저장
+			var childDivs = Array.from(parentDiv.getElementsByClassName('col-md-6'));
+
+      	var divs = Array.from(parentDiv.getElementsByTagName('div'));
+
+      // divs 배열을 id 기준으로 역순으로 정렬
+      	childDivs.sort(function(a, b) {
+      	  var idA = parseInt(a.id);
+      	  var idB = parseInt(b.id);
+      	  return idB - idA;
+      	});
+
+      	childDivs.forEach(function(div) {
+      	  parentDiv.appendChild(div);
+      	});
+    }
+	</script>
+	
+	
+
+	<script>
+	function loadMarkers() {
+		
+		clearMarkers();
+    	removeDiv();
+		
+		// 지도의 현재 영역을 얻어옵니다 
+	    var bounds = map.getBounds();
+		
+	    // 영역의 남서쪽 위도 좌표를 얻어옵니다 
+	    var swLat = bounds.getSouthWest().getLat(); 
+	    
+	    // 영역의 남서쪽 경도 좌표를 얻어옵니다.
+	    var swLng = bounds.getSouthWest().getLng(); 
+	    
+	    // 영역의 북동쪽 위도 좌표를 얻어옵니다 
+	    var neLat = bounds.getNorthEast().getLat(); 
+	    
+	    // 영역의 북동쪽 위도 좌표를 얻어옵니다 
+	    var neLng = bounds.getNorthEast().getLng(); 
+	    
+	    
+	    
+	    var markers = [];
+	      
+	    <c:forEach var="m" items="${ list }">
+		  // 경계 좌표를 기반으로 DB에서 마커 데이터 가져오기 & 가져온 데이터를 기반으로 새로운 마커 생성 및 표시
+		  geocoder.addressSearch('${ m.houseAddress }', function(result, status) {
+				
+			    // 정상적으로 검색이 완료됐으면 
+			     if (status === kakao.maps.services.Status.OK) {
+			    	 
+			    	if((swLat<result[0].y)&&(result[0].y<neLat)&&(swLng<result[0].x)&&(result[0].x<neLng)) {
+			    		
+						        
+						        var marker = new kakao.maps.Marker({
+						            position: new kakao.maps.LatLng(result[0].y, result[0].x)
+						        });
+
+						    // 클러스터에 마커 추가
+							clusterer.addMarker(marker);
+
+							// 마커를 markers 배열에 추가
+							markers.push(marker);
+						
+							// 카드를 동적으로 생성하여 id가 "content"인 div에 추가합니다
+		                    var cardDiv = document.createElement('div');
+		                    cardDiv.className = 'col-md-6';
+		                    cardDiv.id = '${m.houseNo}';
+		                    
+		                    var cardLink = document.createElement('a');
+		                    cardLink.href = '';
+		                    cardLink.className = '';
+		                    
+		                    var card = document.createElement('div');
+		                    card.className = 'card';
+		                    
+		                    var cardImage = document.createElement('img');
+		                    cardImage.src = '...';
+		                    cardImage.className = 'card-img-top';
+		                    cardImage.alt = '...';
+		                    card.appendChild(cardImage);
+		                    
+		                    var cardBody = document.createElement('div');
+		                    cardBody.className = 'card-body';
+		                    
+		                    var cardTitle = document.createElement('h5');
+		                    cardTitle.className = 'card-title';
+		                    cardTitle.innerHTML = '${m.houseName}';
+		                    cardBody.appendChild(cardTitle);
+		                    
+		                    var cardGender = document.createElement('p');
+		                    cardGender.className = 'card-gender';
+		                    cardGender.innerHTML = '${m.resGender}';
+		                    cardBody.appendChild(cardGender);
+		                    
+		                    var cardType = document.createElement('p');
+		                    cardType.className = 'card-type';
+		                    cardType.innerHTML = '${m.resType} (${m.floor})';
+		                    cardBody.appendChild(cardType);
+		                    
+		                    card.appendChild(cardBody);
+		                    cardLink.appendChild(card);
+		                    cardDiv.appendChild(cardLink);
+		                    
+		                    var contentDiv = document.getElementById('content');
+		                    contentDiv.appendChild(cardDiv);
+		                    		                    
+			    	}
+			    	
+					removeDuplicateDivsById();
 			    	
 			        rearrangeDivsById();
-			    	
-
 					
 			}
 		});
@@ -434,7 +472,7 @@
                                     </svg>
                                     <div id="search-detail-text">조건검색</div>
                                 </span>
-                            <form>
+                            <form method="get" action="list.ho">
                                 <input type="text" placeholder="지역명, 주변명 입력">
                                 <button type="submit">
                                     <i class="fa fa-search" style="color : rgb(249,88,10)"></i>
@@ -571,26 +609,6 @@
             }
         }
     </script>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

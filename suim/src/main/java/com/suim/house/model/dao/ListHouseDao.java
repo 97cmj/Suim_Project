@@ -12,7 +12,7 @@ public class ListHouseDao {
 
 		public ArrayList<House> selectList(SqlSessionTemplate sqlSession) {
 				
-				return (ArrayList)sqlSession.selectList("houseMapper.selectList");
+				return (ArrayList)sqlSession.selectList("listHouseMapper.selectList");
 				
 			}
 	
