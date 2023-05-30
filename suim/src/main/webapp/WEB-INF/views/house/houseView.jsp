@@ -29,7 +29,7 @@
 
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3886c3b4f37795f353cee393f9f8f47d&libraries=services,clusterer,drawing"></script>
-	
+
 <style>
 .top {
 	flex: 2;
@@ -432,24 +432,51 @@
 			</div>
 
 
-			<br> <br> <br> <br> <br> <br> <br>
-			<br> <br> <br> <br> <br> <br> <br>
-			<br> <br> <br>
-
-
-			<!-- 	지도 부분 -->
-			<div id="map"
-				style="height: 350px; width: 100%; border-radius: 3px; border: 1px solid #ddd; position: relative; top: -410px;"></div>
-
+			<!--지도 부분 -->
+			<div class="middle_MapInfo">
+				<p class="m_title">위치 정보</p>
+				<div id="map"
+					style="height: 400px; width: 70%; border-radius: 3px; border: 1px solid #ddd;"></div>
+			</div>
 			<script>
 				var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
 					center : new kakao.maps.LatLng(37.534219, 126.901577), // 지도의 중심좌표
-					level : 5 // 지도의 확대 레벨
+					level : 5
+				// 지도의 확대 레벨
 				});
 				// 주소-좌표 변환 객체 생성합니다
 				var geocoder = new kakao.maps.services.Geocoder();
+
+				geocoder
+						.addressSearch(
+								'${h.houseAddress}',
+								function(result, status) {
+
+									// 정상적으로 검색이 완료됐으면 
+									if (status === kakao.maps.services.Status.OK) {
+
+										var coords = new kakao.maps.LatLng(
+												result[0].y, result[0].x);
+
+										// 결과값으로 받은 위치를 마커로 표시합니다
+										var marker = new kakao.maps.Marker({
+											map : map,
+											position : coords
+										});
+
+										// 인포윈도우로 장소에 대한 설명을 표시합니다
+										var infowindow = new kakao.maps.InfoWindow(
+												{
+													content : '<div style="width:150px;text-align:center;padding:6px 0;">${h.houseName}</div>'
+												});
+										infowindow.open(map, marker);
+
+										// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+										map.setCenter(coords);
+									}
+								});
 			</script>
-			
+
 		</section>
 		<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 </body>

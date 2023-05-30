@@ -230,3 +230,12 @@
   font-size: 18px;
   font-weight: bold;
 }
+
+
+
+/* 지도 */
+.middle_MapInfo {
+  padding: 20px;
+  margin-left: 30px; /* 여기에 값을 조정하여 오른쪽으로 이동시킴 */
+}
+
