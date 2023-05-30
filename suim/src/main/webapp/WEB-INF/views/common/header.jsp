@@ -8,7 +8,7 @@
 	                
 	                <ul class="nav nav-pills navi">
 	                    
-	                        <li class="nav-item"><a href="#" class="nav-link nav-text">방 찾기</a></li>
+	                        <li class="nav-item"><a href="detail.ho" class="nav-link nav-text">방 찾기</a></li>
 	                        <li class="nav-item">
 	                            <a href="#" class="nav-link nav-text">쉼</a>
 	                            <ul>
@@ -57,7 +57,7 @@
 	
 	                            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 pb-2">
 	                                <li class="nav-item offcanvas-text m-4">
-	                                    <a class="side-black" aria-current="page" href="#">방 찾기</a>
+	                                    <a class="side-black" aria-current="page" href="detail.ho">방 찾기</a>
 	                                </li>
 	                                <li class="nav-item dropdown m-4">
 	                                    <a class="side-black" href="#" id="offcanvasNavbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">셰어하우스 쉼</a>
