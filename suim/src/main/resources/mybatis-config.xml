@@ -1,23 +1,25 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE configuration
-  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "mybatis-3-config.dtd" >
 <configuration>
 	
 	<settings>
-		<setting name="jdbcTypeForNull" value="NULL"/>
+		<setting name="jdbcTypeForNull" value="NULL" />
 	</settings>
 	
 	<typeAliases>
 		<typeAlias type="com.suim.member.model.vo.Member" alias="member" />
 		<typeAlias type="com.suim.board.model.vo.Board" alias="board" />
 		<typeAlias type="com.suim.board.model.vo.Battachment" alias="battachment" />
+    <typeAlias type="com.suim.house.model.vo.House" alias="house" />
+
 	</typeAliases>
 	    
 	    
 	    <mappers>
 	    	<mapper resource="/mappers/member/member-mapper.xml"/>
 	    	<mapper resource="/mappers/board/board-mapper.xml"/>
+	    	<mapper resource="/mappers/house/house-mapper.xml"/>
+	    	<mapper resource="/mappers/house/list-house-mapper.xml" />
 	    </mappers>
 	    
 </configuration>
