@@ -24,8 +24,10 @@ public class HouseController {
 	private HouseService houseService;
 	
 	@RequestMapping("detail.ho")
-	public ModelAndView selectList(ModelAndView mv, HttpSession session) {
-	    House h = houseService.selectHouse(4);
+	public ModelAndView selectList(ModelAndView mv, int hno, HttpSession session) {
+	    House h = houseService.selectHouse(hno);
+	    System.out.println("아");
+	    System.out.println(hno);
 	    
 	    ArrayList<Wish> list = houseService.checkHeart(h.getHouseNo());
 	    
