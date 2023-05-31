@@ -9,11 +9,15 @@
 	</settings>
 	
 	<typeAliases>
+		<typeAlias type="com.suim.member.model.vo.Member" alias="member" />
+		<typeAlias type="com.suim.board.model.vo.Board" alias="board" />
+		<typeAlias type="com.suim.board.model.vo.Battachment" alias="battachment" />
 	</typeAliases>
 	    
 	    
 	    <mappers>
 	    	<mapper resource="/mappers/member/member-mapper.xml"/>
+	    	<mapper resource="/mappers/board/board-mapper.xml"/>
 	    </mappers>
 	    
 </configuration>
