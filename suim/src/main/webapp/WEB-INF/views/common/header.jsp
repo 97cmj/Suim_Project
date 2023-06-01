@@ -29,9 +29,9 @@
 	                        <li class="nav-item">
 	                            <a href="#" class="nav-link nav-text">커뮤니티</a>
 	                            <ul>
-	                                <li><a href="">자유게시판</a></li>
+	                                <li><a href="list.bo">자유게시판</a></li>
 	                                <li><a href="">입주후기</a></li>
-	                                <li><a href="">사람구해요</a></li>
+	                                <li><a href="flist.bo">사람구해요</a></li>
 	                            </ul>
 	                        </li>
 	                        
@@ -139,8 +139,8 @@
 	                                </li>
 	                                <li class="nav-item dropdown m-4"><a class="side-black" href="#" id="offcanvasNavbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">커뮤니티 </a>
 	                                    <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown2">
-	                                        <li><a class="dropdown-item" href="#">자유게시판</a></li>
-	                                        <li><a class="dropdown-item" href="#">사람구해요</a></li>
+	                                        <li><a class="dropdown-item" href="list.bo">자유게시판</a></li>
+	                                        <li><a class="dropdown-item" href="flist.bo">사람구해요</a></li>
 	                                        <li><a class="dropdown-item" href="#">입주 후기 </a></li>                                            
 	                                    </ul>
 	                                </li>

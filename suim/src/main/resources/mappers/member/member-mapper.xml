@@ -25,7 +25,6 @@
 		resultMap="memberResultSet">
 
 		SELECT * FROM MEMBER
-		LEFT JOIN MEMBER_INFO USING(MEMBER_ID)
 		WHERE MEMBER_ID = #{memberId}
 	</select>
 
