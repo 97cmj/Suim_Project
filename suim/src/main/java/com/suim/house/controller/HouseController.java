@@ -26,9 +26,7 @@ public class HouseController {
 	@RequestMapping("detail.ho")
 	public ModelAndView selectList(ModelAndView mv, int hno, HttpSession session) {
 	    House h = houseService.selectHouse(hno);
-	    System.out.println("아");
-	    System.out.println(hno);
-	    
+	
 	    ArrayList<Wish> list = houseService.checkHeart(h.getHouseNo());
 	    
 	    Member loginUser = (Member) session.getAttribute("loginUser");
