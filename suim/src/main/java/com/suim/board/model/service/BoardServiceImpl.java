@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.suim.board.model.dao.BoardDao;
 import com.suim.board.model.vo.Battachment;
 import com.suim.board.model.vo.Board;
+import com.suim.board.model.vo.Reply;
 import com.suim.common.model.vo.PageInfo;
 
 @Service
@@ -20,7 +21,8 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 
-
+	//------------------자유게시판-----------------------
+	
 	@Override
 	public int selectListCount() {
 		return boardDao.selectListCount(sqlSession);
@@ -32,8 +34,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int insertBoard(Board b, Battachment ba) {
-		return boardDao.insertBoard(sqlSession, b , ba);
+	public int insertBoard(Board b) {
+		return boardDao.insertBoard(sqlSession, b);
+	}
+	@Override
+	public int insertBattachment(Battachment ba) {
+		return boardDao.insertBattachment(sqlSession, ba);
 	}
 
 	@Override
@@ -54,6 +60,35 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int deleteBoard(int boardNo) {
 		return boardDao.deleteBoard(sqlSession, boardNo);
+	}
+
+	@Override
+	public ArrayList<Reply> selectReplyList(int boardNo) {
+		return boardDao.selectReplyList(sqlSession, boardNo);
+	}
+
+	@Override
+	public int insertReply(Reply r) {
+		return boardDao.insertReply(sqlSession, r);
+	}
+
+	@Override
+	public int ReplyCount(int boardNo) {
+		return boardDao.ReplyCount(sqlSession, boardNo);
+	}
+	
+	//------------------------------------------------
+	
+	//------------------사람구해요-----------------------
+
+	@Override
+	public int selectfListCount() {
+		return boardDao.selectfListCount(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Board> selectfList(PageInfo pi) {
+		return boardDao.selectfList(sqlSession, pi);
 	}
 	
 	
