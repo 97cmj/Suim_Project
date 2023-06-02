@@ -31,7 +31,7 @@
 	                
 	                <ul class="nav nav-pills navi">
 	                    
-	                        <li class="nav-item"><a href="#" class="nav-link nav-text">방 찾기</a></li>
+	                        <li class="nav-item"><a href="chat.ch" class="nav-link nav-text">방 찾기</a></li>
 	                        <li class="nav-item">
 	                            <a href="#" class="nav-link nav-text">쉼</a>
 	                            <ul>
@@ -135,7 +135,7 @@
 	                                </c:if>
 	                                
 	                                <li class="nav-item offcanvas-text m-4">
-	                                    <a class="side-black" aria-current="page" href="#">방 찾기</a>
+	                                    <a class="side-black" aria-current="page" href="">방 찾기</a>
 	                                </li>
 	                                
 	                                <li class="nav-item dropdown m-4">
