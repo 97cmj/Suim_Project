@@ -1,12 +1,10 @@
 package com.suim.member.model.service;
 
 import java.util.ArrayList;
-
-
-import javax.validation.Valid;
-
+import java.util.Map;
 
 import javax.validation.Valid;
+
 
 import com.suim.member.model.vo.Member;
 import com.suim.member.model.vo.SignUp;
@@ -40,6 +38,18 @@ public interface MemberService {
 
 	// 번호 중복체크 서비스
 	int phoneCheck(String phone);
+	
+	// NAVER API 회원가입
+	int insertApiMember(Member member);
+
+	// 네이버로그인 계정 체크
+	Map<String, Object> naverConnectionCheck(String email);
+	
+	// 네이버 회원 체크 서비스
+	int setNaverConnection(Map<String, Object> apiJson);
+
+	// 회원 네이버 연동 서비스
+	Member userNaverLoginPro(Map<String, Object> apiJson);
 
 	
 }
