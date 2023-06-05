@@ -26,7 +26,7 @@ public class ListHouseDao {
 		Map<String, Object> con = new HashMap<>();
 		con.put("minValue", minValue);
 		con.put("maxValue", maxValue);
-		con.put("genderDivision", genderDivisions);
+		con.put("genderDivisions", genderDivisions);
 		con.put("houseType", houseType);
 		con.put("maxResident", maxResident);
 		con.put("floor", floor);

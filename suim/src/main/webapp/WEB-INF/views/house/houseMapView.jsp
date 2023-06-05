@@ -689,9 +689,9 @@
                                                 <div class="genderFilter">
                                                     <p class="filterTitle"><strong>성별 타입</strong>
                                                     <div class="filter_cont">
-                                                            <input type="checkbox" id="house-filter_gender_division_f" name="genderDivisions" value="여성"><label for="house-filter_gender_division_f">&nbsp;여성전용</label>&nbsp;
-                                                            <input type="checkbox" id="house-filter_gender_division_m" name="genderDivisions" value="남성"><label for="house-filter_gender_division_m">&nbsp;남성전용</label>&nbsp;
-                                                            <input type="checkbox" id="house-filter_gender_division_mf" name="genderDivisions" value="남녀공용"><label for="house-filter_gender_division_mf">&nbsp;남녀공용</label>&nbsp;
+                                                            <input type="checkbox" id="house-filter_gender_divisions_f" name="genderDivisions" value="여성전용"><label for="house-filter_gender_divisions_f">&nbsp;여성전용</label>&nbsp;
+                                                            <input type="checkbox" id="house-filter_gender_divisions_m" name="genderDivisions" value="남성전용"><label for="house-filter_gender_divisions_m">&nbsp;남성전용</label>&nbsp;
+                                                            <input type="checkbox" id="house-filter_gender_divisions_mf" name="genderDivisions" value="남녀공용"><label for="house-filter_gender_division_mf">&nbsp;남녀공용</label>&nbsp;
                                                     </div>
                                                 </div>
                                                 <!-- 성별 타입 끝-->
