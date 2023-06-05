@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+
+<mapper namespace="adminNoticeMapper">
+
+	<resultMap id="noticeResultSet" type="notice">
+		<result column="NOTICE_NO" property="noticeNo" />
+		<result column="NOTICE_TITLE" property="noticeTitle" />
+		<result column="NOTICE_CONTENT" property="noticeContent" />
+		<result column="NOTICE_DATE" property="noticeDate" />
+		<result column="NOTICE_VIEW" property="noticeView" />
+		<result column="NOTICE_STATUS" property="noticeStatus" />
+	</resultMap>
+
+	<resultMap id="adminNoticeResultSet" type="nAttachment">
+		<result column="NAT_NO" property="natNo" />
+		<result column="ORGIN_NAME" property="originName" />
+		<result column="CHANGE_NAME" property="changeName" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="FILE_STATUS" property="fileStatus" />
+		<result column="NOTICE_NO" property="noticeNo" />
+	</resultMap>
+	
+	<insert id="insertNoticeBoard" parameterType="notice">
+		INSERT INTO NOTICE (NOTICE_NO,
+							NOTICE_TITLE,
+							NOTICE_CONTENT,
+							NOTICE_DATE,
+							NOTICE_VIEW,
+							NOTICE_STATUS)
+					VALUES (SEQ_NOTICE_NO.NEXTVAL,
+							#{noticeTitle},
+							#{noticeContent},
+							DEFAULT,
+							DEFAULT,
+							DEFAULT)
+	</insert>
+	
+	<insert id="insertNoticeFile" parameterType="nAttachment">
+		INSERT INTO NATTACHMENT (NAT_NO,
+							ORIGIN_NAME,
+							CHANGE_NAME,
+							CREATE_DATE,
+							FILE_STATUS,
+							NOTICE_NO)
+					VALUES (SEQ_NAT_NO.NEXTVAL,
+							#{originName},
+							#{changeName},
+							DEFAULT,
+							DEFAULT,
+							SEQ_NOTICE_NO.CURRVAL)
+					
+	</insert>
+	
+	<!-- 공지사항 상세조회 후 파일첨부 할 때 공지사항번호 조회용 쿼리문 -->
+	<select id="selectBoard" parameterType="_int" resultMap="noticeResultSet">
+		SELECT NOTICE_NO
+		  FROM NOTICE
+		 WHERE NOTICE_NO = #{noticeNo}
+	</select>
+	
+	
+	
+
+</mapper>

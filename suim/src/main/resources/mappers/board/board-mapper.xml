@@ -36,7 +36,7 @@
 		<result column="FIND_VIEW" property="findView" />
 		<result column="FIND_DATE" property="findDate" />
 		<result column="ORIGIN_NAME" property="originName" />
-		
+    
 		<result column="FIND_CONTENT" property="findContent" />
 		<result column="CHANGE_NAME" property="changeName" />
 		<result column="FIND_REPLY_COUNT" property="freplyCount" />
@@ -53,8 +53,6 @@
 	
 
 
-
-	
 		<!-- 게시글 총 갯수 구하는 쿼리문 -->
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
@@ -261,6 +259,7 @@
 			    F.FIND_NO,
 			    F.FIND_TITLE,
 			    LISTAGG(F.FIND_CONTENT, ', ') WITHIN GROUP (ORDER BY F.FIND_CONTENT) AS FIND_CONTENT,
+
 			    F.FIND_CATEGORY,
 			    F.FIND_VIEW,
 			    F.FIND_DATE,
@@ -268,16 +267,20 @@
 			    F.MEMBER_ID,
 			    FA.ORIGIN_NAME,
 			    FA.CHANGE_NAME,
+      
 			    M.NICNAME,
+
 			    COUNT(FR.FRE_NO) AS FIND_REPLY_COUNT
 			FROM FIND F
 			JOIN MEMBER M ON (M.MEMBER_ID = F.MEMBER_ID)
 			LEFT JOIN FATTACHMENT FA ON (FA.FIND_NO = F.FIND_NO)
 			LEFT JOIN FIND_REPLY FR ON (FR.FIND_NO = F.FIND_NO)
+
 			WHERE F.STATUS = 'Y'
 			GROUP BY
 			    F.FIND_NO,
 			    F.FIND_TITLE,
+
 			    F.FIND_CATEGORY,
 			    F.FIND_VIEW,
 			    F.FIND_DATE,
@@ -288,6 +291,7 @@
 			ORDER BY F.FIND_NO DESC
 
 		</select>
+
 		
 		<update id="updateBoard" parameterType="board">
 		  UPDATE BOARD

@@ -63,6 +63,7 @@ public class BoardController {
 		
 	
 		
+
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
 		  .addObject("blist", blist)
@@ -259,7 +260,9 @@ public class BoardController {
 		public ModelAndView updateBoard(int bno,
 									ModelAndView mv) {
 			
+
 			Board b = boardService.updateBoardList(bno);
+
 			
 			System.out.println(b);
 			mv.addObject("b", b)
