@@ -1,7 +1,6 @@
 package com.suim.house.model.dao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +31,6 @@ public class ListHouseDao {
 		con.put("maxResident", maxResident);
 		con.put("floor", floor);
 		con.put("openDate", openDate);
-		
 				
 		return (ArrayList)sqlSession.selectList("listHouseMapper.selectList", con);
 		
