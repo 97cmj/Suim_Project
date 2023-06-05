@@ -33,12 +33,12 @@ public class ListHouseController {
 			if (searchKeyword == null) {
 		        searchKeyword = ""; // null인 경우 빈 문자열로 초기화
 			}
-			
+
 			ArrayList<Region> region = listHouseService.regionSelectList(searchKeyword);
 		    ArrayList<House> list = listHouseService.selectList(minValue,maxValue,genderDivisions,houseType,maxResident,floor,openDate);
-
-		    mv.addObject("list", list);
 		    
+		    mv.addObject("list", list);
+		     
 		    if (region.isEmpty()) {
 		        mv.addObject("regionEmpty", true);
 		    } else {
