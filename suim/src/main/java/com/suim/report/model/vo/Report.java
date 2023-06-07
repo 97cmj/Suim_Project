@@ -16,4 +16,5 @@ public class Report {
 	private String reportId;
 	private Date reportDate;
 	private String reportStatus;
+	
 }
