@@ -35,8 +35,7 @@
 		<result column="RES_GENDER" property="resGender" />
 		<result column="DEPOSIT" property="deposit" />
 		<result column="RENT" property="rent" />
-		<result column="CHANGE_NAME" property="changeName" />
-	</resultMap>
+
 	
 
 	<!-- 자유게시판 게시글 갯수 -->
@@ -108,6 +107,7 @@
 		F.FIND_NO,
 		F.FIND_TITLE,
 		F.FIND_CONTENT,
+
 		F.FIND_CATEGORY,
 		F.FIND_VIEW,
 		F.FIND_DATE,
