@@ -92,6 +92,7 @@
         <br><br><br><br>
 
 
+
 		
    <form id="enrollForm" method="get" action="list.fi" enctype="multipart/form-data">     
     <div class="search-filter">
@@ -108,15 +109,18 @@
         <option value="all">성별을 선택하세요</option>
         <option value="M" >남자</option>
         <option value="F" >여자</option>
+
     </select>
 
     &nbsp;&nbsp;
 
     <label for="condition">조건:</label>
+
     <select id="condition" name="category" style="border-radius: 8px;">
         <option value="all">조건을 선택하세요</option>
         <option value="방구해요" >방구해요</option>
         <option value="세놓아요" >세놓아요</option>
+
     </select>
     &nbsp;
 
@@ -133,6 +137,7 @@
 		
 
 
+
 		<c:if test="${not empty loginUser}">
 		    <a class="btn btn-secondary" style="display: inline-block; vertical-align: middle; line-height: 20px; background-color: rgb(250,107,111); height: 20px; text-decoration: none; color: #fff; padding: 0 10px; font-size: medium; margin-left: 1220px;" href="enrollForm.fi">
 		        글작성
@@ -140,6 +145,7 @@
 		    </a>
 		</c:if>
 		        
+
         <table class="table" style="text-align: center;" id="freeboard">
         <thead>
             <tr>
@@ -195,6 +201,7 @@
 	
        
 
+
 <div id="pagingArea" style="margin-top: 22px;">
   <ul class="pagination">
     <c:choose>
@@ -220,6 +227,7 @@
     </c:choose>
   </ul>
 </div>
+
    
     
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>

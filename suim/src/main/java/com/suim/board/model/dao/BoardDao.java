@@ -134,7 +134,8 @@ public class BoardDao {
 	public Find updateFindList(SqlSessionTemplate sqlSession, int findNo) {
 		return sqlSession.selectOne("boardMapper.selectFind", findNo);
 	}
-	
+
+
 	//------------------------------------------------------------------------------
 	
 	//---------------------------이용후기---------------------------------------------
@@ -166,4 +167,5 @@ public class BoardDao {
 		return (ArrayList)sqlSession.selectList("boardMapper.selectiList", fin ,rowBounds);
 	}
 	
+
 }

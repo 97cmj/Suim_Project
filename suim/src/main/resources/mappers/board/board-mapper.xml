@@ -53,6 +53,7 @@
 		<result column="FRE_DATE" property="freDate" />
 		<result column="FRE_ID" property="freId" />
 		<result column="FIND_NO" property="findNo" />
+
 	</resultMap>
 	
 		<!-- INREVIEW 테이블로부터 조회된 ResultSet 을 InReview 객체로 가공해주는 resultMap -->
@@ -67,6 +68,7 @@
     <result column="INR_CONTENT" property="inrContent" />
     <result column="CHANGE_NAME" property="changeName" />
     <result column="THUMBNAIL" property="thumbnail" />
+
 	</resultMap>
 	
 
@@ -386,6 +388,7 @@
 	
 	
 	<select id="selectFind" parameterType="_int" resultMap="findResultSet">
+
 			SELECT
 			    F.FIND_NO,
 			    F.FIND_TITLE,
@@ -396,6 +399,7 @@
 			    F.STATUS,
 			    F.MEMBER_ID,
 			    M.NICKNAME,
+
 			    FA.ORIGIN_NAME,
 			    FA.CHANGE_NAME,
 			    COUNT(FR.FRE_NO) AS FIND_REPLY_COUNT,
@@ -404,8 +408,10 @@
 			JOIN MEMBER M ON (M.MEMBER_ID = F.MEMBER_ID)
 			LEFT JOIN FATTACHMENT FA ON (FA.FIND_NO = F.FIND_NO)
 			LEFT JOIN FIND_REPLY FR ON (FR.FIND_NO = F.FIND_NO)
+
 			WHERE F.FIND_NO = #{findNo}
 			AND F.STATUS = 'Y'
+
 			GROUP BY
 			    F.FIND_NO,
 			    F.FIND_TITLE,
@@ -416,9 +422,11 @@
 			    F.STATUS,
 			    F.MEMBER_ID,
 			    M.NICKNAME,
+
 			    FA.ORIGIN_NAME,
 			    FA.CHANGE_NAME
 			ORDER BY F.FIND_NO DESC
+
 	</select>
 	
 	<update id="increasefCount" parameterType="_int">
@@ -508,6 +516,7 @@
 		  WHERE FIND_NO = #{findNo}
 		  AND STATUS = 'Y'
 		</update>
+
 		
 		
 		<update id="increaseiCount" parameterType="_int">
@@ -549,6 +558,7 @@
         IA.CHANGE_NAME
     ORDER BY I.INR_NO DESC
 </select>
+
 	
 
 	

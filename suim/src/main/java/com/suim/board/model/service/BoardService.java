@@ -99,6 +99,7 @@ public interface BoardService {
 	// 상세페이지 조회
 	Find updateFindList(int findNo);
 	
+
 	//------------------------------------------------
 	
 	//------------------이용후기-----------------------
@@ -114,5 +115,6 @@ public interface BoardService {
 	
 	ArrayList<InReview> selectiList(PageInfo pi, HashMap<String, String> fin);
 	
+
 
 }

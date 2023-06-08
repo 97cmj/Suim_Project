@@ -347,6 +347,7 @@ public class BoardController {
 					}
 					
 					mv.addObject("pi", pi) 
+
 					  .addObject("flist", flist)
 					  .addObject("url", uriWithQueryString)
 					  .setViewName("board/find-board");
@@ -354,8 +355,6 @@ public class BoardController {
 					
 					
 					return mv;  
-
-					
 
 
 				}

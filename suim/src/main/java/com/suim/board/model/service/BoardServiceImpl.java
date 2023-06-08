@@ -150,6 +150,7 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.insertFind(sqlSession, f);
 	}
 
+
 	@Override
 	public int updateFind(Find f) {
 		return boardDao.updateFind(sqlSession, f);
