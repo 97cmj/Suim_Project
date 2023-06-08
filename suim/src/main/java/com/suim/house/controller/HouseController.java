@@ -216,5 +216,5 @@ public class HouseController {
 	        model.addAttribute("errorMsg", "방 정보 수정에 실패하였습니다.");
 	        return "common/errorPage";
 	    }
-	}	
+	}
 }
