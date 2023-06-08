@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import com.suim.board.model.dao.BoardDao;
 import com.suim.board.model.vo.Battachment;
 import com.suim.board.model.vo.Board;
+import com.suim.board.model.vo.Find;
 import com.suim.board.model.vo.Reply;
+import com.suim.board.model.vo.findReply;
 import com.suim.common.model.vo.PageInfo;
 
 @Service
@@ -74,11 +76,25 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int ReplyCount(int boardNo) {
+		
+		
 		return boardDao.ReplyCount(sqlSession, boardNo);
 	}
 	
-	//------------------------------------------------
+	@Override
+	public int updateBoard(Board b) {
+		return boardDao.updateBoard(sqlSession, b);
+
+	}
 	
+	@Override
+	public Board updateBoardList(int boardNo) {
+		return boardDao.updateBoardList(sqlSession, boardNo);
+	}
+
+	
+	
+	//------------------------------------------------
 	//------------------사람구해요-----------------------
 
 	@Override
@@ -87,9 +103,55 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public ArrayList<Board> selectfList(PageInfo pi) {
+	public ArrayList<Find> selectfList(PageInfo pi) {
 		return boardDao.selectfList(sqlSession, pi);
 	}
+
+	@Override
+	public int increasefCount(int findNo) {
+		return boardDao.increasefCount(sqlSession, findNo);
+	}
+
+	@Override
+	public Find selectFind(int findNo) {
+		return boardDao.selectFind(sqlSession, findNo);
+	}
+	@Override
+	public int deleteFind(int findNo) {
+		return boardDao.deleteFind(sqlSession, findNo);
+	}
+
+	@Override
+	public ArrayList<findReply> selectfReplyList(int findNo) {
+		
+		
+		return boardDao.selectfReplyList(sqlSession, findNo);
+	}
+
+	@Override
+	public int insertfReply(findReply fr) {
+		return boardDao.insertfReply(sqlSession, fr);
+	}
+
+	@Override
+	public int insertFind(Find f) {
+		return boardDao.insertFind(sqlSession, f);
+	}
+
+	@Override
+	public int updateFind(Find f) {
+		return boardDao.updateFind(sqlSession, f);
+	}
+
+	@Override
+	public Find updateFindList(int findNo) {
+		return boardDao.updateFindList(sqlSession, findNo);
+	}
+
+
+
+
+	
 	
 	
 

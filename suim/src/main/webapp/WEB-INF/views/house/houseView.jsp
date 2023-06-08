@@ -72,7 +72,7 @@
 			<aside class="left">
 				<!-- 왼쪽 영역 내용 -->
 				<h3>${h.houseName }</h3>
-
+						
 				<div class="wrapper">
 					<div class="connected-carousels">
 						<div class="stage">

@@ -16,7 +16,7 @@
 		</script>
 		<c:remove var="alertMsg" scope="session" />
 	</c:if>
-	
+
 	<c:if test="${ not empty toastError }">
 		<script>
 		toastr.error("${ toastError }");
@@ -30,8 +30,7 @@
 		</script>
 		<c:remove var="toastSuccess" scope="session" />
 	</c:if>
-	
-	
+
 	<c:set var="currentPath" value="${pageContext.request.servletPath}" />
 	<c:if test="${!currentPath.equals('/WEB-INF/views/main.jsp')}">
 	  <script>
@@ -49,7 +48,7 @@
 	                
 	                <ul class="nav nav-pills navi">
 	                    
-	                        <li class="nav-item"><a href="chat.ch" class="nav-link nav-text">방 찾기</a></li>
+	                        <li class="nav-item"><a href="/chat.ch" class="nav-link nav-text">방 찾기</a></li>
 	                        <li class="nav-item">
 	                            <a href="#" class="nav-link nav-text">쉼</a>
 	                            <ul>
@@ -61,7 +60,7 @@
 	                            <ul>
 	                                <li><a href="/list.bo">자유게시판</a></li>
 	                                <li><a href="">입주후기</a></li>
-	                                <li><a href="/flist.bo">사람구해요</a></li>
+	                                <li><a href="/list.fi">사람구해요</a></li>
 	                            </ul>
 	                        </li>
 	                        
@@ -77,6 +76,7 @@
 	                            		<a href="#" class="nav-link nav-text">${ loginUser.memberName }님</a>
 		                            	<ul>
 			                                <li><a href="/mypage/timeline">마이페이지</a></li>
+
 			                                <li><a href="/chat.ch">채팅방</a>
 			                                
 			                                <li>
@@ -140,7 +140,7 @@
 									    </c:choose>
 									  </c:when>
 									</c:choose>
-								
+
 	                                <c:if test="${not empty loginUser }">
 	                                
 	                                <li class="nav-item dropdown m-4">
@@ -158,7 +158,6 @@
 	                                    <a class="side-black" aria-current="page" href="">방 찾기</a>
 	                                </li>
 	                                
-	                                
 	                                <li class="nav-item dropdown m-4">
 	                                    <a class="side-black" href="#" id="offcanvasNavbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">셰어하우스 쉼</a>
 	                                        <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown1">
@@ -168,13 +167,13 @@
 	                                <li class="nav-item dropdown m-4"><a class="side-black" href="#" id="offcanvasNavbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">커뮤니티 </a>
 	                                    <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown2">
 	                                        <li><a class="dropdown-item" href="list.bo">자유게시판</a></li>
-	                                        <li><a class="dropdown-item" href="flist.bo">사람구해요</a></li>
+	                                        <li><a class="dropdown-item" href="list.fi">사람구해요</a></li>
 	                                        <li><a class="dropdown-item" href="#">입주 후기 </a></li>                                            
 	                                    </ul>
 	                                </li>
 	                                <li class="nav-item dropdown m-4"><a class="side-black" href="#" id="offcanvasNavbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false">고객센터 </a>
 	                                    <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown3">
-	                                        <li><a class="dropdown-item" href="#">공지사항</a></li>
+	                                        <li><a class="dropdown-item" href="notice.no">공지사항</a></li>
 	                                        <li><a class="dropdown-item" href="#">자주 묻는 질문</a></li>                        
 	                                    </ul>
 	                                </li>

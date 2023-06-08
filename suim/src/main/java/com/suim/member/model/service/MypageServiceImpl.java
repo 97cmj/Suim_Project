@@ -10,32 +10,36 @@ import com.suim.board.model.vo.Board;
 import com.suim.common.model.vo.PageInfo;
 import com.suim.house.model.vo.House;
 import com.suim.member.model.dao.MypageDao;
+import com.suim.member.model.vo.MyWish;
 
 @Service
-public class MypageServiceImpl implements MypageService{
+public class MypageServiceImpl implements MypageService {
 
 	private final SqlSessionTemplate sqlSession;
 	private final MypageDao mypageDao;
 
 	@Autowired
 	public MypageServiceImpl(SqlSessionTemplate sqlSession, MypageDao mypageDao) {
-	    this.sqlSession = sqlSession;
-	    this.mypageDao = mypageDao;
+		this.sqlSession = sqlSession;
+		this.mypageDao = mypageDao;
 	}
-	
+
 	@Override
-	public int selectBoardListCount() {
-		return mypageDao.selectBoardListCount(sqlSession);
+	public int selectBoardListCount(String memberId) {
+		return mypageDao.selectBoardListCount(sqlSession, memberId);
+
 	}
-	
+
 	@Override
 	public ArrayList<Board> selectBoardList(PageInfo pi, String memberId) {
 		return mypageDao.selectBoardList(sqlSession, pi, memberId);
 	}
 
 	@Override
-	public int selectFindListCount() {
-		return mypageDao.selectFindListCount(sqlSession);
+
+	public int selectFindListCount(String memberId) {
+		return mypageDao.selectFindListCount(sqlSession, memberId);
+
 	}
 
 	@Override
@@ -57,5 +61,20 @@ public class MypageServiceImpl implements MypageService{
 	}
 
 
+	@Override
+	public int deleteBoard(int[] intArray, String memberId) {
+		return mypageDao.deleteBoard(sqlSession, intArray, memberId);
+		
+	}
+
+	@Override
+	public int selectWishListCount(String memberId) {
+		return mypageDao.selectWishListCount(sqlSession, memberId);
+	}
+
+	@Override
+	public ArrayList<MyWish> selectWishList(PageInfo pi, String memberId) {
+		return mypageDao.selectWishList(sqlSession, pi, memberId);
+	}
 
 }
