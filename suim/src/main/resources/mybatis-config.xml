@@ -19,6 +19,7 @@
 		<typeAlias type="com.suim.report.model.vo.Report" alias="report" />
 		<typeAlias type="com.suim.chat.model.vo.ChatList" alias="chatList" />
 		<typeAlias type="com.suim.chat.model.vo.ChatLog" alias="chatlog" />
+		<typeAlias type="com.suim.house.model.vo.Reservation" alias="reservation"/>
 	</typeAliases>
 	    
 	    

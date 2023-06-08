@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.suim.board.model.vo.Board;
 import com.suim.common.model.vo.PageInfo;
+import com.suim.house.model.vo.House;
 
 @Repository
 public class MypageDao {
@@ -39,5 +40,25 @@ public class MypageDao {
 		
 		return (ArrayList)sqlSession.selectList("mypageMapper.selectFindList", memberId, rowBounds);
 	}
+	
+	
+	
+	
+	
+	public int selectHouseListCount(SqlSessionTemplate sqlSession, String memberId) {
+		return sqlSession.selectOne("mypageMapper.selectHouseListCount", memberId);
+	}
+	
+	
+	public ArrayList<House> selectHouseList(SqlSessionTemplate sqlSession, PageInfo pi, String memberId) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit(); // offset : 건너뛸 숫자
+		int limit = pi.getBoardLimit(); // limit : 조회할 갯수
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
 
+		return (ArrayList)sqlSession.selectList("mypageMapper.selectHouseList", memberId, rowBounds);
+		
+	}
+	
 }
