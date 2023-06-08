@@ -222,7 +222,9 @@ public class MypageController {
 		String memberId = m.getMemberId();
 		int listCount = mypageService.selectWishListCount(memberId);
 		PageInfo pi = Pagination.getPageInfo(listCount, page, pageLimit, boardLimit);
+    
 		ArrayList<MyWish> list = mypageService.selectWishList(pi, memberId);
+
 		model.addAttribute("pi", pi).addAttribute("list", list);
 		return "member/mypage/wish";
 	}
