@@ -31,7 +31,9 @@ import com.suim.board.model.vo.Battachment;
 import com.suim.board.model.vo.Board;
 import com.suim.board.model.vo.Find;
 import com.suim.board.model.vo.InReview;
+
 import com.suim.board.model.vo.InReviewReply;
+
 import com.suim.board.model.vo.Reply;
 import com.suim.board.model.vo.findReply;
 import com.suim.common.model.vo.PageInfo;
@@ -304,6 +306,7 @@ public class BoardController {
 
 		//---------------------------사람구해요--------------------------------
 		
+
 		@RequestMapping("list.fi")
 		public ModelAndView selectfList(@RequestParam(defaultValue="all") String gender, 
 										@RequestParam(defaultValue="all")String category,
@@ -357,7 +360,6 @@ public class BoardController {
 			
 			return mv;  
 
-
 		}
 		
 
@@ -366,6 +368,7 @@ public class BoardController {
 			public ModelAndView selectFind(ModelAndView mv,
 									HttpServletRequest request,
 											int fno) {
+
 
 				int result = boardService.increasefCount(fno);
 				
@@ -503,6 +506,7 @@ public class BoardController {
 			return mv;
 		}
 
+
 		@RequestMapping("update.fi")
 		public String updateBoard(Find fb,
 							String category,
@@ -569,6 +573,7 @@ public class BoardController {
 				
 				pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 				ilist = boardService.selectiList(pi);
+
 				
 			} 
 			else {
@@ -706,6 +711,7 @@ public class BoardController {
 			return mv;
 		}
 
+
 		@RequestMapping("update.in")
 		public String updateInReview(InReview i,
 						HttpSession session,
@@ -755,9 +761,7 @@ public class BoardController {
 			
 			return (result > 0) ? "success" : "fail";
 		}
-		
-		
-				
+
 	
 		   
 }

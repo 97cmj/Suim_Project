@@ -16,6 +16,7 @@ import com.suim.board.model.vo.InReviewReply;
 import com.suim.board.model.vo.Reply;
 import com.suim.board.model.vo.findReply;
 import com.suim.common.model.vo.PageInfo;
+import com.suim.board.model.vo.InReview;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -169,6 +170,7 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.selectfListCount(sqlSession);
 	}
 
+
 	@Override
 	public int selectiListCount(HashMap<String, String> fin) {
 		return boardDao.selectiListCount(sqlSession, fin);
@@ -224,6 +226,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int insertInReviewReply(InReviewReply ir) {
 		return boardDao.insertInReviewReply(sqlSession, ir);
+
 	}
 
 

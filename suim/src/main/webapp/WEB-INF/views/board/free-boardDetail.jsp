@@ -243,7 +243,9 @@
 	var backButton = document.querySelector('.btn-secondary');
 
 	// 버튼을 클릭하면 goBack 함수를 호출한다
+
 	//backButton.addEventListener('click', goBack);
+
     
     </script>
     

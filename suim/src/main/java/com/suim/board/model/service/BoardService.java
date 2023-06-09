@@ -11,6 +11,7 @@ import com.suim.board.model.vo.InReviewReply;
 import com.suim.board.model.vo.Reply;
 import com.suim.board.model.vo.findReply;
 import com.suim.common.model.vo.PageInfo;
+import com.suim.board.model.vo.InReview;
 
 public interface BoardService {
 	
@@ -139,6 +140,7 @@ public interface BoardService {
 	
 	// 댓글 작성 서비스 (Ajax)
 	int insertInReviewReply(InReviewReply ir);
+
 
 
 }

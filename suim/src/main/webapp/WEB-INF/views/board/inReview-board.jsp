@@ -68,6 +68,7 @@
 		  margin: 0 5px;
 
 		}
+
 		.container .row {
 		    margin-bottom: 130px; /* 가로 간격 설정 */
 		  }
@@ -115,12 +116,15 @@
 
         
 <c:if test="${not empty loginUser}">
+
     <a class="btn btn-secondary" style="display: inline-block; vertical-align: middle; line-height: 30px; background-color: rgb(250,107,111); height: 30px; text-decoration: none; color: #fff; padding: 0 10px; font-size: medium; margin-left: 1184px; margin-bottom: 12px; width: 100px;" href="enrollForm.in">
+
         후기작성
     </a>
 </c:if>
         
        <!-- Gallery -->
+
        
 <div class="container">
   <c:forEach var="i" items="${ilist}" varStatus="status">
@@ -147,6 +151,7 @@
 </div>
 	
    
+
 <!-- Gallery -->
        
 
@@ -158,13 +163,17 @@
                     		<li class="page-item disabled" ><a class="page-link" href="#" style="background-color : white; color : rgb(250, 107, 111);"><</a></li>
                 		</c:when>
                 		<c:otherwise>
+
 		                    <li class="page-item"><a class="page-link" href="list.in?cPage=${ pi.currentPage - 1 }"><</a></li>
+
                 		</c:otherwise>
                 	</c:choose>
                     
                     
                     <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }" step="1">
+
                     	<li class="page-item"><a class="page-link" href="list.in?cPage=${ p }" style="background-color : white; color : rgb(250, 107, 111);">${ p }</a></li>
+
                     </c:forEach>
                     
                     <c:choose>
@@ -172,13 +181,17 @@
                     		<li class="page-item disabled"><a class="page-link" href="#" style="background-color : white; color : rgb(250, 107, 111);">></a></li>
                     	</c:when>
                     	<c:otherwise>
+
                     		<li class="page-item"><a class="page-link" href="list.in?cPage=${ pi.currentPage + 1 }" style="background-color : white; color : rgb(250, 107, 111);"> ></a></li>
+
                     	</c:otherwise>
                     </c:choose>
                 </ul>
             </div>
 
+
    
+
     
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         <script>
@@ -197,6 +210,7 @@
         button.classList.remove('hovered');
         });
         
+
         function redirectToDetail(inrNo) {
             location.href = "detail.in?ino=" + inrNo;
           }
@@ -205,6 +219,7 @@
         	  $(".bestcontainer .item").click(function() {
         	    let ino = $(this).find(".ino").text();
         	    location.href = "detail.in?ino=" + ino;
+
         	  });
         	});
          

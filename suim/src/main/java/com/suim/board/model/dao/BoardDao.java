@@ -11,7 +11,9 @@ import com.suim.board.model.vo.Battachment;
 import com.suim.board.model.vo.Board;
 import com.suim.board.model.vo.Find;
 import com.suim.board.model.vo.InReview;
+
 import com.suim.board.model.vo.InReviewReply;
+
 import com.suim.board.model.vo.Reply;
 import com.suim.board.model.vo.findReply;
 import com.suim.common.model.vo.PageInfo;
@@ -168,6 +170,7 @@ public class BoardDao {
 		return (ArrayList)sqlSession.selectList("boardMapper.selectiList", fin ,rowBounds);
 	}
 	
+
 	public int increaseInCount(SqlSessionTemplate sqlSession, int inrNo) {
 		return sqlSession.update("boardMapper.increaseInCount", inrNo);
 	}
@@ -200,5 +203,6 @@ public class BoardDao {
 		return sqlSession.insert("boardMapper.insertInReviewReply", ir);
 	
 	}
+
 
 }

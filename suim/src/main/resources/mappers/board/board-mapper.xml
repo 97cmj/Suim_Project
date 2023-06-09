@@ -57,7 +57,9 @@
 	</resultMap>
 	
 		<!-- INREVIEW 테이블로부터 조회된 ResultSet 을 InReview 객체로 가공해주는 resultMap -->
+
 	<resultMap id="InReviewResultSet" type="inreview">
+
     <result column="INR_NO" property="inrNo" />
     <result column="INR_TITLE" property="inrTitle" />
     <result column="MEMBER_ID" property="memberId" />
@@ -69,6 +71,7 @@
     <result column="CHANGE_NAME" property="changeName" />
     <result column="THUMBNAIL" property="thumbnail" />
 
+
 	</resultMap>
 	 <!-- INREVIEWREPLY 테이블로부터 조회된 ResultSet 을 INREVIEW 객체로 가공해주는 resultMap -->
 	<resultMap id="inReviewReplyResultSet" type="inreviewreply">
@@ -79,6 +82,7 @@
 		<result column="IRE_DATE" property="ireDate" />
 		<result column="IRE_ID" property="ireId" />
 		<result column="INR_NO" property="inrNo" />
+
 
 	</resultMap>
 	
@@ -538,6 +542,7 @@
 	</update>
 		
 		
+
 		<!-- 게시글 리스트를 구해주는 쿼리문 -->
 		<select id="selectiList" resultMap="InReviewResultSet">
 		    SELECT
@@ -682,6 +687,7 @@
 				   		, #{memberId}
 				   		)
 	</insert> 
+
 
 	
 
