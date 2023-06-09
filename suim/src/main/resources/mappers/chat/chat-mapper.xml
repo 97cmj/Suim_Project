@@ -93,5 +93,11 @@
 	      AND RECEIVE_USER = #{Id}
 	      AND R_STATUS = 'N'
 	</update>
-
+	
+	<delete id="deleteChat" parameterType="java.util.Map">
+    DELETE FROM CHAT_LIST
+    WHERE CHAT_NO = #{rno}
+    AND (MUSER = #{Id} OR CUSER = #{Id})
+</delete>
+	
 </mapper>

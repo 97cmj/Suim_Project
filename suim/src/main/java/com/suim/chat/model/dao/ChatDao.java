@@ -63,4 +63,12 @@ public class ChatDao {
         params.put("Id", Id);
         sqlSession.insert("chatMapper.setRead", params);
     }
+    
+    public void deleteChat(SqlSessionTemplate sqlSession, int rno, String Id) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("rno", rno);
+        params.put("Id", Id);
+        sqlSession.delete("chatMapper.deleteChat", params);
+    }
+    
 }
