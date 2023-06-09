@@ -119,7 +119,7 @@ public class HouseController {
 	    
 	    if(result > 0) { // 게시글 등록 성공 => 게시글 목록보기 요청
 	        session.setAttribute("alertMsg", "성공적으로 방이 등록되었습니다.");
-	        return "redirect:list.ho";
+	        return "redirect:/mypage/house";
 	    } else { // 게시글 등록 실패 => 에러문구 담아서 에러페이지 포워딩
 	        model.addAttribute("errorMsg", "방 등록에 실패하였습니다.");
 	        return "common/errorPage";
