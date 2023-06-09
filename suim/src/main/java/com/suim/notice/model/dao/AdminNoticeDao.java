@@ -41,8 +41,21 @@ public class AdminNoticeDao {
 		return sqlSession.update("adminNoticeMapper.updateNoticeBoard", n);
 	}
 	
-	public Nattachment selectForUpdateNoticeFile(SqlSessionTemplate sqlSession, Nattachment nAttach) {
-		return sqlSession.selectOne("adminNoticeMapper.selectNoticeFile", nAttach);
+	// 공지사항 업데이트를 위해 파일 조회용 dao문
+	public Nattachment selectForUpdateNoticeFile(SqlSessionTemplate sqlSession, int natNo) {
+		return sqlSession.selectOne("adminNoticeMapper.selectNoticeFile", natNo);
+	}
+	
+	public int updateNoticeFile(SqlSessionTemplate sqlSession, Nattachment nAttach) {
+		return sqlSession.update("adminNoticeMapper.updateNoticeFile", nAttach);
+	}
+	
+	public int changeFileStatus(SqlSessionTemplate sqlSession, Nattachment nAttach) {
+		return sqlSession.update("adminNoticeMapper.chageFileStatus", nAttach);
+	}
+	
+	public int deleteNotice(SqlSessionTemplate sqlSession, int nno) {
+		return sqlSession.update("adminNoticeMapper.deleteNotice", nno);
 	}
 	
 
