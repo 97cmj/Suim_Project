@@ -11,10 +11,11 @@ import com.suim.board.model.dao.BoardDao;
 import com.suim.board.model.vo.Battachment;
 import com.suim.board.model.vo.Board;
 import com.suim.board.model.vo.Find;
+import com.suim.board.model.vo.InReview;
+import com.suim.board.model.vo.InReviewReply;
 import com.suim.board.model.vo.Reply;
 import com.suim.board.model.vo.findReply;
 import com.suim.common.model.vo.PageInfo;
-import com.suim.board.model.vo.InReview;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -180,6 +181,49 @@ public class BoardServiceImpl implements BoardService {
 	
 	public ArrayList<InReview> selectiList(PageInfo pi,HashMap<String, String> fin) {
 		return boardDao.selectiList(sqlSession, pi,fin);
+	}
+
+	@Override
+	public int increaseInCount(int inrNo) {
+		return boardDao.increaseInCount(sqlSession,inrNo);
+	}
+	
+	@Override
+	public InReview selectInReview(int inrNo) {
+		return boardDao.selectInReview(sqlSession,inrNo);
+	}
+
+	@Override
+	public int deleteInReview(int inrNo) {
+		return boardDao.deleteInReview(sqlSession, inrNo);
+	}
+
+	@Override
+	public int insertInReview(InReview i) {
+		return boardDao.insertInReview(sqlSession, i);
+	}
+
+	@Override
+	public int updateInReivew(InReview i) {
+		return boardDao.updateInReivew(sqlSession, i);
+	}
+
+	@Override
+	public InReview updateInReivewList(int inrNo) {
+		return boardDao.updateInReivewList(sqlSession, inrNo);
+
+	}
+	
+	@Override
+	public ArrayList<InReviewReply> selectInReviewReplyList(int inrNo) {
+		
+		
+		return boardDao.selectInReviewReplyList(sqlSession, inrNo);
+	}
+
+	@Override
+	public int insertInReviewReply(InReviewReply ir) {
+		return boardDao.insertInReviewReply(sqlSession, ir);
 	}
 
 
