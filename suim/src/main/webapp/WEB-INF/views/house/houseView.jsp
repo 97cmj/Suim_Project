@@ -111,8 +111,9 @@
 				<c:if test="${loginUser.memberId == h.memberId}">
 					<div id="btnDiv">
 						<!-- 수정, 삭제는 본인의 글을 볼 경우에만 -->
-						<a id="hEdit" class="white" href="houseEdit.ho?hno=${h.houseNo}">수정</a>
-						<a class="white" id="houseDel" href="houseEdit?no=${h.houseNo}"
+						<a id="hEdit" class="white" href="houseEdit.ho?hno=${h.houseNo}" 
+						onclick="return confirm('정말로 삭제하시겠습니까?')">수정</a>
+						<a class="white" id="houseDel" href="delete.ho?hno=${h.houseNo}"
 							onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</a>
 					</div>
 				</c:if>

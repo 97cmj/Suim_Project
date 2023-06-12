@@ -274,6 +274,7 @@
 								        };
 							    	stomp.send("/chat/" + rno, {}, JSON.stringify(message));
 							        messageInput.value = ""; // 메시지 입력란 초기화
+							        leftRoom = false;
 							    }
 							    
 							    if (messageContent !== "") {
@@ -317,7 +318,7 @@
 							function appendMessage(message) {
 							  var messagesContainer = document.querySelector(".chat-window .messages");
 							  var messageElement = document.createElement("p");
-							 					  
+		  
 							  messageElement.textContent = message.content;
 
 							  var messageDate = new Date(message.sendDate);
@@ -342,7 +343,7 @@
 							    }
 							    messageElement.classList.add('other-message');
 							  }
-
+							  
 							  messagesContainer.appendChild(messageElement);
 							
 							  // 스크롤 자동 아래로 이동

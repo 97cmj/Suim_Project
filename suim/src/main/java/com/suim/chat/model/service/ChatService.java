@@ -25,6 +25,6 @@ public interface ChatService {
 	
 	void setRead(int rno, String Id);
 	
-	void deleteChat(int rno, String Id);
+	void deleteChat(int rno);
 	
 }

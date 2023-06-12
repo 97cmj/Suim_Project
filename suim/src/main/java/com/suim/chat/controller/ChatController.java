@@ -117,11 +117,9 @@ public class ChatController {
     }
     
     @RequestMapping("deleteChat.ch")
-	public ModelAndView deleteChat(ModelAndView mv, int rno, HttpSession session) {
-		Member loginUser = (Member) session.getAttribute("loginUser");
-		String Id = loginUser.getMemberId();
-		chatService.deleteChat(rno, Id);
-		mv.setViewName("chat/chat");
+	public ModelAndView deleteChat(ModelAndView mv, int rno) {
+		chatService.deleteChat(rno);
+		mv.setViewName("redirect:/chat.ch");
 		return mv;
 	}
 }
