@@ -60,15 +60,16 @@
                         <th style="width: 80px;"><label for="writer">작성자</label></th>
                         <td><input type="text" id="writer" class="form-control" value="${loginUser.nickName}" name="memberId" readonly></td>
                     </tr>
-<tr>
-    <th style="width: 80px;"><label for="category">카테고리</label></th>
-    <td>
-        <input type="checkbox" id="personNeeded" name="category" value="방구해요" ${fb.category eq '방구해요' ? 'checked' : ''} style="transform: scale(1.5);" onclick="uncheckOtherCheckbox('personNeeded');">
-        <label for="personNeeded" style="font-size: 20px;">방구해요</label>
-        <input type="checkbox" id="roomAvailable" name="category" value="세놓아요" ${fb.category eq '세놓아요' ? 'checked' : ''} style="transform: scale(1.5);" onclick="uncheckOtherCheckbox('roomAvailable');">
-        <label for="roomAvailable" style="font-size: 20px;">세놓아요</label>
-    </td>
-</tr>
+                    
+				<tr>
+				    <th style="width: 80px;"><label for="category">카테고리</label></th>
+				    <td>
+				        <input type="checkbox" id="personNeeded" name="category" value="방구해요" ${fb.category eq '방구해요' ? 'checked' : ''} style="transform: scale(1.5);" onclick="uncheckOtherCheckbox('personNeeded');">
+				        <label for="personNeeded" style="font-size: 20px;">방구해요</label>
+				        <input type="checkbox" id="roomAvailable" name="category" value="세놓아요" ${fb.category eq '세놓아요' ? 'checked' : ''} style="transform: scale(1.5);" onclick="uncheckOtherCheckbox('roomAvailable');">
+				        <label for="roomAvailable" style="font-size: 20px;">세놓아요</label>
+				    </td>
+				</tr>
 
 
 

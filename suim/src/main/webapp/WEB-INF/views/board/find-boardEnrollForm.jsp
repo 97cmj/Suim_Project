@@ -31,7 +31,7 @@
         
         
         
-<title>자유게시판</title>
+<title>사람구해요 작성</title>
 		<%@ include file="/WEB-INF/views/common/include.jsp" %>
 		<link href="/resources/css/user/signup.css" rel="stylesheet" />
 
@@ -62,7 +62,7 @@
                         <th style="width: 80px;"><label for="writer">작성자</label></th>
                         <td><input type="text" id="writer" class="form-control" value="${loginUser.memberId}" name="memberId" readonly></td>
                     </tr>
-					<tr>
+                    <tr>
 					    <th style="width: 80px;"><label for="category">카테고리</label></th>
 					    <td>
 					        <input type="checkbox" id="personNeeded" name="category" value="방구해요" style="transform: scale(1.5);"  checked onclick="uncheckOtherCheckbox('personNeeded');">
@@ -168,8 +168,52 @@
 	    	                document.getElementById('personNeeded').checked = false;
 	    	            }
 	    	        }
+	    	     // 등록하기 버튼과 필수 입력 필드들을 선택합니다.
+	    	        const enrollForm = document.getElementById('enrollForm');
+	    	        const titleInput = document.getElementById('title');
+	    	        const categoryInputs = document.querySelectorAll('input[name="category"]');
+	    	        const contentTextarea = document.getElementById('summernote');
+	    	        const submitButton = document.querySelector('button[type="submit"]');
 
-	          
+	    	        // 등록하기 버튼 클릭 이벤트를 처리하는 함수
+	    	        function handleSubmitButtonClick(event) {
+	    	          const isTitleEmpty = titleInput.value.trim() === '';
+	    	          const isCategoryEmpty = !isCategorySelected();
+	    	          const isContentEmpty = contentTextarea.value.trim() === '';
+
+	    	          if (isTitleEmpty || isCategoryEmpty || isContentEmpty) {
+	    	            let errorMessage = '';
+	    	            if (isTitleEmpty) {
+	    	              errorMessage += '제목 ';
+	    	            }
+	    	            if (isCategoryEmpty) {
+	    	              errorMessage += '카테고리 ';
+	    	            }
+	    	            if (isContentEmpty) {
+	    	              errorMessage += '내용 ';
+	    	            }
+	    	            errorMessage += '을 입력해야 등록할 수 있습니다.';
+	    	            alert(errorMessage);
+
+	    	            // 등록하기 버튼의 기본 동작인 폼 제출을 취소합니다.
+	    	            event.preventDefault();
+	    	          }
+	    	        }
+
+	    	        // 카테고리가 선택되었는지 확인하는 함수
+	    	        function isCategorySelected() {
+	    	          let isAnyCategorySelected = false;
+	    	          categoryInputs.forEach((input) => {
+	    	            if (input.checked) {
+	    	              isAnyCategorySelected = true;
+	    	            }
+	    	          });
+	    	          return isAnyCategorySelected;
+	    	        }
+
+	    	        // 등록하기 버튼 클릭 이벤트를 감지하여 처리합니다.
+	    	        submitButton.addEventListener('click', handleSubmitButtonClick);
+
 	         
       </script>
 	
