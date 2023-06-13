@@ -1,7 +1,7 @@
 package com.suim.house.controller;
 
-import java.util.ArrayList;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.suim.common.mail.MailHandler;
 import com.suim.common.model.vo.PageInfo;
 import com.suim.common.template.Pagination;
+import com.suim.house.model.service.HouseService;
 import com.suim.house.model.service.ListHouseService;
 import com.suim.house.model.vo.House;
 import com.suim.house.model.vo.Region;
@@ -151,7 +152,7 @@ public class ListHouseController {
 				return mv;
 			} else {
 			
-			ArrayList<Reservation> list = listHouseService.myHouseRezSelect(houseNo);
+			ArrayList<Reservation> list = listHouseService.selectHouseRezList(pi,houseNo);
 			mv.addObject("pi", pi);
 		    mv.addObject("list", list);
 		    mv.addObject("houseNo", houseNo);
