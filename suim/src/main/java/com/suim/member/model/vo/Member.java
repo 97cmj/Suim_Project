@@ -24,8 +24,10 @@ public class Member {
 	private Timestamp modifyDate;
 	private Timestamp loginDate;
 	private String changeName;
-	private String status;;
+
 	private int memberPoint;
+	private String status;
+	private String blacklistFlag;
 	
 	private String memberComment;
 	private String naverLogin;

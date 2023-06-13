@@ -12,6 +12,8 @@ public interface HouseService {
 	// 게시글 상세 조회
 		House selectHouse(int hno);
 		
+		House selectEnroll(int hno);
+		
 	// 찜 조회
 		ArrayList<Wish> checkHeart(int hno);
 	
@@ -32,5 +34,7 @@ public interface HouseService {
 	    int updateHouse(House h);
 	    
 	    int updatePhoto(Photo p);
+	    
+	    void delete(int hno);
 		
 }

@@ -248,8 +248,9 @@ $('#notificationButton').click(function() {
 	                <a class="navbar-brand" href="/"><img class="logo" src="/resources/img/common/sim5.png"></a>
 	                
 	                <ul class="nav nav-pills navi">
-	                    	<li id="socketAlert"></li>
-	                        <li class="nav-item"><a href="/chat.ch" class="nav-link nav-text">방 찾기</a></li>
+          
+	                        <li class="nav-item"><a href="" class="nav-link nav-text">방 찾기</a></li>
+
 	                        <li class="nav-item">
 	                            <a href="#" class="nav-link nav-text">쉼</a>
 	                            <ul>
@@ -298,6 +299,7 @@ $('#notificationButton').click(function() {
 	                            <ul>
 	                                <li><a href="/notice.no">공지사항</a></li>
 	                                <li><a href="/faqList">자주 묻는 질문</a></li>
+	                                <li><a href="/event.ev">이벤트</a></li>  
 	                            </ul>
 	                        </li>
 	                </ul>
@@ -379,7 +381,8 @@ $('#notificationButton').click(function() {
 	                                <li class="nav-item dropdown m-4"><a class="side-black" href="#" id="offcanvasNavbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false">고객센터 </a>
 	                                    <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown3">
 	                                        <li><a class="dropdown-item" href="notice.no">공지사항</a></li>
-	                                        <li><a class="dropdown-item" href="#">자주 묻는 질문</a></li>                        
+	                                        <li><a class="dropdown-item" href="/faqList">자주 묻는 질문</a></li> 
+	                                        <li><a class="dropdown-item" href="event.ev">이벤트</a></li>                    
 	                                    </ul>
 	                                </li>
 	                            </ul>

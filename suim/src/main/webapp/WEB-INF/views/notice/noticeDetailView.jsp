@@ -59,7 +59,7 @@
             
             <div style="display:inline-block">
                 <div id="noticeBold" class="table-title">
-                    우주 공지사항
+                    	SUIM 공지사항
                 </div>
             
                 <div id="nListSearch" class="search-box">
@@ -121,7 +121,6 @@
                         </c:if> 	
                          	
                 			<form id="postForm" action="" method="post">
-                			
 			            		<!-- 글번호는 노출되면 안되므로 hidden 타입으로 넘김 -->
 			            		<input type="hidden" name="nno" value="${ n.noticeNo }">
 			            		
@@ -156,8 +155,8 @@
                 
                
                 
-                <button class="btn btn-primary btn-block submit-btn" onclick="faqList.no">
-                    <a href="./faqList.no" id="faqLink">목록가기</a>
+                <button class="btn btn-primary btn-block submit-btn">
+                    <a href="notice.no">목록가기</a>
                 </button>
                
             </div>
