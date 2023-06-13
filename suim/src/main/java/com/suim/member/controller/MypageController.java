@@ -29,6 +29,7 @@ import com.suim.board.model.vo.Board;
 import com.suim.common.model.vo.PageInfo;
 import com.suim.common.template.Pagination;
 import com.suim.house.model.vo.House;
+import com.suim.house.model.vo.Reservation;
 import com.suim.member.model.service.MemberService;
 import com.suim.member.model.service.MypageService;
 import com.suim.member.model.vo.Member;
@@ -172,6 +173,7 @@ public class MypageController {
 	@GetMapping("board")
 	public String boardList(@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "type", defaultValue = "board") String type, Model model) {
+		
 		Member loginUser = (Member) session.getAttribute("loginUser");
 		if (loginUser == null) {
 			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
@@ -329,18 +331,32 @@ public class MypageController {
 
 	// 마이페이지의 내 예약내역 조회로 이동합니다.
 	@RequestMapping("reservation")
-	public String mypageReservation(HttpServletRequest request) {
+	public String mypageReservation(@RequestParam(value="cPage", defaultValue="1") int currentPage,
+									HttpServletRequest request, Model model) {
+		
 		session.setAttribute("originalUrl", request.getRequestURI());
+		
+		int pageLimit = 10;
+	    int boardLimit = 10;
+	   
+	    Member m = (Member) session.getAttribute("loginUser");
+	    
+	    String memberId = m.getMemberId();
+	    
+	    int listCount = 0;
+	    PageInfo pi = null;
+	   
+	    listCount = mypageService.selectRezListCount(memberId);
+	    
+	    pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+
+	    ArrayList<Reservation> list = mypageService.selectRezList(pi, memberId);
+	    
+	    model.addAttribute("pi", pi)
+	    	 .addAttribute("list", list);
+		
 		return "member/mypage/reservation";
 	}
 
-		
-
-	   @RequestMapping("delete.ho")
-		public ModelAndView deleteChat(ModelAndView mv, int hno) {
-			houseService.delete(hno);
-			mv.setViewName("redirect:/mypage/house");
-			return mv;
-		}
 
 }

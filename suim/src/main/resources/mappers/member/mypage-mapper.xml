@@ -88,6 +88,21 @@
 	   	<result column="CHANGE_NAME" property="changeName"/>
 	   	<result column="ENROLL_STATUS" property="enrollStatus"/>
 	</resultMap>
+	
+	<!-- 내가 예약한 셰어하우스 resultMap -->
+	<resultMap id="reservationResultMap" type="reservation">
+	    <result column="REZ_NO" property="rezNo"/>
+		<result column="REZ_DATE" property="rezDate"/>
+		<result column="REZ_HOUR" property="rezHour"/>
+		<result column="SEND_MEMBER_ID" property="sendMemberId"/>
+		<result column="REC_MEMBER_ID" property="recMemberId"/>
+		<result column="REZ_STATUS" property="rezStatus"/>
+		<result column="REZ_REQUEST_DATE" property="rezRequestDate"/>
+		<result column="CANCEL_CONTENT" property="cancelContent"/>
+		<result column="DEL_STATUS" property="delStatus"/>
+		<result column="HOUSE_NO" property="houseNo"/>
+		<result column="HOUSE_NAME" property="houseName"/>
+	</resultMap>
 
 
 
@@ -107,7 +122,9 @@
 		WHERE B.MEMBER_ID = #{memberId}
 		AND B.STATUS = 'Y'
 		GROUP BY B.BOARD_NO, B.BOARD_TITLE, B.BOARD_VIEW, B.BOARD_DATE
+
 		ORDER BY B.BOARD_DATE DESC
+
 	</select>
 
 	<select id="selectFindListCount" parameterType="string" resultType="_int">
@@ -126,7 +143,9 @@
 		WHERE F.MEMBER_ID = #{memberId}
 		AND F.STATUS = 'Y'
 		GROUP BY F.FIND_NO, F.FIND_TITLE, F.FIND_VIEW, F.FIND_DATE
+
 		ORDER BY F.FIND_DATE DESC
+
 	</select>
 	
 	
@@ -146,6 +165,7 @@
 		WHERE I.MEMBER_ID = #{memberId}
 		AND I.STATUS = 'Y'
 		GROUP BY I.INR_NO, I.INR_TITLE, I.INR_VIEW, I.INR_DATE
+
 		ORDER BY I.INR_DATE DESC
 	</select>
 	
@@ -243,6 +263,24 @@
 		AND h.MEMBER_ID = #{memberId}
 	   	AND p.FILE_LEVEL = 'Y'
 	    ORDER BY HOUSE_NO DESC
+	</select>
+	
+	<!-- 내가 예약한 셰어하우스 리스트 갯수 구하는 쿼리문 -->
+	<select id="selectRezListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM RESERVATION
+		WHERE DEL_STATUS = 'N'
+		AND SEND_MEMBER_ID = #{memberId}
+	</select>
+	
+	<!-- 내가 예약한 셰어하우스 리스트 조회하는 쿼리문 -->
+	<select id="selectRezList" resultMap="reservationResultMap">
+	   SELECT r.*, h.HOUSE_NAME 
+		FROM RESERVATION r
+		JOIN HOUSE h ON r.HOUSE_NO = h.HOUSE_NO
+			WHERE r.SEND_MEMBER_ID = #{memberId}
+			AND r.DEL_STATUS = 'N'
+		 ORDER BY r.REZ_NO DESC
 	</select>
 
 

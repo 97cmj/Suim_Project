@@ -112,7 +112,7 @@
 					<div id="btnDiv">
 						<!-- 수정, 삭제는 본인의 글을 볼 경우에만 -->
 						<a id="hEdit" class="white" href="houseEdit.ho?hno=${h.houseNo}" 
-						onclick="return confirm('정말로 삭제하시겠습니까?')">수정</a>
+						onclick="return confirm('정말로 수정하시겠습니까?')">수정</a>
 						<a class="white" id="houseDel" href="delete.ho?hno=${h.houseNo}"
 							onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</a>
 					</div>
@@ -393,7 +393,8 @@ var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표�
 	function rezPopup() {
         var houseNo = "${h.houseNo}";
         var houseName = "${h.houseName}";
-        var popupUrl = "houseRez.ho?value=" + encodeURIComponent(houseNo) + "&value2=" + encodeURIComponent(houseName);
+        var memberId = "${h.memberId}";
+        var popupUrl = "houseRez.ho?value=" + encodeURIComponent(houseNo) + "&value2=" + encodeURIComponent(houseName) + "&value3=" + encodeURIComponent(memberId);
         if ("${loginUser}" == "") {
             alert("로그인이 필요합니다.");
             window.location.href = "/detail.ho?hno=" + encodeURIComponent(houseNo);

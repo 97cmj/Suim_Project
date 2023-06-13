@@ -36,9 +36,11 @@
 
 	<script type="text/javascript">
 		var socket = null;
+
 		var isFirstLoad = true;
 		var isUpdatingNotification = false;
 		var isVibrating = false;
+
 		
 		$(document).ready(function(){ //페이지가 새로고침 되면 웹소켓을 연결시킨다.
 			
@@ -47,6 +49,7 @@
 			addMessageToNotificationList('${loginUser.memberId}');
 			notificationCount();
 			}
+
 		});
 		
 		function connectWs(){
@@ -54,6 +57,7 @@
 		socket = ws;
 		
 		ws.onopen = function() {
+
 		};	
 			
 			ws.onmessage = function(event) {
@@ -66,11 +70,14 @@
 				    isFirstLoad = false;
 			 };
 			ws.onclose = function() {
+
 		 };
 		};
 
 		
+
 		function addMessageToNotificationList(message) {
+
 			  // AJAX 요청 보내기
 			  $.ajax({
 			    url: '/selectRecentNotification', // 변경된 데이터를 가져올 URL
@@ -97,6 +104,7 @@
 			    }
 			  });
 			};
+
 			
 			function vibrateButton() {
 				  if (isVibrating) {
@@ -120,18 +128,20 @@
 			
 			
 			
-			
+
 
 	 function selectRecentNotification(data) {
 		  // 받은 데이터를 사용하여 목록 업데이트
 		  var notificationList = $('#notificationList');
 		  notificationList.empty(); // 목록 비우기
+
 		  
 		  if (data.length === 0) {
 	    	  var notificationItem = $('<li style="list-style-type: none; padding-top : 350px; font-weight : bold; font-size : 20px;">').text('알림이 존재하지 않습니다.');
 	    	  notificationList.prepend(notificationItem);
 	    	  return;
 	    	}
+
 		  // 데이터를 순회하면서 목록에 추가
 		  for (var i = 0; i < data.length; i++) {
 		    var notification = data[i];
@@ -141,15 +151,19 @@
 		    var postType = notification.postType;
 		    var postNo = notification.postNo;
 		    var receiverId = notification.receiverId;
+
 		    
 		    
 		    
 		   
 
+
 		    var notificationText = '';
 		    if (postType === 'board') {
 		
+
 		    	 notificationText = '<a href="/detail.bo?bno=' + postNo + '" onclick="notificationDelete(\'' + '/detail.bo?bno=' + postNo + '\', \'' + postNo + '\', \'board\', \'' + receiverId + '\')" class="notification">' + senderId + '님이 ' + createdTime.toLocaleString() + '에 자유게시판의 <span class="content">' + content + '</span>에 댓글을 달았습니다. <span class="time">' + createdTime.toLocaleString() + '</span></a>';
+
 		    } else {
 		      // 다른 postType에 대한 처리를 추가할 수 있습니다.
 		    }
@@ -186,8 +200,7 @@
 			 });
 		};
 		
-		
-		
+				
 		
 		function notificationDelete(linkUrl, postNo, postType, receiverId) {
 			  // AJAX 요청 보내기
@@ -203,6 +216,8 @@
 			    success: function(response) {
 			      // 요청이 성공하면 링크로 이동
 			      if (response.success) {
+
+
 
 			        // 링크로 이동
 			        window.location.href = linkUrl;
@@ -257,6 +272,7 @@
 #notificationButton {
   position: fixed;
   right: 10px;
+
   bottom: 41px;
   width: 60px;
   height: 60px;
@@ -264,15 +280,18 @@
   background-color: #000000;
   color: #ffffff;
   font-size: 32px;
+
   border: none;
   outline: none;
   cursor: pointer;
   z-index : 9999;
+
   box-shadow : rgba(255, 255, 255, 0.12) 0px 0px 2px 0px inset, rgba(0, 0, 0, 0.05) 0px 0px 2px 1px, rgba(0, 0, 0, 0.22) 0px 4px 20px;
 }
 
 #notificationButton:hover {
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+
 }
 
 #notificationModal {
@@ -283,7 +302,9 @@
   width: 300px;
   height: 100%;
   background-color: #fff;
+
   z-index: 9998;
+
   overflow-y: auto;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
@@ -327,20 +348,24 @@
 .vibrate {
   animation: vibrate 0.1s infinite linear;
 }
+
 </style>
 
 
 	<div id="notificationModal">
+
 	<div class="modal-header justify-content-center" style="border-bottom : 1px solid #e0e0e0; height : 60px;">
 	<h3>알림</h3>
 	<span class="close">&times;</span>
 	</div>
   <div class="modal-content">
+
     <ul id="notificationList"></ul>
   </div>
 </div>
 	
 <script>
+
 
 $('#notificationButton').click(function(e) {
     console.log('click');
@@ -360,6 +385,7 @@ $('#notificationButton').click(function(e) {
       modal.hide();
     }
   });
+
 
 </script>
 
