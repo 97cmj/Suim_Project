@@ -234,11 +234,7 @@
 				        },
 				        dataType : "json", 
 				        success : function(alram){
-				              if(alram == 1){
-				            	  alert("알람입력성공")
-				              }else{
-				            	  alert("알람입력실패")
-				              }
+				             
 				        }
 				    
 				    });
