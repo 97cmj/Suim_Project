@@ -168,6 +168,7 @@ public class MypageController {
 	@GetMapping("board")
 	public String boardList(@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "type", defaultValue = "board") String type, Model model) {
+		
 		Member loginUser = (Member) session.getAttribute("loginUser");
 		if (loginUser == null) {
 			return "redirect:/";
@@ -278,13 +279,4 @@ public class MypageController {
 		return "member/mypage/reservation";
 	}
 		
-
-	   @RequestMapping("delete.ho")
-		public ModelAndView deleteChat(ModelAndView mv, int hno) {
-			houseService.delete(hno);
-			mv.setViewName("redirect:/mypage/house");
-			return mv;
-		}
-
-
 }
