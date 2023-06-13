@@ -43,6 +43,8 @@ public class ListHouseController {
 	
 	@Autowired
 	private ListHouseService listHouseService;
+	@Autowired
+	private HouseService HouseService;
 	
 	// 지도와 셰어하우스 리스트 상세 검색
 	@RequestMapping("list.ho")
@@ -129,31 +131,36 @@ public class ListHouseController {
 	}
 	
 	// 셰어하우스 별 예약 신청 리스트
-	@RequestMapping("myhouseRez.ho")
-	public String myHouseRezSelect(@RequestParam(value="cPage", defaultValue="1") int currentPage, @RequestParam(value="houseNo") int houseNo, HttpSession session,
-												HttpServletRequest request, Model model) {
-	
-		session.setAttribute("originalUrl", request.getRequestURI());
-	
-
-	 	int pageLimit = 10;
-	    int boardLimit = 10;
-	   
-	    int listCount = 0;
-	    PageInfo pi = null;
-	   
-	    listCount = listHouseService.selectHouseRezListCount(houseNo);
-	    
-	    pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-		
-		ArrayList<Reservation> list = listHouseService.selectHouseRezList(pi, houseNo);
-				
-		model.addAttribute("pi", pi)
-   	 		.addAttribute("list", list)
-   	 		.addAttribute("houseNo", houseNo);
-	    		
-	    return "member/mypage/myHouseReservation";
-	}
+		@RequestMapping("myhouseRez.ho")
+		public ModelAndView myHouseRezSelect(ModelAndView mv, @RequestParam(value="cPage", defaultValue="1")
+		int currentPage, @RequestParam(value="houseNo") int houseNo, HttpSession session, HttpServletRequest request) {
+			
+			session.setAttribute("originalUrl", request.getRequestURI());
+	        int pageLimit = 10;
+	        int boardLimit = 10;
+	        int listCount = 0;
+	        PageInfo pi = null;
+	        listCount = listHouseService.selectHouseRezListCount(houseNo);
+	        pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+			
+			House h = HouseService.selectHouse(houseNo);
+			
+			if (h.getEnrollStatus().equals("심사완료")) {
+				mv.addObject("h", h);
+				mv.setViewName("/house/kakao");
+				return mv;
+			} else {
+			
+			ArrayList<Reservation> list = listHouseService.myHouseRezSelect(houseNo);
+			mv.addObject("pi", pi);
+		    mv.addObject("list", list);
+		    mv.addObject("houseNo", houseNo);
+		    mv.setViewName("member/mypage/myHouseReservation");
+			
+		    return mv;
+		   
+			}
+		}
 	
 	// 셰어하우스 예약 확인
 	@RequestMapping("confirmRez.rez")
