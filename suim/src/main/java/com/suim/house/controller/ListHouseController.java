@@ -10,8 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.suim.common.model.vo.PageInfo;
+import com.suim.common.template.Pagination;
 import com.suim.house.model.service.HouseService;
 import com.suim.house.model.service.ListHouseService;
 import com.suim.house.model.vo.House;
 import com.suim.house.model.vo.Region;
 import com.suim.house.model.vo.Reservation;
-import com.suim.house.model.vo.Wish;
 import com.suim.member.model.vo.Member;
 
 @Controller
@@ -119,7 +118,16 @@ public class ListHouseController {
 	
 	// 셰어하우스 별 예약 신청 리스트
 	@RequestMapping("myhouseRez.ho")
-	public ModelAndView myHouseRezSelect(ModelAndView mv, int houseNo) {
+	public ModelAndView myHouseRezSelect(ModelAndView mv, @RequestParam(value="cPage", defaultValue="1") 
+	int currentPage, @RequestParam(value="houseNo") int houseNo, HttpSession session, HttpServletRequest request) {
+		
+		session.setAttribute("originalUrl", request.getRequestURI());
+        int pageLimit = 10;
+        int boardLimit = 10;
+        int listCount = 0;
+        PageInfo pi = null;
+        listCount = listHouseService.selectHouseRezList(pi,houseNo);;
+        pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
 		House h = HouseService.selectHouse(houseNo);
 		
@@ -130,12 +138,13 @@ public class ListHouseController {
 		} else {
 		
 		ArrayList<Reservation> list = listHouseService.myHouseRezSelect(houseNo);
-		
+		mv.addObject("pi", pi);
 	    mv.addObject("list", list);
-	    
+	    mv.addObject("houseNo", houseNo);
 	    mv.setViewName("member/mypage/myHouseReservation"); 
 		
 	    return mv;
+	    
 		}
 	}
 	
