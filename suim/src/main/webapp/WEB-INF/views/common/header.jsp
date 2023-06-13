@@ -26,6 +26,7 @@
 
 .notification .time {
   color: #888;
+
 }
 
 .notification .title {
@@ -44,6 +45,7 @@
     bottom: 65px;
     right: 50px;
 
+
 }
 
 </style>
@@ -61,7 +63,9 @@
 		if(${loginUser != null}){
 			connectWs();
 			addMessageToNotificationList('${loginUser.memberId}');
+
 			$('#notificationButton').show();
+
 			}
 
 		});
@@ -77,6 +81,8 @@
 			ws.onmessage = function(event) {
 				 
 				 addMessageToNotificationList(event.data);
+
+
 				 if (!isFirstLoad && !isUpdatingNotification && !isVibrating) {
 				      vibrateButton();
 				    }
@@ -90,6 +96,7 @@
 		
 
 		function addMessageToNotificationList(message) {
+
 			  $.ajax({
 			    url: '/selectRecentNotification',
 			    method: 'GET',
@@ -98,17 +105,20 @@
 			      receiverId: '${loginUser.memberId}'
 			    },
 			    success: function(data) {
+
 			      selectRecentNotification(data);
 			      if (!isFirstLoad && !isVibrating) {
 			        vibrateButton();
 			      }
 			      isUpdatingNotification = false;
+
 			    },
 			    error: function(error) {
 			      console.error('웹소켓 오류가 발생했습니다:', error);
 			    }
 			  });
 			}
+
 
 		function selectRecentNotification(data) {
 			console.log(data);
@@ -144,9 +154,11 @@
 			var notificationText = '';
 		    if (postType === 'board') {
 		    	notificationText = '<a href="/detail.bo?bno=' + postNo + '" onclick="notificationDelete(\'' + '/detail.bo?bno=' + postNo + '\', \'' + postNo + '\', \'board\', \'' + receiverId + '\')" class="notification">' + senderId + '님이 자유게시판의 ' +  '<span class="title">' + title + '</span>' + ' 게시글에 댓글을 달았습니다.' + '<div class="content">"' + postContent + '"</div>' + '<span class="time">' + timeDifference + '</span>' + '</a>';
+
 		    } else {
 		      // You can add handling for other postTypes.
 		    }
+
 
 		    var notificationItem = $('<li style="list-style-type: none"></li>').html(notificationText);
 		    notificationListElement.prepend(notificationItem);
@@ -156,12 +168,11 @@
 		      $('#notificationButton .notification-count').remove();
 		      $('#notificationButton').append(countElement);
 		      createPagination(pi.startPage, pi.endPage, pi.currentPage, pi.maxPage);
+
 		  }
 			
 			
-
-			
-			
+		
 			
 			
 
@@ -252,23 +263,7 @@
 				    }
 				  });
 				}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
+	
 
 			
 			function vibrateButton() {
@@ -315,6 +310,33 @@
 				}	
 			
 			
+				
+		
+		
+		function notificationCount() {
+			var notificationList = $('#notificationList');
+			 $.ajax({
+				    url: '/notificationCount',
+				    method: 'GET',
+				    dataType: 'json',
+				    data : {
+				    	receiverId : '${loginUser.memberId}'
+				    },
+				    success: function(data) {
+				    	
+				    	var count = data;
+
+				          // Display the updated count next to the notificationButton
+				          var countElement = $('<span style="font-size: 14px; ">').addClass('notification-count').text(count);
+
+				          
+				          $('#notificationButton .notification-count').remove(); // Remove the previous count
+				          $('#notificationButton').append(countElement);
+				          
+				    }
+			 });
+		};
+		
 				
 		
 		function notificationDelete(linkUrl, postNo, postType, receiverId) {
@@ -387,7 +409,6 @@
 #notificationButton {
   position: fixed;
   right: 10px;
-
   bottom: 10px;
   width: 60px;
   height: 60px;
@@ -465,6 +486,7 @@
 }
 
 </style>
+
 
 
 <div id="notificationModal">
