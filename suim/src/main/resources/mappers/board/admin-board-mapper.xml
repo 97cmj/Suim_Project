@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="adminBoardMapper">
+
+	<resultMap id="boardResultMap" type="board">
+		<result column="BOARD_NO" property="boardNo" />
+		<result column="BOARD_TITLE" property="boardTitle" />
+		<result column="BOARD_CONTENT" property="boardContent" />
+		<result column="BOARD_VIEW" property="boardView" />
+		<result column="BOARD_DATE" property="boardDate" />
+		<result column="STATUS" property="status" />
+		<result column="MEMBER_ID" property="memberId" />
+	</resultMap>
+	
+
+	<select id="selectBoardList" resultMap="boardResultMap">
+		SELECT *
+		FROM BOARD
+		ORDER BY BOARD_NO DESC
+	</select>
+
+</mapper>
