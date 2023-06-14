@@ -41,16 +41,21 @@
                         <div class="bg-light rounded h-100 p-4" width="">
                             <h6 class="mb-4">회원 관리</h6>
 
-                            <nav>
-                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
-                                        data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
-                                        aria-selected="true">회원 관리</button>
-                                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
-                                        data-bs-target="#nav-profile" type="button" role="tab"
-                                        aria-controls="nav-profile" aria-selected="false">또 뭘 관리하지?</button>
-                                </div>
-                            </nav>
+							<ul class="nav nav-tabs">
+								<li class="nav-item"><a
+									class="nav-link <c:if test="${category eq 'A'}">active</c:if>"
+									data-toggle="tab" href="/admin/list.me">전체</a></li>
+								<li class="nav-item"><a
+									class="nav-link <c:if test="${category eq '일반'}">active</c:if>"
+									data-toggle="tab" href="/admin/list.me?currentPage=1&category=일반">일반</a></li>
+								<li class="nav-item"><a
+									class="nav-link <c:if test="${category eq '블랙'}">active</c:if>"
+									data-toggle="tab" href="/admin/list.me?currentPage=1&category=블랙">블랙</a></li>
+								<li class="nav-item"><a
+									class="nav-link <c:if test="${category eq '탈퇴'}">active</c:if>"
+									data-toggle="tab" href="/admin/list.me?currentPage=1&category=탈퇴">탈퇴</a></li>
+							</ul>
+
                             <div class="tab-content pt-3" id="nav-tabContent">
                                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 		                            <div class="table-responsive">
@@ -64,12 +69,11 @@
 		                                            <th scope="col">연락처</th>
 		                                            <th scope="col">가입일</th>
 		                                            <th scope="col">상태</th>
-		                                            <th scope="col">블랙회원</th>
 		                                        </tr>
 		                                    </thead>
 		                                    <tbody>
 		                                    	<c:forEach var="m" items="${ list }">
-		                    						<tr>
+		                    						<tr data-id="${m.memberId}">
 			                                            <td scope="row"><input class="form-check-input" type="checkbox" value=""></td>
 			                                            
 			                                            <td>${ m.nickName }</td>
@@ -77,11 +81,13 @@
 			                                            <td>${ m.email }</td>
 			                                            <td>${ m.phone }</td>
 			                                            <td>${ m.enrollDate }</td>
-			                                            <td>${ m.status }</td>
 			                                            <td>
 												            <c:choose>
-												                <c:when test="${m.blacklistFlag eq 1}">
-												                    <span class="badge bg-danger">블랙회원</span>
+												                <c:when test="${m.status eq '탈퇴'}">
+												                    <span class="badge bg-danger">탈퇴회원</span>
+												                </c:when>
+												                <c:when test="${m.blacklistFlag eq 'BLACKLISTED'}">
+												                    <span class="badge bg-dark">블랙회원</span>
 												                </c:when>
 												                <c:otherwise>
 												                    <span class="badge bg-success">일반회원</span>
@@ -92,13 +98,15 @@
 			                                	</c:forEach>
 		                                    </tbody>
 		                                </table>
+		                                <div align="center">
+										    <a class="btn btn-primary withdraw">탈퇴</a>
+										    <a class="btn btn-primary general">일반</a>
+										</div>
+										<br><br>
+							
 		                            </div>
                                 </div>
-                                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                    Sanctus vero sit kasd sea gubergren takimata consetetur elitr elitr, consetetur sadipscing takimata ipsum dolores. Accusam duo accusam et labore ea elitr ipsum tempor sit, dolore aliquyam ipsum sit amet sit. Et dolore ipsum labore invidunt rebum. Sed dolore gubergren sanctus vero diam lorem rebum elitr, erat diam dolor clita.
-                                </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -106,56 +114,145 @@
             <!-- Table End -->
 
             <script>
-                $(document).ready(function(){
-                    $("#check_all").click(function(){
-                        if($("#check_all").prop("checked")){
-                            $("input[type=checkbox]").prop("checked",true);
-                        }else{
-                            $("input[type=checkbox]").prop("checked",false);
+				$(document).ready(function() {
+	            	
+	        	    // 전체선택 체크박스 클릭 이벤트
+	        	    $(document).on('change', 'thead input[type="checkbox"]', function() {
+	        	        var checkboxes = $('tbody input[type="checkbox"]');
+	        	        checkboxes.prop('checked', this.checked);
+	        	    });
+	
+	        	    // 개별 체크박스 클릭 이벤트
+	        	    $(document).on('change', 'tbody input[type="checkbox"]', function() {
+	        	        var selectAllCheckbox = $('thead input[type="checkbox"]');
+	        	        selectAllCheckbox.prop('checked', $('tbody input[type="checkbox"]:checked').length === $('tbody input[type="checkbox"]').length);
+	        	    });
+				
+	        	    // 탈퇴 버튼 클릭 이벤트
+	        	    $(document).on('click', 'a.withdraw', function() {
+	        	        var checkedCheckboxes = $('tbody input[type="checkbox"]:checked');
+	        	        var updateIds = [];
+	
+	        	        checkedCheckboxes.each(function() {
+	        	            var memberId = $(this).closest('tr').data('id');
+	        	            updateIds.push(memberId);
+	        	        });
+	        	        
+	        	        if (updateIds.length === 0) {
+	        	            alert("탈퇴할 회원을 선택해주세요.");
+	        	            return;
+	        	        }
+	        	        
+	        	        var withdraw = confirm("탈퇴하시겠습니까?");
+	        	        if (!withdraw) {
+	        	            return;
+	        	        }
+	
+	        	        // 탈퇴 처리를 위한 Ajax 요청
+	        	        $.ajax({
+	        	            type: "POST",
+	        	            url: "/admin/updateStatusAll.me",
+	        	            data: {
+	        	            	memberId : updateIds.join(","),
+	        	                memberStatus : '탈퇴'
+	        	            },
+	        	            success: function(response) {
+	        	            	// 응답 받은 경우
+	        	                // 화면에서 해당 데이터의 상태 업데이트
+	        	                if (response === 'Y') {
+	        		            	alert("탈퇴되었습니다.");
+	        		            	location.reload();
+	        		            } else {
+	        		            	alert("회원 탈퇴에 실패했습니다.");
+	        		            }
+	        	            },
+	        	            error: function() {
+	    		            	alert("탈퇴에 실패했습니다.");
+	        	            }
+	        	            
+	        	        });
+	        	    });
+	        	    
+	        	 	// 일반 버튼 클릭 이벤트
+	        	    $(document).on('click', 'a.general', function() {
+	        	        var checkedCheckboxes = $('tbody input[type="checkbox"]:checked');
+	        	        var updateIds = [];
+	
+	        	        checkedCheckboxes.each(function() {
+	        	            var memberId = $(this).closest('tr').data('id');
+	        	            updateIds.push(memberId);
+	        	        });
+	        	        
+	        	        if (updateIds.length === 0) {
+	        	            alert("일반으로 변경할 회원을 선택해주세요.");
+	        	            return;
+	        	        }
+	        	        
+	        	        var general = confirm("일반 회원으로 변경하시겠습니까?");
+	        	        if (!general) {
+	        	            return;
+	        	        }
+	
+	        	        // 일반 처리를 위한 Ajax 요청
+	        	        $.ajax({
+	        	            type: "POST",
+	        	            url: "/admin/updateStatusAll.me",
+	        	            data: {
+	        	            	memberId : updateIds.join(","),
+	        	                memberStatus : '일반'
+	        	            },
+	        	            success: function(response) {
+	        	            	// 응답 받은 경우
+	        	                // 화면에서 해당 데이터의 상태 업데이트
+	        	                if (response === 'Y') {
+	        		            	alert("일반회원으로 변경되었습니다.");
+	        		            	location.reload();
+	        		            } else {
+	        		            	alert("일반회원 변경에 실패했습니다.");
+	        		            }
+	        	            },
+	        	            error: function() {
+	    		            	alert("일반회원 변경에 실패했습니다.");
+	        	            }
+	        	            
+	        	        });
+	        	    });
+	        	    
+                    // 상세 페이지로 이동용
+                    $("#memberList>tbody>tr").click(function(e) {
+                        if ($(e.target).is('input[type="checkbox"]')) {
+                            e.stopPropagation();
+                        } else {
+                            var id = $(this).children(".memberId").text();
+                            location.href = "detail.me?id=" + id;
                         }
                     });
-                    
-                    // 상세 페이지로 이동용
-            		$("#memberList>tbody>tr").click(function() {
-            			var id = $(this).children(".memberId").text();
-            			location.href = "detail.me?id=" + id;	
-            		});
-            	});
+                	
+                 	// 전체선택 체크박스 클릭 이벤트
+            	    $(document).on('change', 'thead input[type="checkbox"]', function() {
+            	        var checkboxes = $('tbody input[type="checkbox"]');
+            	        checkboxes.prop('checked', this.checked);
+            	    });
+			});
 	                
             </script>
 
 			<br>
-            <div id="pagingArea">
-                <ul class="pagination">
-                	
-                	<c:choose>
-                		<c:when test="${ pi.currentPage eq 1 }">
-                    		<li class="page-item disabled"><a class="page-link" href="#">&lt;&lt;</a></li>
-                    		<li class="page-item disabled"><a class="page-link" href="#">&lt;</a></li>
-                		</c:when>
-                		<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="#">&lt;&lt;</a></li>
-		                    <li class="page-item"><a class="page-link" href="admin/list.me?currentPage=${ pi.currentPage - 1 }">&lt;</a></li>
-                		</c:otherwise>
-                	</c:choose>
-                    
-                    
-                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }" step="1">
-                    	<li class="page-item"><a class="page-link" href="admin/list.me?currentPage=${ p }">${ p }</a></li>
-                    </c:forEach>
-                    
-                    <c:choose>
-                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
-                    		<li class="page-item disabled"><a class="page-link" href="#">&gt;</a></li>
-                    		<li class="page-item disabled"><a class="page-link" href="#">&gt;&gt;</a></li>
-                    	</c:when>
-                    	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="admin/list.me?currentPage=${ pi.currentPage + 1 }">&gt;</a></li>
-                    		<li class="page-item"><a class="page-link" href="admin/list.me?currentPage=${ pi.currentPage + 1 }">&gt;&gt;</a></li>
-                    	</c:otherwise>
-                    </c:choose>
-                </ul>
-            </div>
+			<nav id="pagingArea" style="margin-top: 30px; margin-bottom: 30px;">
+				<ul class="pagination justify-content-center">
+					<li class="page-item ${pi.currentPage == 1 ? 'disabled' : ''}">
+						<a class="page-link" href="<c:url value='/admin/list.me?currentPage=${pi.currentPage - 1}&category=${category}'/>">&lt;</a>
+					</li>
+					<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}" step="1">
+						<li class="page-item ${pi.currentPage == p ? 'active' : ''}">
+							<a class="page-link" href="<c:url value='/admin/list.me?currentPage=${p}&category=${category}'/>">${p}</a>
+						</li>
+					</c:forEach>
+					<li class="page-item ${pi.currentPage == pi.maxPage || pi.listCount == 0 ? 'disabled' : ''}">
+						<a class="page-link" href="<c:url value='/admin/list.me?currentPage=${pi.currentPage + 1}&category=${category}'/>">&gt;</a>
+					</li>
+				</ul>
+			</nav>
 
             <br clear="both"><br>
             

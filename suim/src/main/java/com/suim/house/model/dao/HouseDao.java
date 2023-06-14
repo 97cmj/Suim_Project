@@ -64,4 +64,12 @@ public class HouseDao {
 	public int delete(SqlSessionTemplate sqlSession, int hno) {
 		return sqlSession.update("houseMapper.delete", hno);
 	}
+
+	public House selectEnroll(SqlSessionTemplate sqlSession, int hno) {
+		return sqlSession.selectOne("houseMapper.selectEnroll", hno);
+	}
+	
+	public int payment(SqlSessionTemplate sqlSession, int hno) {
+		return sqlSession.update("houseMapper.payment", hno);
+	}
 }

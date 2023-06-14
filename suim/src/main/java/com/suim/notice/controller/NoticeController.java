@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,7 +51,7 @@ public class NoticeController {
 		  .setViewName("notice/notice");
 		System.out.println("리스트는 " + list);
 		System.out.println(mv);
-		System.out.println("11");
+
 		return mv;
 	}
 
@@ -105,7 +106,7 @@ public class NoticeController {
 			   .setViewName("common/errorPage");
 			
 		}
-		
+		mv.setViewName("notice/noticeDetailView");
 		// System.out.println("mv 는" + mv);
 		return mv;
 	}
@@ -145,10 +146,10 @@ public class NoticeController {
 	
 	
 
-	@RequestMapping("/faqList.no")
+	@GetMapping("/faqList")
 	public String faqList() {
 		
-		return "/notice/faqList";
+		return "notice/faqList";
 	}
 	
 	

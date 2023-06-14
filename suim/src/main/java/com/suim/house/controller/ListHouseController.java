@@ -1,15 +1,17 @@
 package com.suim.house.controller;
 
-import java.util.ArrayList;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,17 +19,33 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.suim.common.mail.MailHandler;
+import com.suim.common.model.vo.PageInfo;
+import com.suim.common.template.Pagination;
+import com.suim.house.model.service.HouseService;
 import com.suim.house.model.service.ListHouseService;
 import com.suim.house.model.vo.House;
 import com.suim.house.model.vo.Region;
 import com.suim.house.model.vo.Reservation;
 import com.suim.member.model.vo.Member;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class ListHouseController {
+	
+	private final JavaMailSender mailSender;
+	
+	@Autowired
+	public ListHouseController(JavaMailSender mailSender) {
+		this.mailSender = mailSender;
+	}
 	
 	@Autowired
 	private ListHouseService listHouseService;
+	@Autowired
+	private HouseService HouseService;
 	
 	// 지도와 셰어하우스 리스트 상세 검색
 	@RequestMapping("list.ho")
@@ -75,13 +93,14 @@ public class ListHouseController {
 	
 	// 예약신청 팝업창 컨트롤러
 	@RequestMapping("houseRez.ho")
-	public String reservationPage(@RequestParam("value") int houseNo, @RequestParam("value2") String houseName,
+	public String reservationPage(@RequestParam("value") int houseNo, @RequestParam("value2") String houseName, @RequestParam("value3") String memberId,
 									HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) {
 
 	    Member loginUser = (Member) session.getAttribute("loginUser");
 
 	    model.addAttribute("houseNo", houseNo);
 	    model.addAttribute("loginUser", loginUser);
+	    model.addAttribute("memberId", memberId);
 	    model.addAttribute("houseName", houseName);
 
 	    return "house/houseReservation";
@@ -91,13 +110,14 @@ public class ListHouseController {
 	// 예약 신청(등록) 컨트롤러
 	@RequestMapping("enrollReservation.rez")
 	public String reservationInsert(Model model, HttpServletRequest request, HttpSession session,
-									Date rezDate, String rezHour, int houseNo, String memberId) {
+									Date rezDate, String rezHour, int houseNo, String sendMemberId, String recMemberId) {
 		
 		 Map<String, Object> reservation = new HashMap<>();
 				 reservation.put("rezDate", rezDate);
 				 reservation.put("rezHour", rezHour);
 				 reservation.put("houseNo", houseNo);
-				 reservation.put("memberId", memberId);
+				 reservation.put("sendMemberId", sendMemberId);
+				 reservation.put("recMemberId", recMemberId);
 				
 		int result = listHouseService.rezInsert(reservation); 
 		
@@ -112,17 +132,36 @@ public class ListHouseController {
 	}
 	
 	// 셰어하우스 별 예약 신청 리스트
-	@RequestMapping("myhouseRez.ho")
-	public ModelAndView myHouseRezSelect(ModelAndView mv, int houseNo) {
-		
-		ArrayList<Reservation> list = listHouseService.myHouseRezSelect(houseNo);
-				
-	    mv.addObject("list", list);
-	    
-	    mv.setViewName("member/mypage/myHouseReservation"); 
-		
-	    return mv;
-	}
+		@RequestMapping("myhouseRez.ho")
+		public ModelAndView myHouseRezSelect(ModelAndView mv, @RequestParam(value="cPage", defaultValue="1")
+		int currentPage, @RequestParam(value="houseNo") int houseNo, HttpSession session, HttpServletRequest request) {
+			
+			session.setAttribute("originalUrl", request.getRequestURI());
+	        int pageLimit = 10;
+	        int boardLimit = 10;
+	        int listCount = 0;
+	        PageInfo pi = null;
+	        listCount = listHouseService.selectHouseRezListCount(houseNo);
+	        pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+			
+			House h = HouseService.selectHouse(houseNo);
+			
+			if (h.getEnrollStatus().equals("심사완료")) {
+				mv.addObject("h", h);
+				mv.setViewName("/house/kakao");
+				return mv;
+			} else {
+			
+			ArrayList<Reservation> list = listHouseService.selectHouseRezList(pi,houseNo);
+			mv.addObject("pi", pi);
+		    mv.addObject("list", list);
+		    mv.addObject("houseNo", houseNo);
+		    mv.setViewName("member/mypage/myHouseReservation");
+			
+		    return mv;
+		   
+			}
+		}
 	
 	// 셰어하우스 예약 확인
 	@RequestMapping("confirmRez.rez")
@@ -147,11 +186,13 @@ public class ListHouseController {
 	}	
 	
 		// 예약취소 팝업창 컨트롤러
-		@RequestMapping("rezCancel.rez")
+		@RequestMapping("rezCancelPop.rez")
 		public String rezCancelPop(@RequestParam("value") int rezNo, @RequestParam("value2") String houseName,
 										HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) {
 
-		    model.addAttribute("rezNo", rezNo);
+			ArrayList<Reservation> r = listHouseService.selectRezOne(rezNo);
+
+		    model.addAttribute("r", r);
 		    model.addAttribute("houseName", houseName);
 		
 		    return "member/mypage/reservationCancel";
@@ -159,5 +200,48 @@ public class ListHouseController {
 		}
 		
 		// 셰어하우스 예약 취소
+		@RequestMapping("rezCancel.rez")
+		public ModelAndView rezCancel(ModelAndView mv, HttpServletRequest request, HttpSession session,
+									int rezNo, String cancelContent, String sendMemberId, String recMeberId, String houseName) {
+					
+			Map<String, Object> rezCancel = new HashMap<>();
+				rezCancel.put("rezNo", rezNo);
+				rezCancel.put("cancelContent", cancelContent);
+				
+			int result = listHouseService.rezCancel(rezCancel);
+			
+			String se = listHouseService.memberEmail(sendMemberId);
+			
+			String re = listHouseService.memberEmail(recMeberId);
 	
+			try {
+				MailHandler sendMail = new MailHandler(mailSender);
+				sendMail.setText("<h1>예약이 취소되었습니다.</h1>" +"<br><br>" + "<h3>취소사유 :</h3>" + "<br>" + cancelContent);
+				sendMail.setFrom("suimm012@gmail.com", "쉼");
+				sendMail.setSubject(houseName + "의 예약이 취소되었습니다.");
+				sendMail.setTo(se);
+				sendMail.send();
+				sendMail.setTo(re);
+				sendMail.send();
+				
+			} catch (MessagingException e) {
+				log.error("메일 전송 중 에러 발생: {}", e.getMessage());
+			} catch (Exception e) {
+				log.error("기타 에러 발생: {}", e.getMessage());
+			}
+			
+			
+			if (result > 0) { // 성공
+		        session.setAttribute("canMsg", "예약이 취소되었습니다.");
+		    } else { // 실패
+		        session.setAttribute("canMsg", "예약 취소에 실패하였습니다.");
+		    }
+		
+			String cancel = request.getHeader("Referer");
+			
+		    mv.setViewName("redirect:" + cancel);
+
+		    return mv;
+		
+		}	
 }

@@ -209,10 +209,11 @@
 
 <body>
 
+	<%@ include file="/WEB-INF/views/common/include.jsp"%>
+
+
 	<%@ include file="/WEB-INF/views/common/header.jsp"%>
-	
-	
-	
+
 	<div class="container">
         <br><br><br><br>
         <div class="row">
@@ -579,8 +580,8 @@
 		                    cardTitle.className = 'card-title';
 		                    cardTitle.innerHTML = '${m.houseName}';
 		                    
-		                    cardBody.appendChild(cardTitle);
-		                    
+			                cardBody.appendChild(cardTitle);
+			                
 		                    var cardGender = document.createElement('p');
 		                    cardGender.className = 'card-gender';
 		                    cardGender.innerHTML = '${m.resGender}';

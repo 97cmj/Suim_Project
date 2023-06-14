@@ -57,10 +57,6 @@
 										data-toggle="tab" id="status-pending"
 										href="/admin/list.re?page=1&category=W">가맹 신청 내역</a></li>
 									<li class="nav-item"><a
-										class="nav-link <c:if test="${category eq 'Y'}">active</c:if>"
-										data-toggle="tab" id="status-confirm"
-										href="/admin/list.re?page=1&category=Y">예치금 내역</a></li>
-									<li class="nav-item"><a
 										class="nav-link <c:if test="${category eq 'N'}">active</c:if>"
 										data-toggle="tab" id="status-reject"
 										href="/admin/list.re?page=1&category=N">게시글 내역</a></li>
@@ -92,10 +88,19 @@
 			                                            <th scope="row">성별</th>
 			                                            <td>${ m.gender }</td>
 			                                        </tr>
-			                                        <tr>
-			                                            <th scope="row">선호지역</th>
-			                                            <td>${ m.area }</td>
-			                                        </tr>
+			                                        <c:choose>
+					                                    <c:when test="${ not empty m.area }">
+					                                        <tr>
+					                                            <th scope="row">선호지역</th>
+					                                            <td>${ m.area }</td>
+					                                        </tr>
+					                                    </c:when>
+							                            <c:otherwise>
+						                            		<tr>
+						                            			<td colspan="8">선택한 선호지역이 없습니다.</td>
+						                            		</tr>
+						                            	</c:otherwise>
+						                            </c:choose>
 			                                        <tr>
 			                                            <th scope="row">생년월일</th>
 			                                            <td>${ m.birth }</td>
@@ -123,7 +128,14 @@
 				                                <table class="table">
 				                                    <tr>
 			                                            <th scope="row">프로필 사진</th>
-						                                <td><img src="${ m.changeName }" style="border-radius:200px;"></img></td>
+			                                            <c:choose>
+											        		<c:when test="${not empty m.changeName}">
+						                                		<td><img src="${ m.changeName }" style="border-radius:200px;"></img></td>
+						                                	</c:when>
+													        <c:otherwise>
+													            <td><img src="/resources/img/common/default_profile.png"></img></td>
+													        </c:otherwise>
+													    </c:choose>
 			                                        </tr>
 				                                </table>
 				                        	</div>
@@ -157,7 +169,6 @@
 											   + 	"<td>" + result[i].phone + "</td>"
 											   + "</tr>";
 								}
-								
 								$("#contentArea").html(result);
 							},
 							error : function() {
@@ -167,7 +178,7 @@
 					}
 				</script>
 
-                <a class="btn btn-secondary" style="float:right;" href="admin/list.me">목록으로</a>
+                <a class="btn btn-secondary" style="float:right;" href="list.me">목록으로</a>
                 <br>
     
                 <%-- <c:if test="${ (not empty loginUser) and (loginUser.userId eq b.boardWriter) }"> --%>

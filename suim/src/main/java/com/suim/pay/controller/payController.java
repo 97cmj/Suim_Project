@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.suim.house.model.vo.House;
+
 
 @Controller
 @RequestMapping("/jq")
@@ -47,6 +49,7 @@ public class payController {
 			HttpURLConnection huc = (HttpURLConnection) url.openConnection();
 			huc.setRequestMethod("POST");
 			huc.setRequestProperty("Authorization", "KakaoAK 13fc955495d1fe2148e4af8b813e14c4");
+
 			huc.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
 			huc.setDoOutput(true);
 			House selectHouse = new House();
@@ -74,6 +77,7 @@ public class payController {
 //					+ "&approval_url=http://localhost:8006/"
 //					+ "&fail_url=https://localhost/fail"
 //					+ "&cancel_url=https://localhost/cancel";
+
 			System.out.println(parameter);
 			OutputStream ops = huc.getOutputStream();
 			DataOutputStream dos = new DataOutputStream(ops);

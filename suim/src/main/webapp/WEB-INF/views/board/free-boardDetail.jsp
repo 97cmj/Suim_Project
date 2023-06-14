@@ -116,7 +116,9 @@
                 <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
 		                <a class="btn btn-primary" onclick="postFormSubmit(1);" >수정하기</a>
 		                <a class="btn btn-danger" onclick="postFormSubmit(2);" >삭제하기</a>
-		                < <a class="btn btn-danger" id="apibtn" >결제하기</a> 
+
+		                 <a class="btn btn-danger" id="apibtn" >결제하기</a> 
+
 <%-- 		              <form method="post" action="/kakaoPay" onsubmit="return confirm('결제하시겠습니까?');">
 						<button>카카오페이로 결제하기</button>
 					</form>	 --%>
@@ -207,6 +209,15 @@
 	function addReply() { // 댓글 작성용 ajax
 		
 
+		var content = "${b.boardTitle}";
+		var receiverId = "${b.memberId}";
+		var senderId = "${loginUser.memberId}";
+		var postNo = "${b.boardNo}";
+		var postContent = $("#content").val();
+		var postType = "board"; 
+		
+		
+		
 		
 		if($("#content").val().trim().length != 0) {
 			// 즉, 유효한 내용이 한자라도 있을 경우
@@ -223,13 +234,78 @@
 					
 					if(result == "success") {
 						selectReplyList();
+						
+
+						
 						$("#content").val("");
+						
+
+						
+						if(senderId != receiverId){
+			           		if(socket){
+			        			let socketMsg = postType+","+senderId+","+receiverId+","+postNo+","+content+","+postContent;
+	
+			        			console.log(socketMsg);
+			        			socket.send(socketMsg);
+			           		}
+						}
+						
+						
+						
+						
 					}
 				},
 				error : function() {
 					console.log("댓글 작성용 ajax 통신 실패!");
 				}
 			});
+			
+			
+			if(senderId != receiverId){
+				 $.ajax({
+				        url : '/insertNotification',
+				        type : 'post',
+				        
+				        data : {
+				        	'content' : content,
+				        	'receiverId' : receiverId,
+				        	'senderId' : senderId,
+				        	'postNo' : postNo,
+				        	'postType' : postType,
+				        	'postContent' : postContent
+				        },
+				        dataType : "json", 
+				        success : function(alram){
+				        }
+				    
+				    });
+				}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 		} else {
 			alertify.alert("알림", "댓글 작성 후 등록 요청해주세요.");
@@ -267,6 +343,7 @@
 		} else {
 			alertify.alert("알림", "댓글 작성 후 등록 요청해주세요.");
 		}
+
 	}
 	
 	function selectReplyList() {
@@ -303,6 +380,7 @@
 
 	}
 	
+
 
 	// 추가된 부분: 삭제 버튼 클릭 이벤트 처리
 	$(document).off("click", ".deleteButton").on("click", ".deleteButton", function() {
@@ -460,9 +538,11 @@
 		      url: '/jq/kakaopay.cls',
 		      dataType: "json",
 		      success: function(data) {
+
 		    	  console.log(data);
         	var box = data.next_redirect_pc_url;
 		        window.open(box); 
+
 		    	  
 		      },
 		      error: function(error) {
