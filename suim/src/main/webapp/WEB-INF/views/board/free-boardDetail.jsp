@@ -116,7 +116,7 @@
                 <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
 		                <a class="btn btn-primary" onclick="postFormSubmit(1);" >수정하기</a>
 		                <a class="btn btn-danger" onclick="postFormSubmit(2);" >삭제하기</a>
-		                <!-- <a class="btn btn-danger" id="apibtn" >결제하기</a> -->
+		                < <a class="btn btn-danger" id="apibtn" >결제하기</a> 
 <%-- 		              <form method="post" action="/kakaoPay" onsubmit="return confirm('결제하시겠습니까?');">
 						<button>카카오페이로 결제하기</button>
 					</form>	 --%>
@@ -124,7 +124,7 @@
             <br><br>
             
          		<form id="postForm" action="" method="post">
-	            	<input type="hidden" name="bno" value="${ b.boardNo }">
+	            	<input type="hidden" name="bno" value="${ b.adf }">
 	            	<input type="hidden" name="filePath" value="${ b.changeName }">
 	            </form>
 	            <script>
@@ -460,9 +460,9 @@
 		      url: '/jq/kakaopay.cls',
 		      dataType: "json",
 		      success: function(data) {
-		    	  alert(data.next_redirect_pc_url);
-/*         	var box = data.next_redirect_pc_url;
-		        window.open(box); */
+		    	  console.log(data);
+        	var box = data.next_redirect_pc_url;
+		        window.open(box); 
 		    	  
 		      },
 		      error: function(error) {
