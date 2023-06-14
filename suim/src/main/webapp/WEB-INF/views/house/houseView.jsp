@@ -12,8 +12,6 @@
 <!-- Example assets -->
 <link rel="stylesheet" type="text/css"
 	href="/resources/css/house/jcarousel.connected-carousels.css">
-'
-
 <script type="text/javascript"
 	src="/resources/js/house/vendor/jquery/jquery.js"></script>
 <script type="text/javascript"
@@ -37,6 +35,7 @@
 }
 
 .right {
+	margin-top : 20px;
 	flex: 3;
 	padding: 20px;
 }
@@ -66,7 +65,6 @@
 </style>
 </head>
 <body>
-
 	<div class="container main">
 		<section class="top">
 			<aside class="left">
@@ -275,10 +273,14 @@
 
 <script>
 	$(document).ready(function() {
+		let houseNo = "${h.houseNo}";
+        let houseName = "${h.houseName}";
+        let memberId = "${h.memberId}";
+        
 		  $('#reportBtn').click(function() {
-		    var popupUrl = "report.ho";
+			var popupUrl = "report.ho?value=" + encodeURIComponent(houseNo) + "&value2=" + encodeURIComponent(houseName) + "&value3=" + encodeURIComponent(memberId);
 		    var popupWidth = 800;
-		    var popupHeight = 800;
+		    var popupHeight = 900;
 
 		    var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 		    var windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
@@ -327,13 +329,6 @@ $(document).ready(function() {
 		              });
 		            }
 		          },
-		          error: function(xhr, status, error) {
-		            if (xhr.status === 401) {
-		              alert("로그인 후 이용해주세요.");
-		            } else {
-		              alert("서버에서 에러가 발생했습니다.");
-		            }
-		          }
 		        });
 		      }
 		
@@ -342,14 +337,7 @@ $(document).ready(function() {
 		    $("#chatBtn").click(function() {
 		        var muser = "${h.memberId}"; // JSP 표현식으로부터 값을 가져옴
 		        var isLoggedIn = "${Id}"; // JSP 표현식에서 중괄호({})를 제거하여 JavaScript 변수에 할당
-
-		        if (isLoggedIn) {
-		            // 로그인 상태인 경우 채팅 페이지로 이동
 		            window.location.href = "house.ch?muser=" + muser;
-		        } else {
-		            // 로그인이 필요한 기능이므로 로그인되지 않은 경우 알림창을 표시
-		            alert("로그인 후 이용해주세요.");
-		        }
 		    });
 		});
 
@@ -391,20 +379,13 @@ var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표�
 					});
 	
 	function rezPopup() {
-        var houseNo = "${h.houseNo}";
-        var houseName = "${h.houseName}";
-        var memberId = "${h.memberId}";
+
         var popupUrl = "houseRez.ho?value=" + encodeURIComponent(houseNo) + "&value2=" + encodeURIComponent(houseName) + "&value3=" + encodeURIComponent(memberId);
-        if ("${loginUser}" == "") {
-            alert("로그인이 필요합니다.");
-            window.location.href = "/detail.ho?hno=" + encodeURIComponent(houseNo);
-        } else {
         	  var width = 500;
               var height = 500;
               var left = (screen.width - width) / 2;
               var top = (screen.height - height) / 2;
               var popup = window.open(popupUrl, "popup", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top);
-        }
     }
 	
 	</script>

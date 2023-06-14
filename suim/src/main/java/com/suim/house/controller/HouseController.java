@@ -86,24 +86,16 @@ public class HouseController {
 	
 	
 	@RequestMapping("heart.ho")
-	public ResponseEntity<String> heart(@RequestParam("hno") int hno, @RequestParam("type") String type, HttpSession session) {
-		System.out.println("왔나?");
-		System.out.println(hno);
+	public ResponseEntity<String> heart(@RequestParam("hno") int hno, @RequestParam("type") String type, HttpSession session) {;
 	  Member loginUser = (Member) session.getAttribute("loginUser");
-	  String id = "";
-	  if (loginUser != null) {
-	    id = loginUser.getMemberId();
-	  } else {
-	    // 로그인이 필요한 기능이므로 로그인되지 않은 경우 에러 응답을 반환
-	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 후 이용해주세요.");
-	  }
+	  String id = loginUser.getMemberId();
 
 	  if (type.equals("like")) {
 	    houseService.heartLike(id, hno);
 	  } else {
 	    houseService.heartUnlike(id, hno);
 	  }
-
+	  
 	  // 성공적인 응답 반환
 	  return ResponseEntity.ok().body("success");
 	}
@@ -284,7 +276,7 @@ public class HouseController {
 			            + "<div class='message'>"
 			            + "<p>안녕하세요, 쉼입니다.</p>"
 			            + "<p>" + h.getHouseName() + "의 결제가 완료되었습니다.</p>"
-			            + "<p>더욱 편안한 휴식을 즐기실 수 있도록 최선을 다하겠습니다.</p>"
+			            + "<p>더욱 편안한 셰어하우스가 될 수 있도록 최선을 다하겠습니다.</p>"
 			            + "<p>감사합니다!</p>"
 			            + "</div>"
 			            + "</body>"
@@ -305,6 +297,18 @@ public class HouseController {
 		
 		mv.setViewName("redirect:/mypage/house");
 		return mv;
+	}
+    
+	@RequestMapping("report.ho")
+	public ModelAndView reportHouse(@RequestParam("value") int houseNo, @RequestParam("value2") String houseName, 
+			@RequestParam("value3") String memberId, ModelAndView mv) {
+
+	  mv.addObject("houseNo", houseNo);
+	  mv.addObject("houseName", houseName);
+	  mv.addObject("memberId", memberId);
+	  mv.setViewName("report/reportUpdateForm");
+	    
+	  return mv;
 	}
     
 }

@@ -20,7 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.suim.common.mail.MailHandler;
+import com.suim.common.model.vo.PageInfo;
 import com.suim.common.template.Pagination;
+import com.suim.house.model.service.HouseService;
 import com.suim.house.model.service.ListHouseService;
 import com.suim.house.model.vo.House;
 import com.suim.house.model.vo.Region;
