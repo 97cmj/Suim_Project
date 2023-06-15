@@ -9,11 +9,8 @@
 <head>
 <title>상세페이지</title>
 <link href="/resources/css/house/house.css" rel="stylesheet" />
-<!-- Example assets -->
 <link rel="stylesheet" type="text/css"
 	href="/resources/css/house/jcarousel.connected-carousels.css">
-'
-
 <script type="text/javascript"
 	src="/resources/js/house/vendor/jquery/jquery.js"></script>
 <script type="text/javascript"
@@ -37,6 +34,7 @@
 }
 
 .right {
+	margin-top : 20px;
 	flex: 3;
 	padding: 20px;
 }
@@ -66,12 +64,11 @@
 </style>
 </head>
 <body>
-
 	<div class="container main">
 		<section class="top">
 			<aside class="left">
 				<!-- 왼쪽 영역 내용 -->
-				<h3>${h.houseName }</h3>
+				<h3 style="margin-left : 115px;">${h.houseName }</h3>
 
 				<div class="wrapper">
 					<div class="connected-carousels">
@@ -122,7 +119,6 @@
 					test="${loginUser.memberId != h.memberId && loginUser != null}">
 					<div>
 						<a class="reportBtn" id="reportBtn"> <img title="신고" alt="신고"
-							style="margin-left: 225px; position: relative; top: -22px;"
 							src="/resources/img/house/ico_report.png">
 						</a>
 					</div>
@@ -134,7 +130,7 @@
 							id="profilepic"
 							onerror="this.src='/resources/img/common/default_profile.png'" />
 						</li>
-						<li class="userId">${h.memberId }</li>
+						<li class="userId">${h.nickName }</li>
 						<c:if
 							test="${loginUser.memberId != h.memberId && loginUser != null}">
 							<li class="actionButton">
@@ -151,6 +147,9 @@
 								<button class="q_btn white" id="chatBtn">소통하기</button>
 							</li>
 						</c:if>
+						<li class="actionButton">
+								<button class="q_btn white" onclick="location.href='list.ho'">뒤로가기</button>
+							</li>
 					</ul>
 				</div>
 			</article>
@@ -275,8 +274,12 @@
 
 <script>
 	$(document).ready(function() {
+		let houseNo = "${h.houseNo}";
+        let houseName = "${h.houseName}";
+        let memberId = "${h.memberId}";
+        
 		  $('#reportBtn').click(function() {
-		    var popupUrl = "report.ho";
+			var popupUrl = "report.ho?value=" + encodeURIComponent(houseNo) + "&value2=" + encodeURIComponent(houseName) + "&value3=" + encodeURIComponent(memberId);
 		    var popupWidth = 800;
 		    var popupHeight = 800;
 
@@ -304,6 +307,13 @@ $(document).ready(function() {
 			    });
 			  </c:if>
 			});
+			var content = "${h.houseName}";
+			var receiverId = "${h.memberId}";
+			var senderId = "${loginUser.memberId}";
+			var postNo = "${h.houseNo}";
+			var postContent = "좋아요";
+			var postType = "wish";
+			
 		function heart(hno) {
 		    var heartIcon = $(".fa-heart");
 		    var isLiked = heartIcon.hasClass("fa-solid");
@@ -321,35 +331,54 @@ $(document).ready(function() {
 		                heartIcon.removeClass("fa-solid").addClass("fa-regular fa-bounce").css("color", "");
 		              } else { // unlike 상태일 경우 기존 상태를 지우고 like 상태로 변환
 		                heartIcon.removeClass("fa-regular").addClass("fa-solid fa-bounce").css("color", "#ED0707");
+		              
+		                if(senderId != receiverId){
+			           		if(socket){
+			        			let socketMsg = postType+","+senderId+","+receiverId+","+postNo+","+content+","+postContent;
+	
+			        			console.log(socketMsg);
+			        			socket.send(socketMsg);
+			           		}
+						}
+
+						if(senderId != receiverId){
+										 $.ajax({
+										        url : '/insertNotification',
+										        type : 'post',
+										        
+										        data : {
+										        	'content' : content,
+										        	'receiverId' : receiverId,
+										        	'senderId' : senderId,
+										        	'postNo' : postNo,
+										        	'postType' : postType,
+										        	'postContent' : postContent
+										        },
+										        dataType : "json", 
+										        success : function(alram){
+										        }
+										    
+										    });
+										}
+		              
+		              
+		              
+		              
+		              
 		              }
 		              heartIcon.one("animationiteration webkitAnimationIteration oanimationiteration", function() {
 		                $(this).removeClass("fa-bounce");
 		              });
 		            }
 		          },
-		          error: function(xhr, status, error) {
-		            if (xhr.status === 401) {
-		              alert("로그인 후 이용해주세요.");
-		            } else {
-		              alert("서버에서 에러가 발생했습니다.");
-		            }
-		          }
 		        });
 		      }
 		
 		
 		$(document).ready(function() {
 		    $("#chatBtn").click(function() {
-		        var muser = "${h.memberId}"; // JSP 표현식으로부터 값을 가져옴
-		        var isLoggedIn = "${Id}"; // JSP 표현식에서 중괄호({})를 제거하여 JavaScript 변수에 할당
-
-		        if (isLoggedIn) {
-		            // 로그인 상태인 경우 채팅 페이지로 이동
+		        var muser = "${h.nickName}"; // JSP 표현식으로부터 값을 가져옴
 		            window.location.href = "house.ch?muser=" + muser;
-		        } else {
-		            // 로그인이 필요한 기능이므로 로그인되지 않은 경우 알림창을 표시
-		            alert("로그인 후 이용해주세요.");
-		        }
 		    });
 		});
 
@@ -391,20 +420,13 @@ var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표�
 					});
 	
 	function rezPopup() {
-        var houseNo = "${h.houseNo}";
-        var houseName = "${h.houseName}";
-        var memberId = "${h.memberId}";
+
         var popupUrl = "houseRez.ho?value=" + encodeURIComponent(houseNo) + "&value2=" + encodeURIComponent(houseName) + "&value3=" + encodeURIComponent(memberId);
-        if ("${loginUser}" == "") {
-            alert("로그인이 필요합니다.");
-            window.location.href = "/detail.ho?hno=" + encodeURIComponent(houseNo);
-        } else {
         	  var width = 500;
               var height = 500;
               var left = (screen.width - width) / 2;
               var top = (screen.height - height) / 2;
               var popup = window.open(popupUrl, "popup", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top);
-        }
     }
 	
 	</script>

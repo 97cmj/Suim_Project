@@ -30,7 +30,9 @@
                 	   hiddenInput.value = select.value; 
                 	  }
                    </script>
-                   <input type="hidden" name="hiddenInput" id="reportTypeHidden" value="">
+                   <input type="hidden" name="reportType" value="${ r.reportType }">
+                   <input type="hidden" name="typeNo" value="${ r.typeNo }">
+                   <input type="hidden" name="reportId" value="${ r.reportId }">
                    <tr>
                        <th><label for="title">제목</label></th>
                        <td><input type="text" id="title" class="form-control" name="reportTitle" required value="${ r.reportTitle }"></td>
@@ -50,7 +52,7 @@
                <br>
                <div align="center">
                    <button type="submit" class="btn btn-primary">작성하기</button>
-                   <button type="reset" class="btn btn-danger">취소하기</button>
+                   <button type="button" class="btn btn-danger" onclick="window.close();">취소하기</button>
                </div>
            </form>
        </div>

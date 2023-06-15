@@ -20,10 +20,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- 타입잇 자바스크립트 -->
         <script src="https://unpkg.com/typeit@8.7.1/dist/index.umd.js"></script>
-        <!-- jQuery -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-        <!-- 1:1문의 채팅 -->
-        <script src="/resources/js/common/chatbot.js"></script>
         <!-- 게시판 js -->
         <script src="/resources/js/board/board.js"></script>
         <!-- 나중에 한번에 include 할 부분 -->
@@ -74,7 +70,7 @@
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td>${ fb.memberId }</td>
+                    <td>${ fb.nickName }</td>
                     <th>작성일</th>
                     <td>${ fb.findDate }</td>
                 </tr>
@@ -188,7 +184,12 @@
 	
 	function addReply() { // 댓글 작성용 ajax
 		
-
+		var content = "${fb.findTitle}";
+		var receiverId = "${fb.memberId}";
+		var senderId = "${loginUser.memberId}";
+		var postNo = "${fb.findNo}";
+		var postContent = $("#content").val();
+		var postType = "find";
 		
 		if($("#content").val().trim().length != 0) {
 			// 즉, 유효한 내용이 한자라도 있을 경우
@@ -206,12 +207,49 @@
 					if(result == "success") {
 						selectReplyList();
 						$("#content").val("");
+						
+						
+					
+						
+						if(senderId != receiverId){
+			           		if(socket){
+			        			let socketMsg = postType+","+senderId+","+receiverId+","+postNo+","+content+","+postContent;
+
+			        			console.log(socketMsg);
+			        			socket.send(socketMsg);
+			           		}
+						}
 					}
 				},
 				error : function() {
 					console.log("댓글 작성용 ajax 통신 실패!");
 				}
 			});
+			
+
+			
+			if(senderId != receiverId){
+				 $.ajax({
+				        url : '/insertNotification',
+				        type : 'post',
+				        
+				        data : {
+				        	'content' : content,
+				        	'receiverId' : receiverId,
+				        	'senderId' : senderId,
+				        	'postNo' : postNo,
+				        	'postType' : postType,
+				        	'postContent' : postContent
+				        },
+				        dataType : "json", 
+				        success : function(alram){
+				        }
+				    
+				    });
+				}
+			
+			
+			
 			
 		} else {
 			alertify.alert("알림", "댓글 작성 후 등록 요청해주세요.");
@@ -259,29 +297,6 @@
 	    let freNo = tr.data("id");
 	    
 	    
-	    
-	    $.ajax({
-	        url: "rdelete.bo",
-	        data: { fre: freNo },
-	        type: "post",
-	        success: function(response) {
-	            // 삭제 성공한 경우 해당 댓글을 테이블에서 제거
-	            tr.remove();
-
-	            // 삭제 후 댓글 목록을 다시 로드
-	            selectReplyList();
-
-	            // Show success message using alert
-	            alert("성공적으로 삭제 되었습니다.");
-	        },
-	        error: function(xhr, status, error) {
-	            // 오류 발생 시 처리할 내용
-	            console.log(error);
-
-	            // Show error message using alert
-	            alert("An error occurred while deleting the reply.");
-	        }
-	    });
 
 	    // Confirmation prompt before deleting
 	    var confirmation = confirm("삭제하시겠습니까?");
@@ -289,7 +304,7 @@
 	    if (confirmation) {
 	        // Execute the deletion
 	        $.ajax({
-	            url: "rdelete.bo",
+	            url: "rdelete.fi",
 	            data: { fre: freNo },
 	            type: "post",
 	            success: function(response) {
