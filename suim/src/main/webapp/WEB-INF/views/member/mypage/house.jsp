@@ -7,6 +7,7 @@
 <head>
 <title>마이페이지</title>
 <link href="/resources/css/user/mypage.css" rel="stylesheet" />
+
 <%@ include file="/WEB-INF/views/common/include.jsp"%>
 
 <style>
@@ -204,19 +205,22 @@
 		$.ajax({
 			url: "/pay/kakaopay",
 			type: 'POST',
-			data: {
-				hno: hno
-			},
-			dataType: "json",
-			success: function(data) {
-				var box = data.next_redirect_pc_url;
-				window.open(box);
-			},
-			error: function(error) {
-				alert(error);
-			}
-		});
-	}
-</script>
+        },
+        dataType: "json",
+        success: function(data) {
+            console.log(data.tid);
+            var box = data.next_redirect_pc_url;
+            window.open(box);
+            
+            // 컨트롤러로 data.tid 전송
+            sendTidToController(data.tid);
+            
+        },
+        error: function(error) {
+            alert(error);
+        }
+    });
+}
 
+</script>
 </html>

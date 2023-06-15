@@ -45,11 +45,9 @@ public class ReportController {
 							,HttpServletResponse response) {
 		
 		String memberId = r.getMemberId();
-
 		int result = reportService.insertReport(r);
 		
-		if(result > 0) { 
-
+		if(result > 0) {
 			int reportCount = adminMemberService.selectBlackList(memberId);
 			if(reportCount >= 5) {
 				adminMemberService.updateBlackList(memberId);
