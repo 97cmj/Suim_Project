@@ -144,12 +144,10 @@
 												<button type="submit" class="btn btn-primary btn-sm">예약확인</button>
 												</c:if>
 												<c:if test = "${h.enrollStatus eq '심사완료'}">
-												<button type="submit" class="btn btn-primary btn-sm">결제하기</button>
+												<button type="button" class="btn btn-primary btn-sm" 
+												onclick="Payment('${h.houseNo}')">결제하기</button>
 												</c:if>
 											</form>
-											<form method="post" action="/kakaoPay" onsubmit="return confirm('결제하시겠습니까?');">
-											    <button>카카오페이로 결제하기</button>
-											</form>	
 											<form action="/houseEdit.ho" method="post" onsubmit="return confirm('수정하시겠습니까?');">
 												<input type="hidden" name="hno" value="${h.houseNo}">
 												<button type="submit" class="btn btn-success  btn-sm">수정</button>
@@ -194,8 +192,31 @@
 	        </ul>
 	    </div>
 	</c:if>
-
+	
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
+
+<script>
+	function Payment(houseNo) {
+		event.preventDefault();
+		var hno = houseNo;
+		$.ajax({
+			url: "/pay/kakaopay",
+			type: 'POST',
+			data: {
+				hno: hno
+			},
+			dataType: "json",
+			success: function(data) {
+				var box = data.next_redirect_pc_url;
+				window.open(box);
+			},
+			error: function(error) {
+				alert(error);
+			}
+		});
+	}
+</script>
+
 </html>

@@ -9,7 +9,6 @@
 <head>
 <title>상세페이지</title>
 <link href="/resources/css/house/house.css" rel="stylesheet" />
-<!-- Example assets -->
 <link rel="stylesheet" type="text/css"
 	href="/resources/css/house/jcarousel.connected-carousels.css">
 <script type="text/javascript"
@@ -69,7 +68,7 @@
 		<section class="top">
 			<aside class="left">
 				<!-- 왼쪽 영역 내용 -->
-				<h3>${h.houseName }</h3>
+				<h3 style="margin-left : 115px;">${h.houseName }</h3>
 
 				<div class="wrapper">
 					<div class="connected-carousels">
@@ -120,7 +119,6 @@
 					test="${loginUser.memberId != h.memberId && loginUser != null}">
 					<div>
 						<a class="reportBtn" id="reportBtn"> <img title="신고" alt="신고"
-							style="margin-left: 225px; position: relative; top: -22px;"
 							src="/resources/img/house/ico_report.png">
 						</a>
 					</div>
@@ -132,7 +130,7 @@
 							id="profilepic"
 							onerror="this.src='/resources/img/common/default_profile.png'" />
 						</li>
-						<li class="userId">${h.memberId }</li>
+						<li class="userId">${h.nickName }</li>
 						<c:if
 							test="${loginUser.memberId != h.memberId && loginUser != null}">
 							<li class="actionButton">
@@ -149,6 +147,9 @@
 								<button class="q_btn white" id="chatBtn">소통하기</button>
 							</li>
 						</c:if>
+						<li class="actionButton">
+								<button class="q_btn white" onclick="location.href='list.ho'">뒤로가기</button>
+							</li>
 					</ul>
 				</div>
 			</article>
@@ -280,7 +281,7 @@
 		  $('#reportBtn').click(function() {
 			var popupUrl = "report.ho?value=" + encodeURIComponent(houseNo) + "&value2=" + encodeURIComponent(houseName) + "&value3=" + encodeURIComponent(memberId);
 		    var popupWidth = 800;
-		    var popupHeight = 900;
+		    var popupHeight = 800;
 
 		    var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 		    var windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
@@ -335,8 +336,7 @@ $(document).ready(function() {
 		
 		$(document).ready(function() {
 		    $("#chatBtn").click(function() {
-		        var muser = "${h.memberId}"; // JSP 표현식으로부터 값을 가져옴
-		        var isLoggedIn = "${Id}"; // JSP 표현식에서 중괄호({})를 제거하여 JavaScript 변수에 할당
+		        var muser = "${h.nickName}"; // JSP 표현식으로부터 값을 가져옴
 		            window.location.href = "house.ch?muser=" + muser;
 		    });
 		});

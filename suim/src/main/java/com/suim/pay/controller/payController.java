@@ -10,100 +10,116 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
-
-import javax.servlet.http.HttpSession;
-
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
+import com.suim.house.model.service.HouseService;
 import com.suim.house.model.vo.House;
+import com.suim.pay.model.service.PayService;
 
 
 @Controller
-@RequestMapping("/jq")
+@RequestMapping("pay")
 public class payController {
 	
-	@RequestMapping("/jq.cls")
-	public ModelAndView main(ModelAndView mv, HttpSession s, RedirectView rv) {
-		
-		mv.setViewName("jq/test");
-		return mv;
-	}
-	@RequestMapping("/pay.cls")
-	public ModelAndView serve(ModelAndView mv, HttpSession s, RedirectView rv) {
-		
-		mv.setViewName("jq/serve");
-		return mv;
-	}
+	@Autowired
+	private HouseService houseService;
 	
-	@RequestMapping("/kakaopay.cls")
+	@Autowired
+	private PayService payService;
+	
+	@RequestMapping("kakaopay")
 	@ResponseBody
-	public String kakaopay() {
+	public String kakaopay(int hno) {
 		
-		try {
-			URL url = new URL("https://kapi.kakao.com/v1/payment/ready");
-			HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-			huc.setRequestMethod("POST");
-			huc.setRequestProperty("Authorization", "KakaoAK 13fc955495d1fe2148e4af8b813e14c4");
+	    House h = houseService.selectHouse(hno);
 
-			huc.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
-			huc.setDoOutput(true);
-			House selectHouse = new House();
-			//selectHouse = "디비에서 조회한 쉐어하우스 정보를 가진 객체";
-			String parameter = "cid=TC0ONETIME" + 
-					"&partner_order_id=partner_order_id" + 
-					"&partner_user_id=partner_user_id" + 
-					"&item_name=" + selectHouse.getHouseName() + 
-					"&quantity=1" + 
-					"&total_amount=2200" + 
-					"&vat_amount=200" + 
-					"&tax_free_amount=0" + 
-					"&approval_url=http://localhost:8006/update.bo" + //성공 시 결제상태 update
-					"&fail_url=http://localhost:8006/list.bo" + 
-					"&cancel_url=http://localhost:8006/mypage/house";//쉐어하우스 목록
-//			String parameter = "cid=TC0ONETIME"
-//					+ "&partner_order_id=partner_order_id"
-//					+ "&partner_user_id=partner_user_id"
-//					+ "&item_name=초코파이"
-//					+ "&quantity=1"
-//					+ "&total_amount=2200"
-//					+ "&vat_amount=200"
-//					+ "&tax_free_amount=0"
-//					//+ "&approval_url=https://localhost/jq/pay.cls"
-//					+ "&approval_url=http://localhost:8006/"
-//					+ "&fail_url=https://localhost/fail"
-//					+ "&cancel_url=https://localhost/cancel";
+	    try {
+	        URL url = new URL("https://kapi.kakao.com/v1/payment/ready");
+	        HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+	        huc.setRequestMethod("POST");
+	        huc.setRequestProperty("Authorization", "KakaoAK 13fc955495d1fe2148e4af8b813e14c4");
+	        huc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+	        huc.setDoOutput(true);
 
-			System.out.println(parameter);
-			OutputStream ops = huc.getOutputStream();
-			DataOutputStream dos = new DataOutputStream(ops);
-			dos.writeBytes(parameter);
-			dos.close();
-			
-			int result = huc.getResponseCode();
-			
-			InputStream is;
-			if(result == 200) {
-				is = huc.getInputStream();
-			} else {
-				is = huc.getErrorStream();
-			}
-			
-			InputStreamReader isr = new InputStreamReader(is);
-			BufferedReader br = new BufferedReader(isr);
-			return br.readLine();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return "{\"result\":\"NO\"}";
+	        String itemName = URLEncoder.encode(h.getHouseName(), "UTF-8");
+	        int deposit = h.getDeposit();
+	        String price = String.valueOf(deposit);
+	        
+	        String parameter = "cid=TC0ONETIME" +
+	                "&partner_order_id=partner_order_id" +
+	                "&partner_user_id=partner_user_id" +
+	                "&item_name=" + itemName +
+	                "&quantity=1" +
+	                "&total_amount=" + price +
+	                "&vat_amount=0" +
+	                "&tax_free_amount=0" +
+	                "&approval_url=http://localhost:8006/kakaoPaySuccess" +
+	                "&fail_url=http://localhost:8006/kakaoPayCancel" +
+	                "&cancel_url=http://localhost:8006/kakaoPaySuccessFail";
+	        
+	        //"&approval_url=http://localhost:8006/update.pay?houseName=" + encodedHouseName +
+	        
+	        OutputStream ops = huc.getOutputStream();
+	        DataOutputStream dos = new DataOutputStream(ops);
+	        dos.writeBytes(parameter);
+	        dos.close();
+
+	        int result = huc.getResponseCode();
+	        
+	        InputStream is;
+	     // 승인이 성공적으로 이루어졌을 때의 처리
+	        if (result == 200) {
+	            is = huc.getInputStream();
+	            
+	            InputStreamReader isr = new InputStreamReader(is);
+		        BufferedReader br = new BufferedReader(isr);
+		        String response = br.readLine();
+	            Map<String, String> responseMap = parseResponse(response);
+	            
+	            if (responseMap.containsKey("tid")) {
+	                String tid = responseMap.get("tid");
+	                System.out.println(tid);
+	            }
+	            
+		        return response;
+		        
+	        } else {
+	            is = huc.getErrorStream();
+	        }
+	        
+	    } catch (MalformedURLException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return "{\"result\":\"NO\"}";
 	}
-	
-	
+
+	private Map<String, String> parseResponse(String response) {
+	    Map<String, String> responseMap = new HashMap<>();
+
+	    JSONParser parser = new JSONParser();
+	    try {
+	        Object obj = parser.parse(response);
+	        if (obj instanceof Map) {
+	            Map<String, Object> jsonMap = (Map<String, Object>) obj;
+	            String tid = (String) jsonMap.get("tid");
+	            responseMap.put("tid", tid);
+	        }
+	    } catch (ParseException e) {
+	        e.printStackTrace();
+	    }
+
+	    return responseMap;
+	}
 
 }
