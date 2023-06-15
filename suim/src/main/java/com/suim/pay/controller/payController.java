@@ -61,7 +61,7 @@ public class payController {
 	        huc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 	        huc.setDoOutput(true);
 	        String itemName = URLEncoder.encode(h.getHouseName(), "UTF-8");
-	        int deposit = h.getDeposit();
+	        int deposit = (int) (h.getDeposit()*0.1);
 	        String price = String.valueOf(deposit);
 
 	        String parameter = "cid=TC0ONETIME" +
@@ -166,9 +166,8 @@ public class payController {
 		int result = payService.updatePay(hno);
 		
 		if (result > 0 /*|| result2 > 0*/) {
-		    session.setAttribute("alertMsg", "성공적으로 결제가 되었습니다.");
 		    
-		    mv.setViewName("redirect:mypage/house");
+		    mv.setViewName("common/paySuccess");
 		    
 		} else { // 실패 => 에러 문구를 담아서 에러페이지로 포워딩
 			
