@@ -11,7 +11,6 @@
         <link rel="stylesheet" href="/resources/css/board/board.css">
       
 		<link href="/resources/css/user/signup.css" rel="stylesheet" />
-        <!-- 나중에 한번에 include 할 부분 -->
 
 	<style>
         .content {
@@ -100,7 +99,9 @@
 		                <a class="btn btn-primary" onclick="postFormSubmit(1);" >수정하기</a>
 		                <a class="btn btn-danger" onclick="postFormSubmit(2);" >삭제하기</a>
 
-		                 <a class="btn btn-danger" id="apibtn" >결제하기</a> 
+		                 <form method="post" action="/kakaoPay">
+							    <button>카카오페이로 결제하기</button>
+							</form>
 
 <%-- 		              <form method="post" action="/kakaoPay" onsubmit="return confirm('결제하시겠습니까?');">
 						<button>카카오페이로 결제하기</button>
@@ -255,7 +256,7 @@
 				    
 				    });
 				}
-			
+
 		} else {
 			alertify.alert("알림", "댓글 작성 후 등록 요청해주세요.");
 		}
@@ -417,10 +418,10 @@
 	backButton.addEventListener('click', goBack);
 	
 	
-		$(function() {
+/* 		$(function() {
 		  $('#apibtn').click(function() {
 		    $.ajax({
-		      url: '/jq/kakaopay.cls',
+		      url: '/kakaoPay',
 		      dataType: "json",
 		      success: function(data) {
 
@@ -435,7 +436,7 @@
 		      }
 		    });
 		  });
-		});
+		}); */
 		  // Enter 키를 눌렀을 때 동작할 함수
 		  function handleEnterKey(event) {
 		    if (event.keyCode === 13) {
@@ -444,12 +445,7 @@
 		    }
 		  }
 
-		  // "수정하기" 버튼에 클릭 이벤트 리스너 추가
-		  document.getElementById("submitButton").addEventListener("click", function () {
-		    // 수정하기 버튼을 클릭했을 때 수행할 동작
-		    // 여기에 원하는 동작을 추가하세요
-		    console.log("수정하기 버튼이 클릭되었습니다.");
-		  });
+
 
 		  // 엔터 키 이벤트 리스너 추가
 
