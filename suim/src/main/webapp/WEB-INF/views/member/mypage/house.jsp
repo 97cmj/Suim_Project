@@ -10,6 +10,8 @@
 
 <%@ include file="/WEB-INF/views/common/include.jsp"%>
 
+
+
 <style>
   	body {
 	background-color: #f8f9fa;
@@ -139,13 +141,15 @@
 										</c:if>
 										<p class="card-text">${ h.houseDate }</p>
 										<div class="card-form">
-											<form action="/myhouseRez.ho" method="post">
-												<input type="hidden" name="houseNo" value="${h.houseNo}">
-												<c:if test = "${h.enrollStatus eq '등록완료'}">
-												<button type="submit" class="btn btn-primary btn-sm">예약확인</button>
-												</c:if>
-												<c:if test = "${h.enrollStatus eq '심사완료'}">
-												<button type="button" class="btn btn-primary btn-sm" 
+										
+								<form action="/myhouseRez.ho" method="post">
+									<input type="hidden" name="houseNo" value="${h.houseNo}">
+									<c:if test="${h.enrollStatus eq '등록완료'}">
+										<button type="submit" class="btn btn-primary btn-sm">예약확인</button>
+									</c:if>
+									
+							<c:if test = "${h.enrollStatus eq '심사완료'}">
+												<button type="button" class="btn btn-primary btn-sm"
 												onclick="Payment('${h.houseNo}')">결제하기</button>
 												</c:if>
 											</form>
@@ -194,17 +198,18 @@
 	    </div>
 	</c:if>
 	
-
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
-
 <script>
-	function Payment(houseNo) {
-		event.preventDefault();
-		var hno = houseNo;
-		$.ajax({
-			url: "/pay/kakaopay",
-			type: 'POST',
+function Payment(houseNo, tid) {
+    event.preventDefault();
+    var hno = houseNo;
+    $.ajax({
+        url: '/kakaopay.cls',
+        type: 'POST',
+        data: {
+        	hno: hno,
+            tid: tid
         },
         dataType: "json",
         success: function(data) {
@@ -222,5 +227,9 @@
     });
 }
 
+
 </script>
+
+
+
 </html>

@@ -29,7 +29,7 @@ import com.suim.report.model.vo.Report;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
 @Controller
 public class HouseController {
 	
@@ -314,4 +314,19 @@ public class HouseController {
 //	  return mv;
 //	}
     
+    
+    @RequestMapping("Write.ho")
+	public ModelAndView WriteHouse(ModelAndView mv, HttpSession session) {
+    	
+	    Member loginUser = (Member) session.getAttribute("loginUser");
+	    if (loginUser != null) {
+			mv.setViewName("/house/houseWrite");
+			return mv;
+	    } else {
+    	
+    	session.setAttribute("alertMsg", "로그인 후 이용해주세요.");
+		mv.setViewName("/member/login");
+		return mv;
+	    }
+    }
 }

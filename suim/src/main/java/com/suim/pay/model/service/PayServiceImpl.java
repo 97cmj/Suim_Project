@@ -6,8 +6,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.suim.house.model.service.HouseService;
 import com.suim.pay.model.dao.PayDao;
+import com.suim.pay.model.vo.Pay;
 @Service
 public class PayServiceImpl  implements PayService {
 	
