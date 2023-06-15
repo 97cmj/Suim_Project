@@ -74,7 +74,7 @@
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td>${ i.memberId }</td>
+                    <td>${ i.nickName }</td>
                     <th>작성일</th>
                     <td>${ i.inrDate }</td>
                 </tr>
@@ -189,7 +189,12 @@
 	
 	function addReply() { // 댓글 작성용 ajax
 		
-
+		var content = "${i.inrTitle}";
+		var receiverId = "${i.memberId}";
+		var senderId = "${loginUser.memberId}";
+		var postNo = "${i.inrNo}";
+		var postContent = $("#content").val();
+		var postType = "inreview";
 		
 		if($("#content").val().trim().length != 0) {
 			// 즉, 유효한 내용이 한자라도 있을 경우
@@ -207,12 +212,48 @@
 					if(result == "success") {
 						selectReplyList();
 						$("#content").val("");
+						
+					
+	
+						
+						if(senderId != receiverId){
+			           		if(socket){
+			        			let socketMsg = postType+","+senderId+","+receiverId+","+postNo+","+content+","+postContent;
+
+			        			console.log(socketMsg);
+			        			socket.send(socketMsg);
+			           		}
+						}
 					}
 				},
 				error : function() {
 					console.log("댓글 작성용 ajax 통신 실패!");
 				}
 			});
+			
+			
+			if(senderId != receiverId){
+				 $.ajax({
+				        url : '/insertNotification',
+				        type : 'post',
+				        
+				        data : {
+				        	'content' : content,
+				        	'receiverId' : receiverId,
+				        	'senderId' : senderId,
+				        	'postNo' : postNo,
+				        	'postType' : postType,
+				        	'postContent' : postContent
+				        },
+				        dataType : "json", 
+				        success : function(alram){
+				        }
+				    
+				    });
+				}
+			
+			
+			
 			
 		} else {
 			alertify.alert("알림", "댓글 작성 후 등록 요청해주세요.");
