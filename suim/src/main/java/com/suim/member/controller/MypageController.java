@@ -296,25 +296,35 @@ public class MypageController {
 
 		session.setAttribute("originalUrl", request.getRequestURI());
 
-		int pageLimit = 5;
-		int boardLimit = 6;
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		
+		if (loginUser == null) {
+			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
+			return "redirect:/member/login";
+			
+		} else {
+			
+			int pageLimit = 5;
+			int boardLimit = 6;
 
-		Member m = (Member) session.getAttribute("loginUser");
+			Member m = (Member) session.getAttribute("loginUser");
 
-		String memberId = m.getMemberId();
+			String memberId = m.getMemberId();
 
-		int listCount = 0;
-		PageInfo pi = null;
+			int listCount = 0;
+			PageInfo pi = null;
 
-		listCount = mypageService.selectHouseListCount(memberId);
+			listCount = mypageService.selectHouseListCount(memberId);
 
-		pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+			pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
-		ArrayList<House> list = mypageService.selectHouseList(pi, memberId);
+			ArrayList<House> list = mypageService.selectHouseList(pi, memberId);
 
-		model.addAttribute("pi", pi).addAttribute("list", list);
+			model.addAttribute("pi", pi).addAttribute("list", list);
 
-		return "member/mypage/house";
+			return "member/mypage/house";
+		}
+
 	}
 
 	// 마이페이지의 내 예약내역 조회로 이동합니다.
@@ -324,26 +334,36 @@ public class MypageController {
 		
 		session.setAttribute("originalUrl", request.getRequestURI());
 		
-		int pageLimit = 10;
-	    int boardLimit = 10;
-	   
-	    Member m = (Member) session.getAttribute("loginUser");
-	    
-	    String memberId = m.getMemberId();
-	    
-	    int listCount = 0;
-	    PageInfo pi = null;
-	   
-	    listCount = mypageService.selectRezListCount(memberId);
-	    
-	    pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-
-	    ArrayList<Reservation> list = mypageService.selectRezList(pi, memberId);
-	    
-	    model.addAttribute("pi", pi)
-	    	 .addAttribute("list", list);
+		Member loginUser = (Member) session.getAttribute("loginUser");
 		
-		return "member/mypage/reservation";
+		if (loginUser == null) {
+			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
+			return "redirect:/member/login";
+		} else {
+			
+
+			int pageLimit = 10;
+		    int boardLimit = 10;
+		   
+		    Member m = (Member) session.getAttribute("loginUser");
+		    
+		    String memberId = m.getMemberId();
+		    
+		    int listCount = 0;
+		    PageInfo pi = null;
+		   
+		    listCount = mypageService.selectRezListCount(memberId);
+		    
+		    pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+
+		    ArrayList<Reservation> list = mypageService.selectRezList(pi, memberId);
+		    
+		    model.addAttribute("pi", pi)
+		    	 .addAttribute("list", list);
+			
+			return "member/mypage/reservation";
+
+		}
 	}
 	
 	// 결제내역 페이지로 이동합니다.

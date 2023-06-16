@@ -2,6 +2,7 @@ package com.suim.house.model.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.suim.common.model.vo.PageInfo;
@@ -50,4 +51,8 @@ public interface ListHouseService {
 	
 	// 로그인 유저의 예약 번호 받아오기
 	int loginRno(Map<String, Object> rezCheck);
+	
+	// 중심좌표 셰어하우스 이름 키워드 검색
+	ArrayList<House> keyCenterAd(String searchKeyword);
+	
 }

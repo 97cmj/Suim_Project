@@ -428,7 +428,7 @@ var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표�
 		
 		if("${Id}"=='') {
 			
-			alert("로그인 후 이용해야 합니다.");
+			alert("로그인 후 이용해주세요.");
 			
 		} else {
 		
