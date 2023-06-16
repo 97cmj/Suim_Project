@@ -82,6 +82,11 @@ input[type="submit"], button {
     background-color: #f2f2f2; /* 회색 배경색 */
     color: #999999; /* 회색 글자 색 */
 }
+.input-description {
+	color: #888;
+	font-size: 14px;
+	margin-top: 5px;
+}
 </style>
 </head>
 
@@ -139,12 +144,14 @@ input[type="submit"], button {
 				</select></li>	
 									
 				<li><label for="rent"><span class="red_txt">*</span>월세(관리비
-						포함):</label> <input type="number" id="rent" name="rent"
-					required></li>
-					
+						포함):</label> <input type="number" id="rent" name="rent" min="0"
+					step="10000" required>
+				<div class="input-description">만원 단위로 입력해주세요.</div></li>
+
 				<li><label for="deposit"><span class="red_txt">*</span>보증금:</label>
-					<input type="number" id="deposit" name="deposit"
-					required></li>
+					<input type="number" id="deposit" name="deposit" min="0"
+					step="10000" required>
+				<div class="input-description">만원 단위로 입력해주세요.</div></li>
 							
 				<li><label for="roomPeople"><span class="red_txt">*</span>방
 						인원:</label> <input type="number" id="roomPeople"
@@ -155,7 +162,7 @@ input[type="submit"], button {
 					name="enterDate" required></li>
 					
 				<li><label for="enterdate_max"><span class="red_txt">*</span>최대
-						입주 가능일:</label> <input type="date" id="enterdate"
+						입주 가능일:</label> <input type="date" id="maxenterdate"
 					name="maxEnterDate" required></li>
 					
 				<li><label for="minStay"><span class="red_txt">*</span>최소
@@ -254,6 +261,35 @@ input[type="submit"], button {
 </body>
 
 <script>
+function updateMinDate() {
+	  var now = Date.now();
+	  var timeOff = new Date().getTimezoneOffset() * 60000;
+	  var today = new Date(now - timeOff).toISOString().split("T")[0];
+
+	  document.getElementById("enterdate").setAttribute("min", today);
+	}
+
+	function updateMaxDate() {
+	  var now = Date.now();
+	  var timeOff = new Date().getTimezoneOffset() * 60000;
+	  var today = new Date(now - timeOff).toISOString().split("T")[0];
+
+	  document.getElementById("maxenterdate").setAttribute("min", today);
+	}
+
+	document.getElementById("enterdate").addEventListener("change", updateMinDate);
+	document.getElementById("maxenterdate").addEventListener("change", updateMaxDate);
+
+	// 페이지 로드 시 최소값과 최대값 업데이트
+	updateMinDate();
+	updateMaxDate();
+
+	// 매일 자정마다 최소값과 최대값 업데이트
+	setInterval(function() {
+	  updateMinDate();
+	  updateMaxDate();
+	}, 24 * 60 * 60 * 1000);
+	
 function validateAddress() {
     var addressInput = document.getElementById('area');
     if (addressInput.value === '') {
