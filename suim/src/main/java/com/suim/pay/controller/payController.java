@@ -178,7 +178,6 @@ public class payController {
 		int result = payService.updatePay(hno);
 		
 		if (result > 0 /*|| result2 > 0*/) {
-		    session.setAttribute("alertMsg", "성공적으로 결제가 되었습니다.");
 		    
 		    House h = houseService.selectHouse(hno);
 		    Member loginUser = (Member) session.getAttribute("loginUser");

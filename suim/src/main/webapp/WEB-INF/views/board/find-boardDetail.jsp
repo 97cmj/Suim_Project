@@ -58,12 +58,21 @@
         <div class="innerOuter">
             <br><br>
             <h2>사람구해요 상세보기</h2>
+
             <br>
-			
+            
+
+				
             <a class="btn btn-secondary" style="float:right; background-color: rgb(250, 107, 111);">목록으로</a>
             <br><br>
-
-            <table id="contentArea" algin="center" class="table">
+			    <c:if test="${loginUser.memberId != fb.memberId && loginUser != null}">
+					<div style="margin-left : 10px;">
+						<a class="reportBtn" id="reportBtn" > <img title="신고" alt="신고"
+							src="/resources/img/house/ico_report.png">
+						</a>
+					</div>
+				</c:if>
+            <table id="contentArea" align="center" class="table">
                 <tr>
                     <th width="100">제목</th>
                     <td colspan="3">${ fb.findTitle }</td>
@@ -297,29 +306,6 @@
 	    let freNo = tr.data("id");
 	    
 	    
-	    
-	    $.ajax({
-	        url: "rdelete.bo",
-	        data: { fre: freNo },
-	        type: "post",
-	        success: function(response) {
-	            // 삭제 성공한 경우 해당 댓글을 테이블에서 제거
-	            tr.remove();
-
-	            // 삭제 후 댓글 목록을 다시 로드
-	            selectReplyList();
-
-	            // Show success message using alert
-	            alert("성공적으로 삭제 되었습니다.");
-	        },
-	        error: function(xhr, status, error) {
-	            // 오류 발생 시 처리할 내용
-	            console.log(error);
-
-	            // Show error message using alert
-	            alert("An error occurred while deleting the reply.");
-	        }
-	    });
 
 	    // Confirmation prompt before deleting
 	    var confirmation = confirm("삭제하시겠습니까?");
@@ -327,7 +313,7 @@
 	    if (confirmation) {
 	        // Execute the deletion
 	        $.ajax({
-	            url: "rdelete.bo",
+	            url: "rdelete.fi",
 	            data: { fre: freNo },
 	            type: "post",
 	            success: function(response) {
@@ -432,6 +418,29 @@
 
 	// 버튼을 클릭하면 goBack 함수를 호출한다
 	backButton.addEventListener('click', goBack);
+	
+	$(document).ready(function() {
+		let findNo = "${fb.findNo}";
+        let findTitle = "${fb.findTitle}";
+        let memberId = "${fb.memberId}";
+        
+		  $('#reportBtn').click(function() {
+			var popupUrl = "report.fi?value=" + encodeURIComponent(findNo) + "&value2=" + encodeURIComponent(findTitle) + "&value3=" + encodeURIComponent(memberId);
+		    var popupWidth = 800;
+		    var popupHeight = 800;
+
+		    var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+		    var windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+		    var popupX = (windowWidth / 2) - (popupWidth / 2) + window.screenX;
+		    var popupY = (windowHeight / 2) - (popupHeight / 2) + window.screenY;
+
+		    var options = "width=" + popupWidth + ",height=" + popupHeight + ",left=" + popupX + ",top=" + popupY;
+
+		    var popupWindow = window.open(popupUrl, "신고 팝업창", options);
+		    popupWindow.document.documentElement.classList.add('popup');
+		  });
+		});
 
     
     </script>
