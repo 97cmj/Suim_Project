@@ -5,8 +5,7 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="com.suim.event.model.vo.Event" %>
 <%@ page import="com.suim.event.model.vo.Eattachment" %>
-ter())
-%>
+
 
 
 <!DOCTYPE html>
@@ -170,6 +169,8 @@ ter())
          </table>
 	<script>
 		         $(function() {
+		        	 
+		        	 
 		             // select 태그 변경 이벤트 리스너
 		             $("#categorySelect").change(function() {
 		                 var selectedOption = $(this).val(); // 선택한 옵션 값
