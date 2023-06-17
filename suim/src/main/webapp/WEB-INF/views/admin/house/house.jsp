@@ -59,16 +59,24 @@
 							
 							<ul class="nav nav-tabs">
 								<li class="nav-item">
-									<button class="nav-link active" id="A">전체</button>
+									<a class="nav-link <c:if test="${category eq '전체'}">active</c:if>"
+									data-toggle="tab" href="/admin/list.ho">전체</a>
 								</li>
 								<li class="nav nav-tabs">
-									<button class="nav-link" id="N">대기</button>
+									<a class="nav-link <c:if test="${category eq '심사중'}">active</c:if>"
+									data-toggle="tab" href="/admin/list.ho?currentPage=1&category=심사중">심사중</a>
 								</li>
 								<li class="nav nav-tabs">
-									<button class="nav-link" id="Y">승인</button>
+									<a class="nav-link <c:if test="${category eq '심사완료'}">active</c:if>"
+									data-toggle="tab" href="/admin/list.ho?currentPage=1&category=심사완료">심사완료</a>
 								</li>
 								<li class="nav nav-tabs">
-									<button class="nav-link" id="C">반려</button>
+									<a class="nav-link <c:if test="${category eq '반려'}">active</c:if>"
+									data-toggle="tab" href="/admin/list.ho?currentPage=1&category=반려">반려</a>
+								</li>
+								<li class="nav nav-tabs">
+									<a class="nav-link <c:if test="${category eq '등록완료'}">active</c:if>"
+									data-toggle="tab" href="/admin/list.ho?currentPage=1&category=등록완료">등록완료</a>
 								</li>
 							</ul>
 							
@@ -93,21 +101,15 @@
 			                                    <c:when test="${ not empty list }">
 			                                    	<c:forEach var="h" items="${ list }">
 			                    						<tr>
-				                                            <td scope="row"><input class="form-check-input" type="checkbox" name="checkboxName"></td>
-				                                            <td class="rno">${ h.houseNo }</td>
+				                                            <td scope="row"><input class="form-check-input" type="checkbox" name="checkboxName" data-id="${h.houseNo}"></td>
+				                                            <td class="hno">${ h.houseNo }</td>
 				                                            <td>${ h.houseName }</td>
 				                                            <td>${ h.houseAddress }</td>
 				                                            <td>${ h.deposit }</td>
 				                                            <td>${ h.rent }</td>
-				                                            <td>${ h.enterDate }</td>
-				                                            <td>${ h.maxEnterDate }</td>
-				                                            <td>${ h.minStay }</td>
-				                                            <td>${ h.maxStay }</td>
 				                                            <td>${ h.roomPeople }</td>
-				                                            <td>${ h.incFurniture }</td>
 				                                            <td>${ h.resGender }</td>
 				                                            <td>${ h.resType }</td>
-				                                            <td>${ h.houseStatus }</td>
 				                                            <td>${ h.houseDate }</td>
 				                                        </tr>
 				                                	</c:forEach>
@@ -119,11 +121,36 @@
 				                            	</c:otherwise>
 				                            </c:choose>
 		                                    </tbody>
-	                                </table>
-                            	</div>
-                        </div>
-                    </div>
-
+		                                </table>
+		                                <div align="center">
+											    <a class="btn btn-primary confirm">승인</a>
+											    <a class="btn btn-danger reject">반려</a>
+										</div>
+										<br><br>
+									
+										<form id="postForm" action="" method="post">
+										    <input type="hidden" name="houseNo" value="${h.houseNo}">
+										    <input type="hidden" name="houseStatus" id="houseStatus" value="">
+										</form>
+										
+										<script>
+										    function postFormSubmit(value) {
+										        var form = document.getElementById("postForm");
+												
+										        var status = document.getElementById("houseStatus");
+										        status.value = value;
+										        
+										        
+										        form.action = "updateStatus.ho";
+							
+										        form.submit();
+										    }
+										</script>
+                            		</div>
+	                			</div>
+	                        </div>
+	                    </div>
+					</div>
                 </div>
             </div>
             <!-- Table End -->
@@ -156,13 +183,14 @@
         	        checkedCheckboxes.each(function() {
         	        	updateStatuses.push($(this).data('id'));
         	        });
+        	        console.log(updateStatuses);
         	               	        
         	        if (updateStatuses.length === 0) {
         	            alert("승인할 게시글을 선택해주세요.");
         	            return;
         	        }
         	        
-        	        var confirmation = confirm("일괄 승인하시겠습니까?");
+        	        var confirmation = confirm("승인하시겠습니까?");
         	        if (!confirmation) {
         	            return;
         	        }
@@ -170,20 +198,15 @@
         	        // 승인 처리를 위한 Ajax 요청
         	        $.ajax({
         	            type: "POST",
-        	            url: "/admin/updateStatusAll.re",
+        	            url: "/admin/updateStatusAll.ho",
         	            data: {
-        	            	reportNo : updateStatuses.join(","),
-        	                reportStatus : 'Y'
+        	            	houseNo : updateStatuses.join(","),
+        	                houseStatus : '심사완료'
         	            },
         	            success: function(response) {
         	            	// 응답 받은 경우
         	                // 화면에서 해당 데이터의 상태 업데이트
         	                if (response === 'Y') {
-        	                    // updateStatuses.forEach(function(reportNo) {
-        	                    //    $(`.rno:contains(${reportNo})`).siblings('.report-status').text('Y');
-        	                    // });
-        		            	// $('thead input[type="checkbox"]').prop('checked', false);
-        		            	// $('tbody input[type="checkbox"]').prop('checked', false);
         		            	alert("승인되었습니다.");
         		            	location.reload();
         		            } else {
@@ -211,7 +234,7 @@
 	    	            return;
 	    	        }
 	    	        
-	    	        var confirmation = confirm("일괄 반려하시겠습니까?");
+	    	        var confirmation = confirm("반려하시겠습니까?");
 	    	        if (!confirmation) {
 	    	            return;
 	    	        }
@@ -219,10 +242,10 @@
 	    	        // 반려 처리를 위한 Ajax 요청
 	    	        $.ajax({
 	    	            type: "POST",
-	    	            url: "/admin/updateStatusAll.re",
+	    	            url: "/admin/updateStatusAll.ho",
 	    	            data: {
-	    	            	reportNo : updateStatuses.join(","),
-	    	                reportStatus : 'N'
+	    	            	houseNo : updateStatuses.join(","),
+	    	                houseStatus : '반려'
 	    	            },
 	    	            success: function(response) {
 	    		            if(response === 'Y') {
@@ -241,12 +264,14 @@
     	
             $(document).ready(function(){
                 // 상세 페이지로 이동용
-                $("#reportList>tbody>tr").click(function(e) {
+                $("#houseList>tbody>tr").click(function(e) {
+                	var admin = admin;
+                	
                     if ($(e.target).is('input[type="checkbox"]')) {
                         e.stopPropagation();
                     } else {
-                        var id = $(this).children(".rno").text();
-                        location.href = "detail.re?rno=" + rno;
+                        var hno = $(this).children(".hno").text();
+                        location.href = "/detail.ho?hno=" + hno + "&admin=" + admin;
                     }
                 });
             	

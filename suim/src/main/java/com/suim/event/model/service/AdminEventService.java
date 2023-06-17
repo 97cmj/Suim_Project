@@ -15,6 +15,10 @@ public interface AdminEventService {
 
 	int deleteEvent(int eno);
 
+	Eattachment selectEventFile(int eAttach);
+
+	int deleteEventFile(int eno);
+
 
 	int deleteEventFile(int eno);
 

@@ -1,5 +1,6 @@
 package com.suim.common.socket;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,9 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.suim.member.model.vo.Member;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class EchoHandler extends TextWebSocketHandler {
 	private static final Logger logger = LoggerFactory.getLogger(WebSocketHandler.class);
 	//로그인 한 인원 전체
@@ -32,6 +36,20 @@ public class EchoHandler extends TextWebSocketHandler {
 		String senderId = currentUserName(session);
 		userSessionsMap.put(senderId,session);
 	}
+	
+	
+	public void broadcastMessage(String message) {
+        for (WebSocketSession session : sessions) {
+            try {
+                session.sendMessage(new TextMessage(message));
+                log.info("메세지 보냄");
+            } catch (IOException e) {
+                // Handle exception
+            }
+        }
+    }
+	
+	
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {// 메시지
@@ -59,9 +77,9 @@ public class EchoHandler extends TextWebSocketHandler {
 				logger.info("boardWirterSession"+boardWriterSession);
 				
 				//댓글
-				if ("board".equals(cmd) && boardWriterSession != null) {
+				if (boardWriterSession != null) {
 					logger.info("메시지 잘 보내지나?");
-					TextMessage tmpMsg = new TextMessage(replyWriter + "님이 자유게시판의"
+					TextMessage tmpMsg = new TextMessage(replyWriter + "님이"
 							+ "<a href='/detail.bo?bno="+ bno + "'  style=\"color: black\">"
 							+ title+"에 댓글을 달았습니다. 내용 : " + content + "</a>");
 					boardWriterSession.sendMessage(tmpMsg);

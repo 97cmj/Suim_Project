@@ -67,6 +67,7 @@
 			 , EVENT_STATUS
 		  FROM EVENT
 		 WHERE EVENT_NO = #{eventNo}
+
 		
 	</select>
 	
@@ -78,6 +79,7 @@
 	
 	<!-- 진행중인 유효한 이벤트 리스트 -->
 	<select id="selectCategoryList" resultType="event" resultMap="eventResultSet">
+
 		SELECT EVENT_NO
 	  		 , EVENT_TITLE
 	    	 , EVENT_CATEGORY
@@ -86,8 +88,10 @@
 	    	 , EVENT_VIEW
 	    	 , EVENT_STATUS
 	   		   FROM EVENT
+
 	   	 WHERE EVENT_CATEGORY = #{category}
 	
+
 </select>
 	
 </mapper>

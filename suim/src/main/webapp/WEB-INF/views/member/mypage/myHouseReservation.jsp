@@ -10,6 +10,7 @@
 <link href="/resources/css/user/mypage.css" rel="stylesheet" />
 <%@ include file="/WEB-INF/views/common/include.jsp"%>
 
+
 <style>
     body {
         background-color: #f8f9fa;
@@ -62,7 +63,7 @@
     .rezHour-cell{
         width : 150px;
     }
-    .memberId-cell{
+    .nickName-cell{
         width : 150px;
     }
     .rezRequestDate-cell{
@@ -140,7 +141,7 @@
 					<th scope="col" class="houseTitle-th text-center">쉐어하우스 이름</th>
                     <th scope="col" class="rezDate-cell">예약 일</th>
                     <th scope="col" class="rezHour-cell">예약 시간</th>
-                    <th scope="col" class="memberId-cell">예약자 ID</th>
+                    <th scope="col" class="nickName-cell">예약자 닉네임</th>
                     <th scope="col" class="rezRequestDate-cell">예약 신청일</th>
 					<th scope="col" class="rezStatus-cell">예약 상태</th>
 					<th scope="col" class="rezStatusBtn-cell">예약 상태 변경</th>
@@ -153,7 +154,7 @@
             				<td class="houseTitle-th">${ r.houseName }</td>
                     		<td class="rezDate-cell">${ r.rezDate }</td>
                     		<td class="rezHour-cell">${ r.rezHour }</td>
-                    		<td class="memberId-cell">${ r.sendMemberId }</td>
+                    		<td class="nickName-cell">${ r.nickName }</td>
                     		<td class="rezRequestDate-cell">${ r.rezRequestDate }</td>
 							<td class="rezStatus-cell">${ r.rezStatus }</td>
                     		<td class="rezStatusBtn-cell">
@@ -162,7 +163,7 @@
 	                    				<form action="/confirmRez.rez" method="GET">
 	                    					<input type="hidden" name="houseNo" value="${r.houseNo}">
 										  	<input type="hidden" name="rno" value="${r.rezNo}">
-										  	<button type="submit" class="rez-confirm">예약 확인</button>
+										  	<button type="submit" class="rez-confirm" onclick="handleClick(${r.rezNo}, '${r.houseName}', '${r.recMemberId}', '${r.sendMemberId}', '${r.houseNo}')">예약 확인</button>
 										</form>
 										 <button type="submit" class="rez-cancel" onclick="rezCancelPopup(${r.rezNo}, '${r.houseName}')">예약 취소</button>
 									</div>
@@ -237,6 +238,61 @@
 		}
 	</script>
 	
+	
+<script>
+function handleClick(rezNo, houseName, recMemberId, sendMemberId, houseNo) {
+	  var content = houseName;
+	  var receiverId = sendMemberId;
+	  var senderId = recMemberId;
+	  var postNo = houseNo;
+	  var postType = "rezConfirm";
+	  var postContent = "예약 확정";
+
+	  $('form').submit(function(event) {
+	    event.preventDefault(); // Prevent the default form submission
+
+	    var form = this; // Store the form element for later use
+
+	    // Handle the response from the server
+	    if (senderId != receiverId) {
+	      if (socket) {
+	        let socketMsg = postType + "," + senderId + "," + receiverId + "," + postNo + "," + content + "," + postContent;
+	        socket.send(socketMsg);
+	      }
+	    }
+
+	    if (senderId != receiverId) {
+	      $.ajax({
+	        url: '/insertNotification',
+	        type: 'post',
+	        data: {
+	          'content': content,
+	          'receiverId': receiverId,
+	          'senderId': senderId,
+	          'postNo': postNo,
+	          'postType': postType,
+	          'postContent': postContent
+	        },
+	        dataType: "json",
+	        success: function(alram) {
+	          // AJAX request succeeded, submit the form
+	          form.submit();
+	        },
+	        error: function(xhr, status, error) {
+	          // Handle the error or perform necessary actions
+	        }
+	      });
+	    } else {
+	      // If senderId and receiverId are the same, directly submit the form
+	      form.submit();
+	    }
+	  });
+	}
+
+</script>
+	
+	
+
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>

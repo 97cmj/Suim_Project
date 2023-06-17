@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,15 +15,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.suim.board.model.vo.Board;
+import com.suim.common.main.controller.MainController;
 import com.suim.common.model.vo.PageInfo;
 import com.suim.common.template.Pagination;
 import com.suim.house.model.vo.House;
@@ -34,6 +31,7 @@ import com.suim.member.model.service.MemberService;
 import com.suim.member.model.service.MypageService;
 import com.suim.member.model.vo.Member;
 import com.suim.member.model.vo.MyWish;
+import com.suim.pay.model.vo.Pay;
 
 @Controller
 @RequestMapping("mypage")
@@ -122,6 +120,12 @@ public class MypageController {
 					return "redirect:" + session.getAttribute("originalUrl");
 				}
 			}
+			
+			if(m.getArea() != null) {
+				double[] area = MainController.getCoordinates(m.getArea());
+				m.setLongitude(area[0]);
+				m.setLatitude(area[1]);
+			}
 
 			int result = memberService.updateMember(m);
 			session.setAttribute("loginUser", m);
@@ -157,22 +161,12 @@ public class MypageController {
 		return "/resources/img/member/uploadFiles/" + changeName;
 	}
 
-	// 처음 페이지(알림 페이지)로 이동합니다.
-	@GetMapping({ "/timeline"})
-	public String mypageAlert(HttpServletRequest request) {
-		Member loginUser = (Member) session.getAttribute("loginUser");
-		if (loginUser == null) {
-			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
-			return "redirect:/member/login";
-		}
-		
-		session.setAttribute("originalUrl", request.getRequestURI());
-		return "member/mypage/timeline";
-	}
 
-	@GetMapping("board")
+	@GetMapping({"board", "null", ""})
 	public String boardList(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam(value = "type", defaultValue = "board") String type, Model model) {
+			@RequestParam(value = "type", defaultValue = "board") String type, Model model, HttpServletRequest request) {
+		session.setAttribute("originalUrl", request.getRequestURI());
+		
 		
 		Member loginUser = (Member) session.getAttribute("loginUser");
 		if (loginUser == null) {
@@ -308,25 +302,35 @@ public class MypageController {
 
 		session.setAttribute("originalUrl", request.getRequestURI());
 
-		int pageLimit = 5;
-		int boardLimit = 6;
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		
+		if (loginUser == null) {
+			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
+			return "redirect:/member/login";
+			
+		} else {
+			
+			int pageLimit = 5;
+			int boardLimit = 6;
 
-		Member m = (Member) session.getAttribute("loginUser");
+			Member m = (Member) session.getAttribute("loginUser");
 
-		String memberId = m.getMemberId();
+			String memberId = m.getMemberId();
 
-		int listCount = 0;
-		PageInfo pi = null;
+			int listCount = 0;
+			PageInfo pi = null;
 
-		listCount = mypageService.selectHouseListCount(memberId);
+			listCount = mypageService.selectHouseListCount(memberId);
 
-		pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+			pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
-		ArrayList<House> list = mypageService.selectHouseList(pi, memberId);
+			ArrayList<House> list = mypageService.selectHouseList(pi, memberId);
 
-		model.addAttribute("pi", pi).addAttribute("list", list);
+			model.addAttribute("pi", pi).addAttribute("list", list);
 
-		return "member/mypage/house";
+			return "member/mypage/house";
+		}
+
 	}
 
 	// 마이페이지의 내 예약내역 조회로 이동합니다.
@@ -336,27 +340,75 @@ public class MypageController {
 		
 		session.setAttribute("originalUrl", request.getRequestURI());
 		
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		
+		if (loginUser == null) {
+			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
+			return "redirect:/member/login";
+		} else {
+			
+
+			int pageLimit = 10;
+		    int boardLimit = 10;
+		   
+		    Member m = (Member) session.getAttribute("loginUser");
+		    
+		    String memberId = m.getMemberId();
+		    
+		    int listCount = 0;
+		    PageInfo pi = null;
+		   
+		    listCount = mypageService.selectRezListCount(memberId);
+		    
+		    pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+
+		    ArrayList<Reservation> list = mypageService.selectRezList(pi, memberId);
+		    
+		    model.addAttribute("pi", pi)
+		    	 .addAttribute("list", list);
+			
+			return "member/mypage/reservation";
+
+		}
+	}
+	
+	// 결제내역 페이지로 이동합니다.
+	@RequestMapping("payment")
+	public String mypagePay(@RequestParam(value="cPage", defaultValue="1") int currentPage,
+								HttpServletRequest request, Model model) {
+		
+		session.setAttribute("originalUrl", request.getRequestURI());
+		
 		int pageLimit = 10;
 	    int boardLimit = 10;
-	   
-	    Member m = (Member) session.getAttribute("loginUser");
-	    
-	    String memberId = m.getMemberId();
 	    
 	    int listCount = 0;
 	    PageInfo pi = null;
-	   
-	    listCount = mypageService.selectRezListCount(memberId);
 	    
-	    pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-
-	    ArrayList<Reservation> list = mypageService.selectRezList(pi, memberId);
+	    Member m = (Member) session.getAttribute("loginUser");
 	    
-	    model.addAttribute("pi", pi)
-	    	 .addAttribute("list", list);
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		if (loginUser == null) {
+			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
+			return "redirect:/member/login";
+		}
 		
-		return "member/mypage/reservation";
-	}
+	    String memberId = m.getMemberId();
+	    
+		 listCount = mypageService.selectPayListCount(memberId);
+		 
+		 System.out.println(listCount);
+		 pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
+		 ArrayList<Pay> list = mypageService.selectPayList(pi, memberId);
+		 
+		 System.out.println(list);
+		 model.addAttribute("pi", pi)
+		      .addAttribute("list", list);
+			
+		 return "member/mypage/payment";
+		
+
+	}
 
 }

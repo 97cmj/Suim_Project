@@ -126,7 +126,9 @@
 	 		</a>
 		</c:if>
 		        
+
 					<select id="categorySelect" name="categorySelect">
+
 					
 						<!-- 기본적으로 카테고리를 선택 안 할 시 유효한 모든 진행중인 이벤트들을 조회함 -->
 						<option value="">진행중인 이벤트</option>
@@ -168,6 +170,7 @@
          </tbody>
          </table>
 	<script>
+
 	
 	$(function() {
       	$("#event-table>tbody>tr").click(function() {
@@ -176,6 +179,7 @@
       	});
       });
 		        
+
 		</script>
 		
 

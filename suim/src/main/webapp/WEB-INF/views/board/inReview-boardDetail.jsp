@@ -20,10 +20,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- 타입잇 자바스크립트 -->
         <script src="https://unpkg.com/typeit@8.7.1/dist/index.umd.js"></script>
-        <!-- jQuery -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-        <!-- 1:1문의 채팅 -->
-        <script src="/resources/js/common/chatbot.js"></script>
+
         <!-- 게시판 js -->
         <script src="/resources/js/board/board.js"></script>
         <!-- 나중에 한번에 include 할 부분 -->
@@ -64,9 +61,15 @@
             <h2>이용후기 상세보기</h2>
             <br>
 
-<button class="btn btn-secondary" style="float:right; background-color: rgb(250, 107, 111);">목록으로</button>
+<button class="btn btn-secondary" id="secondary" style="float:right; background-color: rgb(250, 107, 111);">목록으로</button>
             <br><br>
-
+	<c:if test="${loginUser.memberId != i.memberId && loginUser != null}">
+					<div style="margin-left : 10px;">
+						<a class="reportBtn" id="reportBtn" > <img title="신고" alt="신고"
+							src="/resources/img/house/ico_report.png">
+						</a>
+					</div>
+			</c:if>
             <table id="contentArea" algin="center" class="table">
                 <tr>
                     <th width="100">제목</th>
@@ -74,7 +77,7 @@
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td>${ i.memberId }</td>
+                    <td>${ i.nickName }</td>
                     <th>작성일</th>
                     <td>${ i.inrDate }</td>
                 </tr>
@@ -189,7 +192,12 @@
 	
 	function addReply() { // 댓글 작성용 ajax
 		
-
+		var content = "${i.inrTitle}";
+		var receiverId = "${i.memberId}";
+		var senderId = "${loginUser.memberId}";
+		var postNo = "${i.inrNo}";
+		var postContent = $("#content").val();
+		var postType = "inreview";
 		
 		if($("#content").val().trim().length != 0) {
 			// 즉, 유효한 내용이 한자라도 있을 경우
@@ -207,12 +215,48 @@
 					if(result == "success") {
 						selectReplyList();
 						$("#content").val("");
+						
+					
+	
+						
+						if(senderId != receiverId){
+			           		if(socket){
+			        			let socketMsg = postType+","+senderId+","+receiverId+","+postNo+","+content+","+postContent;
+
+			        			console.log(socketMsg);
+			        			socket.send(socketMsg);
+			           		}
+						}
 					}
 				},
 				error : function() {
 					console.log("댓글 작성용 ajax 통신 실패!");
 				}
 			});
+			
+			
+			if(senderId != receiverId){
+				 $.ajax({
+				        url : '/insertNotification',
+				        type : 'post',
+				        
+				        data : {
+				        	'content' : content,
+				        	'receiverId' : receiverId,
+				        	'senderId' : senderId,
+				        	'postNo' : postNo,
+				        	'postType' : postType,
+				        	'postContent' : postContent
+				        },
+				        dataType : "json", 
+				        success : function(alram){
+				        }
+				    
+				    });
+				}
+			
+			
+			
 			
 		} else {
 			alertify.alert("알림", "댓글 작성 후 등록 요청해주세요.");
@@ -359,10 +403,34 @@
 	});
 	
 	document.addEventListener('DOMContentLoaded', function() {
-		  var backButton = document.querySelector('.btn-secondary');
+		  var backButton = document.querySelector('#secondary');
 
 		  backButton.addEventListener('click', function() {
 		    history.back();
+		  });
+		});
+	
+	
+	$(document).ready(function() {
+		let inrNo = "${i.inrNo}";
+        let inrTitle = "${i.inrTitle}";
+        let memberId = "${i.memberId}";
+        
+		  $('#reportBtn').click(function() {
+			var popupUrl = "report.in?value=" + encodeURIComponent(inrNo) + "&value2=" + encodeURIComponent(inrTitle) + "&value3=" + encodeURIComponent(memberId);
+		    var popupWidth = 800;
+		    var popupHeight = 800;
+
+		    var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+		    var windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+		    var popupX = (windowWidth / 2) - (popupWidth / 2) + window.screenX;
+		    var popupY = (windowHeight / 2) - (popupHeight / 2) + window.screenY;
+
+		    var options = "width=" + popupWidth + ",height=" + popupHeight + ",left=" + popupX + ",top=" + popupY;
+
+		    var popupWindow = window.open(popupUrl, "신고 팝업창", options);
+		    popupWindow.document.documentElement.classList.add('popup');
 		  });
 		});
     </script>

@@ -292,14 +292,18 @@ public class AdminEventController {
 	 * @param session
 	 * @return
 	 */
+
 	
 	@RequestMapping("delete.ev")
 	public String deleteEvent(@RequestParam("eno") int eno, Eattachment eAttach, Event e, 
+
 						  Model model, 
 						  String filePath,
 						  HttpSession session) {
 	
+
 	// 그 이벤트 파일의 status 를 n 으로 바꾸기 위해 이벤트 파일을 조회하기 위한 것.
+
 	
 	// 해당 이벤트 게시글의 첨부 파일을 조회해서 file_status 를 n 으로 바꾸기 위한 것.	
 	int re = adminEventService.deleteEventFile(eno);

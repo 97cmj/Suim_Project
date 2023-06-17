@@ -15,4 +15,6 @@ public class MyWish {
 	private int deposit;
 	private int rent;
 	private String changeName;
+	private String houseWriter;
+	
 }

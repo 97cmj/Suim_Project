@@ -5,8 +5,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +20,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.suim.common.mail.MailHandler;
+import com.suim.common.main.controller.MainController;
 import com.suim.house.model.service.HouseService;
+import com.suim.house.model.service.ListHouseService;
 import com.suim.house.model.vo.House;
 import com.suim.house.model.vo.Photo;
 import com.suim.house.model.vo.Wish;
 import com.suim.member.model.vo.Member;
+import com.suim.report.model.vo.Report;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 public class HouseController {
 	
@@ -39,16 +39,19 @@ public class HouseController {
 	private HouseService houseService;
 	
 	@Autowired
+	private ListHouseService listHouseService;
+	
+	@Autowired
 	public HouseController(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
 	}
 	
 	@RequestMapping("detail.ho")
-	public ModelAndView selectList(ModelAndView mv, int hno, HttpSession session) {
+	public ModelAndView selectList(ModelAndView mv, int hno, HttpSession session, String admin) {
 		
 	    House h = houseService.selectHouse(hno);
-	    
-	    if (!h.getEnrollStatus().equals("등록완료")) {
+
+	    if (!h.getEnrollStatus().equals("등록완료") && (admin == null)) {
 	    	session.setAttribute("alertMsg", "현재 심사중입니다.");
 	    	mv.setViewName("redirect:/mypage/house");
 	    	return mv;
@@ -61,9 +64,24 @@ public class HouseController {
 	    
 	    int lo = 0;
 	    String Id = "";
+	    int rezChResult = 0;
 	    
 	    if (loginUser != null) {
 	    	Id = loginUser.getMemberId();
+	    	
+	    	 Map<String, Object> rezCheck = new HashMap<>();
+			 rezCheck.put("hno", hno);
+			 rezCheck.put("Id", Id);
+		
+			 rezChResult = listHouseService.rezChCount(rezCheck);
+			    
+			 if(rezChResult > 0) {
+			    	
+				 int loginRno = listHouseService.loginRno(rezCheck);
+				 mv.addObject("loginRno", loginRno);
+			}
+	    	
+	    	
 	    	for(Wish w : list) {
 	    		if(loginUser.getMemberId().equals(w.getId())){
 	    			lo = w.getHno();
@@ -71,6 +89,7 @@ public class HouseController {
 	    	}
 	    }
 	    
+		mv.addObject("rezChResult", rezChResult);
 	    mv.addObject("plist", plist);
 	    mv.addObject("Id", Id);
 	    mv.addObject("lo", lo);
@@ -80,15 +99,8 @@ public class HouseController {
 	}
 	
 	
-	
-	
-	
-	
-	
 	@RequestMapping("heart.ho")
 	public ResponseEntity<String> heart(@RequestParam("hno") int hno, @RequestParam("type") String type, HttpSession session) {
-		System.out.println("왔나?");
-		System.out.println(hno);
 	  Member loginUser = (Member) session.getAttribute("loginUser");
 	  String id = "";
 	  if (loginUser != null) {
@@ -119,6 +131,12 @@ public class HouseController {
 	    
 	    MultipartFile[] images = {image1, image2, image3, image4, image5, image6};
 	    
+	    if(h.getHouseAddress() != null) {
+			double[] area = MainController.getCoordinates(h.getHouseAddress());
+			h.setLatitude(area[0]);
+			h.setLongitude(area[1]);
+		}
+	    
 	    int result2 = houseService.enrollHouse(h);
 	    
 	    int hno = houseService.selectHno(h.getMemberId());
@@ -145,7 +163,7 @@ public class HouseController {
 	    }
 	    
 	    if(result > 0) { // 게시글 등록 성공 => 게시글 목록보기 요청
-	        session.setAttribute("alertMsg", "성공적으로 방이 등록되었습니다.");
+	        session.setAttribute("alertMsg", "방이 등록되었습니다.");
 	        return "redirect:/mypage/house";
 	    } else { // 게시글 등록 실패 => 에러문구 담아서 에러페이지 포워딩
 	        model.addAttribute("errorMsg", "방 등록에 실패하였습니다.");
@@ -187,6 +205,8 @@ public class HouseController {
 	@RequestMapping("houseEdit.ho")
 	public ModelAndView houseEdit(ModelAndView mv, int hno, HttpSession session) {
 	
+		
+		
 	    House h = houseService.selectHouse(hno);
 	    
 	    if (!h.getEnrollStatus().equals("등록완료")) {
@@ -211,7 +231,14 @@ public class HouseController {
 				
 		int [] photoNos = {photoNo1, photoNo2, photoNo3, photoNo4, photoNo5, photoNo6,};
 	    MultipartFile[] images = {image1, image2, image3, image4, image5, image6};    
+	    
+	    if(h.getHouseAddress() != null) {
+			double[] area = MainController.getCoordinates(h.getHouseAddress());
 
+			h.setLongitude(area[0]);
+			h.setLatitude(area[1]);
+		}
+	    
 	    h.setHouseNo(hno);
 	    Member loginUser = (Member) session.getAttribute("loginUser");
 	    h.setMemberId(loginUser.getMemberId());
@@ -245,7 +272,7 @@ public class HouseController {
 	    }
 
 	    if (result > 0) {
-	        session.setAttribute("alertMsg", "성공적으로 방 정보가 수정되었습니다.");
+	        session.setAttribute("alertMsg", "방 정보가 수정되었습니다.");
 	        return "redirect:/mypage/house";
 	    } else {
 	        model.addAttribute("errorMsg", "방 정보 수정에 실패하였습니다.");
@@ -254,57 +281,41 @@ public class HouseController {
 	}
 	
     @RequestMapping("delete.ho")
-	public ModelAndView deleteChat(ModelAndView mv, int hno) {
-		houseService.delete(hno);
+	public ModelAndView deleteHouse(ModelAndView mv, int hno) {
+		houseService.deleteHouse(hno);
 		mv.setViewName("redirect:/mypage/house");
 		return mv;
 	}
     
-    @RequestMapping("payment")
-	public ModelAndView payment(ModelAndView mv, int hno, HttpSession session) {
-		houseService.payment(hno);
-		House h = houseService.selectHouse(hno);
-		Member loginUser = (Member) session.getAttribute("loginUser");
-		  String email = loginUser.getEmail();
-		
-		  try {
-			    MailHandler sendMail = new MailHandler(mailSender);
-			    
-			    // HTML 형식으로 메일 내용을 작성합니다.
-			    String htmlContent = "<html>"
-			            + "<head>"
-			            + "<style>"
-			            + "body { font-family: Arial, sans-serif; }"
-			            + "h3 { color: #333; }"
-			            + ".message { margin-top: 20px; padding: 10px; background-color: #f9f9f9; border: 1px solid #ddd; }"
-			            + "</style>"
-			            + "</head>"
-			            + "<body>"
-			            + "<h3>결제가 완료되었습니다.</h3>"
-			            + "<div class='message'>"
-			            + "<p>안녕하세요, 쉼입니다.</p>"
-			            + "<p>" + h.getHouseName() + "의 결제가 완료되었습니다.</p>"
-			            + "<p>더욱 편안한 휴식을 즐기실 수 있도록 최선을 다하겠습니다.</p>"
-			            + "<p>감사합니다!</p>"
-			            + "</div>"
-			            + "</body>"
-			            + "</html>";
 
-			    sendMail.setText(htmlContent);
-			    sendMail.setFrom("suimm012@gmail.com", "쉼");
-			    sendMail.setSubject(h.getHouseName() + "의 결제가 완료되었습니다.");
-			    sendMail.setTo(email);
-			    sendMail.send();
-			                
-			} catch (MessagingException e) {
-			    log.error("메일 전송 중 에러 발생: {}", e.getMessage());
-			} catch (Exception e) {
-			    log.error("기타 에러 발생: {}", e.getMessage());
-			}
-		
-		
-		mv.setViewName("redirect:/mypage/house");
-		return mv;
+	@RequestMapping("report.ho")
+	public ModelAndView reportHouse(@RequestParam("value") int houseNo, @RequestParam("value2") String houseName, 
+			@RequestParam("value3") String memberId, ModelAndView mv) {
+	  
+	  Report r = new Report();
+	  r.setTypeNo(houseNo);
+	  r.setReportId(memberId);
+	  r.setReportType("house");
+	  
+	  mv.addObject("r", r);
+	  mv.setViewName("report/reportUpdateForm");
+	    
+	  return mv;
 	}
     
+    
+    @RequestMapping("Write.ho")
+	public ModelAndView WriteHouse(ModelAndView mv, HttpSession session) {
+    	
+	    Member loginUser = (Member) session.getAttribute("loginUser");
+	    if (loginUser != null) {
+			mv.setViewName("/house/houseWrite");
+			return mv;
+	    } else {
+    	
+    	session.setAttribute("alertMsg", "로그인 후 이용해주세요.");
+		mv.setViewName("redirect:/member/login");
+		return mv;
+	    }
+    }
 }

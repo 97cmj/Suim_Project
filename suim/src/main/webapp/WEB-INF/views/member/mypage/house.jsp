@@ -7,7 +7,10 @@
 <head>
 <title>마이페이지</title>
 <link href="/resources/css/user/mypage.css" rel="stylesheet" />
+
 <%@ include file="/WEB-INF/views/common/include.jsp"%>
+
+
 
 <style>
   	body {
@@ -134,22 +137,35 @@
 										<p class="card-text">${ h.enrollStatus }</p>
 										</c:if>
 										<c:if test = "${h.enrollStatus eq '등록완료'}">
-										<p class="card-text">${ h.deposit } / ${ h.rent }</p>
+										 <c:choose>
+			    							<c:when test="${h.deposit == 0}">
+			    								<p class="card-text">없음 / ${(h.rent/10000).intValue()}만원</p>
+			    							</c:when>
+											<c:when test="${h.rent == 0}">
+			    								<p class="card-text">${(h.deposit/10000).intValue()}만원 / 없음</p>
+			    							</c:when>
+											<c:when test="${h.deposit == 0} && ${h.rent == 0}">
+			    								<p class="card-text">없음 / 없음</p>
+			    							</c:when>
+			    							<c:otherwise>	
+												 <p class="card-text">${(h.deposit/10000).intValue()}만원 / ${(h.rent/10000).intValue()}만원</p>
+											</c:otherwise>
+										</c:choose>
 										</c:if>
 										<p class="card-text">${ h.houseDate }</p>
 										<div class="card-form">
-											<form action="/myhouseRez.ho" method="post">
-												<input type="hidden" name="houseNo" value="${h.houseNo}">
-												<c:if test = "${h.enrollStatus eq '등록완료'}">
-												<button type="submit" class="btn btn-primary btn-sm">예약확인</button>
-												</c:if>
-												<c:if test = "${h.enrollStatus eq '심사완료'}">
-												<button type="submit" class="btn btn-primary btn-sm">결제하기</button>
+										
+								<form action="/myhouseRez.ho" method="post">
+									<input type="hidden" name="houseNo" value="${h.houseNo}">
+									<c:if test="${h.enrollStatus eq '등록완료'}">
+										<button type="submit" class="btn btn-primary btn-sm">예약확인</button>
+									</c:if>
+									
+							<c:if test = "${h.enrollStatus eq '심사완료'}">
+												<button type="button" class="btn btn-primary btn-sm"
+												onclick="Payment('${h.houseNo}')">결제하기</button>
 												</c:if>
 											</form>
-											<form method="post" action="/kakaoPay" onsubmit="return confirm('결제하시겠습니까?');">
-											    <button>카카오페이로 결제하기</button>
-											</form>	
 											<form action="/houseEdit.ho" method="post" onsubmit="return confirm('수정하시겠습니까?');">
 												<input type="hidden" name="hno" value="${h.houseNo}">
 												<button type="submit" class="btn btn-success  btn-sm">수정</button>
@@ -194,8 +210,39 @@
 	        </ul>
 	    </div>
 	</c:if>
-
-
+	
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
+<script>
+function Payment(houseNo, tid) {
+    event.preventDefault();
+    var hno = houseNo;
+    $.ajax({
+        url: '/kakaopay.cls',
+        type: 'POST',
+        data: {
+        	hno: hno,
+            tid: tid
+        },
+        dataType: "json",
+        success: function(data) {
+            console.log(data.tid);
+            var box = data.next_redirect_pc_url;
+            window.open(box);
+            
+            // 컨트롤러로 data.tid 전송
+            sendTidToController(data.tid);
+            
+        },
+        error: function(error) {
+            alert(error);
+        }
+    });
+}
+
+
+</script>
+
+
+
 </html>

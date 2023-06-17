@@ -3,6 +3,7 @@ package com.suim.house.model.dao;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
@@ -88,6 +89,28 @@ public class ListHouseDao {
 		// 멤버 이메일 주소 가져오기
 		public String memberEmail(SqlSessionTemplate sqlSession, String memberId) {
 			return sqlSession.selectOne("listHouseMapper.memberEmail", memberId);
+		}
+
+
+		public ArrayList<House> selectHouseList(SqlSessionTemplate sqlSession) {
+			return (ArrayList)sqlSession.selectList("listHouseMapper.selectHouseList");
+		}
+
+		
+		// 로그인유저의 셰어하우스 예약 체크
+		public int rezChCount(SqlSessionTemplate sqlSession, Map<String, Object> rezCheck) {
+			return sqlSession.selectOne("listHouseMapper.rezChCount", rezCheck);
+		}
+		
+		// 로그인유저의 셰어하우스 예약 번호 받아오기
+		public int loginRno(SqlSessionTemplate sqlSession, Map<String, Object> rezCheck) {
+			return sqlSession.selectOne("listHouseMapper.loginRno", rezCheck);
+		}
+		
+		// 중심좌표 셰어하우스 이름 키워드 검색
+		public ArrayList<House> keyCenterAd(SqlSessionTemplate sqlSession, String searchKeyword){
+			return (ArrayList)sqlSession.selectList("listHouseMapper.keyCenterAd", searchKeyword);
+
 		}
 	
 }
