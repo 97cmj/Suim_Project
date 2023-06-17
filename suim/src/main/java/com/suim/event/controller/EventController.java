@@ -2,6 +2,7 @@ package com.suim.event.controller;
 
 import java.util.ArrayList;
 
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class EventController {
 	@Autowired
 	private EventService eventService;
 	
+	
+	/*
 	@RequestMapping("/event.ev")
 	public ModelAndView selectList(
 			@RequestParam(value="cPage", defaultValue="1") int currentPage,
@@ -55,12 +58,13 @@ public class EventController {
 
 		return mv;
 	}
+	*/
 	
-	/*
+	
 	@RequestMapping("/event.ev")
 	public ModelAndView selectList(
 			@RequestParam(value="cPage", defaultValue="1") int currentPage,
-			@RequestParam(value = "category", required = false) String category,
+	//		@RequestParam(value = "category", required = false) String category,
 			ModelAndView mv) {
 		
 		
@@ -79,10 +83,14 @@ public class EventController {
 		System.out.println("입니다.");
 		
 		// 카테고리에 따른 PageInfo 객체 얻어내기
-		category = eventService.selectEventCategory(pi, category);
+		// String category = eventService.selectEventCategory(pi, category);
 		
 		
 		ArrayList<Event> list = eventService.selectList(pi);
+	
+		System.out.println("list -------------- ");
+		System.out.println(list);
+		System.out.println("000000000000000000000000000000000000");
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
 		  .addObject("p")
@@ -92,7 +100,7 @@ public class EventController {
 
 		return mv;
 	}
-	*/
+	
 	
 	@RequestMapping("/detail.ev")
 	public ModelAndView selectBoard(ModelAndView mv, int eno, HttpSession session) {

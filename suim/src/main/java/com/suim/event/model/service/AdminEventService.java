@@ -1,5 +1,7 @@
 package com.suim.event.model.service;
 
+import java.util.ArrayList;
+
 import com.suim.event.model.vo.Eattachment;
 import com.suim.event.model.vo.Event;
 
@@ -13,9 +15,9 @@ public interface AdminEventService {
 
 	int deleteEvent(int eno);
 
-	Eattachment selectEventFile(int eAttach);
 
 	int deleteEventFile(int eno);
 
+	
 
 }
