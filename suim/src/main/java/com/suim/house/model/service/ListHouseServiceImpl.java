@@ -67,4 +67,9 @@ public class ListHouseServiceImpl implements ListHouseService{
 		return listHouseDao.memberEmail(sqlSession, memberId);
 	}
 
+	@Override
+	public ArrayList<House> selectHouseList() {
+		return listHouseDao.selectHouseList(sqlSession);
+	}
+
 }

@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.suim.common.mail.MailHandler;
+import com.suim.common.main.controller.MainController;
 import com.suim.house.model.service.HouseService;
 import com.suim.house.model.vo.House;
 import com.suim.house.model.vo.Photo;
@@ -119,6 +120,12 @@ public class HouseController {
 	    
 	    MultipartFile[] images = {image1, image2, image3, image4, image5, image6};
 	    
+	    if(h.getHouseAddress() != null) {
+			double[] area = MainController.getCoordinates(h.getHouseAddress());
+			h.setLatitude(area[0]);
+			h.setLongitude(area[1]);
+		}
+	    
 	    int result2 = houseService.enrollHouse(h);
 	    
 	    int hno = houseService.selectHno(h.getMemberId());
@@ -187,6 +194,8 @@ public class HouseController {
 	@RequestMapping("houseEdit.ho")
 	public ModelAndView houseEdit(ModelAndView mv, int hno, HttpSession session) {
 	
+		
+		
 	    House h = houseService.selectHouse(hno);
 	    
 	    if (!h.getEnrollStatus().equals("등록완료")) {
@@ -211,7 +220,13 @@ public class HouseController {
 				
 		int [] photoNos = {photoNo1, photoNo2, photoNo3, photoNo4, photoNo5, photoNo6,};
 	    MultipartFile[] images = {image1, image2, image3, image4, image5, image6};    
-
+	    
+	    if(h.getHouseAddress() != null) {
+			double[] area = MainController.getCoordinates(h.getHouseAddress());
+			h.setLatitude(area[0]);
+			h.setLongitude(area[1]);
+		}
+	    
 	    h.setHouseNo(hno);
 	    Member loginUser = (Member) session.getAttribute("loginUser");
 	    h.setMemberId(loginUser.getMemberId());

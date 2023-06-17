@@ -89,5 +89,9 @@ public class ListHouseDao {
 		public String memberEmail(SqlSessionTemplate sqlSession, String memberId) {
 			return sqlSession.selectOne("listHouseMapper.memberEmail", memberId);
 		}
+
+		public ArrayList<House> selectHouseList(SqlSessionTemplate sqlSession) {
+			return (ArrayList)sqlSession.selectList("listHouseMapper.selectHouseList");
+		}
 	
 }

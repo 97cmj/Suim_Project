@@ -45,5 +45,5 @@ public interface ListHouseService {
 	// 멤버의 이메일 확인
 	String memberEmail(String memberId);
 
-	
+	ArrayList<House> selectHouseList();
 }
