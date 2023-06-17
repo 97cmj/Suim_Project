@@ -65,26 +65,6 @@
 	refreshButton.addEventListener('click', function() {
 	    location.reload();
 	});
-	
-	$(document).ready(function() {
-		  $('#reportBtn').click(function() {
-		    var popupUrl = "report.ho";
-		    var popupWidth = 800;
-		    var popupHeight = 800;
-
-		    var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-		    var windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-
-		    var popupX = (windowWidth / 2) - (popupWidth / 2) + window.screenX;
-		    var popupY = (windowHeight / 2) - (popupHeight / 2) + window.screenY;
-
-		    var options = "width=" + popupWidth + ",height=" + popupHeight + ",left=" + popupX + ",top=" + popupY;
-
-		    var popupWindow = window.open(popupUrl, "신고 팝업창", options);
-		    popupWindow.document.documentElement.classList.add('popup');
-		  });
-		});
-	
 		document
 				.addEventListener(
 						"DOMContentLoaded",
@@ -181,6 +161,25 @@
 																	    }
 																	  }
 																});
+												// 신고함수
+												$('#reportBtn').click(function() {
+													var popupUrl = "report.ch?value=" + encodeURIComponent(rno) + 
+															"&value2=" + encodeURIComponent(Iuser);
+												    var popupWidth = 800;
+												    var popupHeight = 800;
+
+												    var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+												    var windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+												    var popupX = (windowWidth / 2) - (popupWidth / 2) + window.screenX;
+												    var popupY = (windowHeight / 2) - (popupHeight / 2) + window.screenY;
+
+												    var options = "width=" + popupWidth + ",height=" + popupHeight + ",left=" + popupX + ",top=" + popupY;
+
+												    var popupWindow = window.open(popupUrl, "신고 팝업창", options);
+												    popupWindow.document.documentElement.classList.add('popup');
+												  });
+												
 												// 대화창 업데이트 함수
 												function updateChatWindow(user) {
 													var chatTitle = document
@@ -225,7 +224,7 @@
 												        messagesContainer.appendChild(message1);
 
 												        var message2 = document.createElement("p");
-												        message2.textContent = "안전한 결제를 위해 웹사이트를 통해 대화를 나누고 결제하세요.";
+												        message2.textContent = "안전한 결제를 위해 웹사이트에서 대화를 나누고 결제하세요.";
 												        messagesContainer.appendChild(message2);
 
 												        var hr = document.createElement("hr");

@@ -31,7 +31,11 @@ public class House {
     private String enrollStatus; // 등록 상태
     private double latitude;
     private double longitude;
+
+
     
     // 사진 테이블에서 불러올 구문
     private String changeName; // Photo테이블의 changeName
+    
+    private String nickName; // 멤버 닉네임
 }
