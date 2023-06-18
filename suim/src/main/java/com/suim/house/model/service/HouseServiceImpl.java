@@ -84,10 +84,6 @@ public class HouseServiceImpl implements HouseService {
 		return houseDao.selectEnroll(sqlSession, hno);
 	}
 
-	@Override
-	public void payment(int hno) {
-		houseDao.payment(sqlSession, hno);
-		
-	}
+	
 	
 }
