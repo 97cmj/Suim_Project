@@ -14,7 +14,8 @@
 	form button {border:none!important;}
 	.searchForm>form>input, .searchForm>form>div {display:inline-block;}
 </style>
-
+<c:choose>
+<c:when test="${ not empty loginUser and loginUser.memberId eq ('admin1') }">
 	<%@ include file="../common/include.jsp" %>
 
 	<div class="container-xxl position-relative bg-white d-flex p-0">
@@ -63,26 +64,47 @@
 					        <div class="tab-content pt-3" id="nav-tabContent">
 					            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 							         <div class="table-responsive">			
-					        <table id="notice-table" class="table">
-			                    <thead>
-			                        <tr class="table-header">
-			                            <td class="nListNo">No</td>
-			                            <td class="title">제목</td>
-			                            <td class="createDate">작성일</td>
-			                        </tr>
-			                    </thead>
-			                    <tbody>
-			                    	<c:forEach var="n" items="${ list }">
-				                        <tr class="table-row" style="background-color:none;">
-				                            <td class="nListNo, nno">${ n.noticeNo }</td>
-				                            <td class="title">
-				                                ${ n.noticeTitle }
-				                            </td>
-				                            <td class="createDate"><fmt:formatDate pattern="yyyy-MM-dd" value="${n.noticeDate }" /></td>
-				                        </tr>
-			                    	</c:forEach>
-                    			</tbody>
-                </table>
+					        <table id="event-table" class="table">
+        
+					        	<thead>
+					        		<tr>
+					        			<c:if test="${ not empty loginUser and loginUser.memberId eq ('admin1') }">
+					        			<div align="right" style="margin:0px">
+							    					<a class="btn btn-secondary" style="display: inline-block; vertical-align: middle; line-height: 20px; background-color: rgb(250,107,111); height: 20px; text-decoration: none; color: #fff; padding: 0 10px; font-size: medium;" href="enrollForm.ev">
+							       	 					이벤트 글작성
+						 							</a>
+						 				</div>
+												</c:if>
+					        		</tr>
+					            	<tr class="table-header">
+						                <td class="eListNo">No</td>
+										<td>카테고리</td>
+						                <td class="title">제목</td>
+						                <td class="eventDate">작성일</td>
+						                <td class="eventView">조회수</td>
+					            	</tr>
+					         	</thead>
+					         	<tbody>
+					         	
+					         		<!-- 이벤트 카테고리별로 다른 게 나오게 함 -->
+					         		<c:forEach var="e" items="${ list }">
+						         		<c:if test="${e.eventCategory eq ('house')}">
+						         		
+						         		</c:if>
+					         		
+							            <tr class="table-row" style="background-color:none;">
+							            	<td class="eListNo, eno">${ e.eventNo }</td>
+							            	<td>${e.eventCategory }</td>
+							            	<td class="title">
+							                	${ e.eventTitle }
+							                </td>
+							                <td class="createDate"><fmt:formatDate pattern="yyyy-MM-dd" value="${e.eventDate }" /></td>
+							                <td class="eventView">${ e.eventView }</td>
+							            </tr>
+							            
+					             	</c:forEach>
+							 	  </tbody>
+					         	</table>
           				</div>
          			</div>
          		</div>
@@ -116,7 +138,7 @@
 		         $(function() {
 		          	$("#event-table>tbody>tr").click(function() {
 		          		let eno = $(this).children(".eno").text();
-		          		location.href = "admin/detail.ev?eno=" + eno; //
+		          		location.href = "detail.ev?eno=" + eno; //
 		          	});
 		          });
 		</script>
@@ -151,3 +173,12 @@
         <!-- Content End -->
 
 	</div>
+</c:when>
+
+<%-- 요청한 이벤트 관리 url 로 접근한 사용자가 관리자가 아닌 경우 잘못된 접근이라는 것을 알려주고 사용자를 메인 페이지로 이동하게 함 --%>
+<c:otherwise>
+	<button type="reset">
+		<a href="/" class="btn btn=warning">잘못된 접근입니다. 메인페이지로 이동해주세요</a>
+	</button>
+</c:otherwise>
+</c:choose>

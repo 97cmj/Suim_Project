@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <link rel="stylesheet" href="/resources/css/common/header.css" />
 
+
 <button id="notificationButton" style="display: none;">
 	<i class="fas fa-bell"></i>
 </button>

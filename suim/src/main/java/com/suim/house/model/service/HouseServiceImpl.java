@@ -83,7 +83,5 @@ public class HouseServiceImpl implements HouseService {
 	public House selectEnroll(int hno) {
 		return houseDao.selectEnroll(sqlSession, hno);
 	}
-
-	
 	
 }

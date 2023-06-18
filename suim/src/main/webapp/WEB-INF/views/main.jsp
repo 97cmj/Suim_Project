@@ -15,9 +15,11 @@
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
 <link rel="stylesheet" href="resources/css/common/main.css" />
+
 </head>
 
 <c:set var="currentPath" value="${pageContext.request.servletPath}" />
+
 
 
 <body>
