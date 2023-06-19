@@ -148,6 +148,15 @@ public class AuthController {
 
 		member.setNickName(nickName);
 		member.setMemberPwd(encPwd);
+		
+
+		if(member.getArea() != null || !member.getArea().equals("")) {
+			double[] area = MainController.getCoordinates(member.getArea());
+			if(area != null) {
+			member.setLongitude(area[0]);
+			member.setLatitude(area[1]);
+			}
+		}
 
 		int result = memberService.insertMember(member);
 		String mailKey = new TempKey().getKey(30, false);
@@ -155,11 +164,7 @@ public class AuthController {
 		int result2 = memberService.insertEmail(email);
 		int result3 = memberService.setEmailCode(email);
 
-		if (member.getArea() != null) {
-			double[] area = MainController.getCoordinates(member.getArea());
-			member.setLongitude(area[0]);
-			member.setLatitude(area[1]);
-		}
+
 
 		CompletableFuture.runAsync(() -> {
 			try {
@@ -198,6 +203,8 @@ public class AuthController {
 	public String loginMember(Member m, HttpSession session, Model model, HttpServletResponse response, String saveId,
 			HttpServletRequest request) {
 		Member loginUser = memberService.loginMember(m);
+		
+		
 
 		if (loginUser == null) {
 			session.setAttribute("toastError", "로그인 할 수 없는 계정입니다.");
@@ -503,6 +510,14 @@ public class AuthController {
 
 		member.setNickName(nickName);
 		member.setMemberPwd(encPwd);
+		
+		if(member.getArea() != null && !member.getArea().equals("")) {
+			double[] area = MainController.getCoordinates(member.getArea());
+			if(area != null) {
+			member.setLongitude(area[0]);
+			member.setLatitude(area[1]);
+			}
+		}
 
 		int result = memberService.insertMember(member);
 		String mailKey = new TempKey().getKey(30, false);
@@ -510,11 +525,6 @@ public class AuthController {
 		int result2 = memberService.insertEmail(email);
 		int result3 = memberService.setEmailCode(email);
 
-		if (member.getArea() != null) {
-			double[] area = MainController.getCoordinates(member.getArea());
-			member.setLongitude(area[0]);
-			member.setLatitude(area[1]);
-		}
 
 		CompletableFuture.runAsync(() -> {
 			try {
