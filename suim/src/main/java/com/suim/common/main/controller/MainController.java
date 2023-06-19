@@ -11,7 +11,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,10 +28,7 @@ import com.google.gson.JsonObject;
 import com.suim.board.model.vo.Find;
 import com.suim.board.model.vo.InReview;
 import com.suim.common.main.model.service.MainService;
-import com.suim.common.main.model.vo.HouseDistance;
-import com.suim.house.model.service.ListHouseService;
 import com.suim.house.model.vo.House;
-import com.suim.member.model.service.MemberService;
 import com.suim.member.model.vo.Member;
 
 @Controller
@@ -89,6 +85,8 @@ public class MainController {
 			model.addAttribute("listHouse", list.subList(0, Math.min(list.size(), 4)));
 			
 		}
+		
+		
 		
 		//그 외 보여질 페이지
 		model.addAttribute("filterFind", filteredList);
