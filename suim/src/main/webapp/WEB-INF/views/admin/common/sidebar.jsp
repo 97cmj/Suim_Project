@@ -80,6 +80,7 @@
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="event.ev" class="dropdown-item">일반 사용자용 이벤트 목록</a>
                             <a href="admin.ev" class="dropdown-item">이벤트 관리</a>
+                            <a href="enrollForm.ev" class="dropdown-item">이벤트 작성</a>
                         </div>
                     </div>
                     
