@@ -9,6 +9,14 @@
 	form input {width:150px!important;}
 	form button {border:none!important;}
 	.searchForm>form>input, .searchForm>form>div {display:inline-block;}
+	.searchForm{
+	    display: flex;
+	    align-items: center;
+	    background-color: #f5f5f5;
+	    border-radius: 20px;
+	    padding: 10px 20px;
+	    justify-content: flex-end;
+	}
 </style>
 
 	<%@ include file="../common/include.jsp" %>
@@ -43,11 +51,10 @@
 							<div align="right" class="searchForm">
 							<form class="d-md-flex ms-4" action="search.re">
 								<div class="select">
-				                    <select class="form-select form-select-sm mb-3" name="condition" style="margin-bottom: unset !important;">
+				                    <select class="form-select form-select-sm mb-3" name="condition" style="margin-bottom: unset !important;height: 36px;">
 				                        <option value="REPORT_TITLE">제목</option>
-				                        <option value="REPORT_CONTENT">내용</option>
 				                        <option value="REPORT_TYPE">유형</option>
-				                        <option value="REPORT_ID">신고자</option>
+				                        <option value="REPORT_ID">신고당한사람</option>
 				                    </select>
 				                </div>
 								<input class="form-control border-0" type="search" placeholder="Search" name="keyword">
@@ -100,12 +107,14 @@
 				                                            <td>
 					                                            <c:choose>
 									                                <c:when test="${r.reportType == 'MEMBER'}">회원</c:when>
-									                                <c:when test="${r.reportType == 'HOUSE'}">셰어하우스</c:when>
-									                                <c:when test="${r.reportType == 'BOARD'}">자유게시판</c:when>
-									                                <c:when test="${r.reportType == 'BRE'}">자유게시판 댓글</c:when>
-									                                <c:when test="${r.reportType == 'FIND'}">사람구해요</c:when>
-									                                <c:when test="${r.reportType == 'FRE'}">사람구해요 댓글</c:when>
-									                                <c:when test="${r.reportType == 'CHAT'}">채팅방</c:when>
+									                                <c:when test="${r.reportType == 'house'}">셰어하우스</c:when>
+									                                <c:when test="${r.reportType == 'board'}">자유게시판</c:when>
+									                                <c:when test="${r.reportType == 'bre'}">자유게시판 댓글</c:when>
+									                                <c:when test="${r.reportType == 'findBoard'}">사람구해요</c:when>
+									                                <c:when test="${r.reportType == 'fre'}">사람구해요 댓글</c:when>
+									                                <c:when test="${r.reportType == 'inReviewBoard'}">입주후기</c:when>
+									                                <c:when test="${r.reportType == 'ire'}">입주후기 댓글</c:when>
+									                                <c:when test="${r.reportType == 'chat'}">채팅방</c:when>
 											                    </c:choose>
 								                            </td>
 				                                            <td>${ r.reportTitle }</td>
@@ -198,7 +207,7 @@
         	            return;
         	        }
         	        
-        	        var confirmation = confirm("일괄 승인하시겠습니까?");
+        	        var confirmation = confirm("승인하시겠습니까?");
         	        if (!confirmation) {
         	            return;
         	        }
@@ -227,7 +236,7 @@
         		            }
         	            },
         	            error: function() {
-    		            	alert("승인에 실패했습니다.");
+        	            	alert("승인에 실패했습니다.");
         	            }
         	            
         	        });
@@ -247,7 +256,7 @@
 	    	            return;
 	    	        }
 	    	        
-	    	        var confirmation = confirm("일괄 반려하시겠습니까?");
+	    	        var confirmation = confirm("반려하시겠습니까?");
 	    	        if (!confirmation) {
 	    	            return;
 	    	        }
@@ -269,7 +278,7 @@
 	    		            }
 	    	            },
 	    	            error: function() {
-			            	alert("반려에 실패했습니다.");
+	    	            	alert("반려에 실패했습니다.");
 	    	            }
 	    	        });
 	    	    });

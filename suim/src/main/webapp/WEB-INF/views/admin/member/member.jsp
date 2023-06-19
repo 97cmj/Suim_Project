@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <style>
 	#memberList {text-align:center;}
 	#memberList>tbody>tr:hover {cursor:pointer;}
@@ -80,13 +80,13 @@
 			                                            <td class="memberId">${ m.memberId }</td>
 			                                            <td>${ m.email }</td>
 			                                            <td>${ m.phone }</td>
-			                                            <td>${ m.enrollDate }</td>
+			                                            <td><fmt:formatDate value="${m.enrollDate}" pattern="yyyy-MM-dd" /></td>
 			                                            <td>
 												            <c:choose>
 												                <c:when test="${m.status eq '탈퇴'}">
 												                    <span class="badge bg-danger">탈퇴회원</span>
 												                </c:when>
-												                <c:when test="${m.blacklistFlag eq 'BLACKLISTED'}">
+												                <c:when test="${m.status eq '블랙'}">
 												                    <span class="badge bg-dark">블랙회원</span>
 												                </c:when>
 												                <c:otherwise>
@@ -160,14 +160,14 @@
 	        	            	// 응답 받은 경우
 	        	                // 화면에서 해당 데이터의 상태 업데이트
 	        	                if (response === 'Y') {
-	        		            	alert("탈퇴되었습니다.");
+	        	                	session.setAttribute("toastSuccess", "탈퇴되었습니다.");
 	        		            	location.reload();
 	        		            } else {
-	        		            	alert("회원 탈퇴에 실패했습니다.");
+	        		            	session.setAttribute("toastError", "회원 탈퇴에 실패했습니다.");
 	        		            }
 	        	            },
 	        	            error: function() {
-	    		            	alert("탈퇴에 실패했습니다.");
+	        	            	session.setAttribute("toastError", "회원 탈퇴에 실패했습니다.");
 	        	            }
 	        	            
 	        	        });
@@ -205,14 +205,14 @@
 	        	            	// 응답 받은 경우
 	        	                // 화면에서 해당 데이터의 상태 업데이트
 	        	                if (response === 'Y') {
-	        		            	alert("일반회원으로 변경되었습니다.");
+	        	                	session.setAttribute("toastSuccess", "일반회원으로 변경되었습니다.");
 	        		            	location.reload();
 	        		            } else {
-	        		            	alert("일반회원 변경에 실패했습니다.");
+	        		            	session.setAttribute("toastError", "일반회원 변경에 실패했습니다.");
 	        		            }
 	        	            },
 	        	            error: function() {
-	    		            	alert("일반회원 변경에 실패했습니다.");
+	        	            	session.setAttribute("toastError", "일반회원 변경에 실패했습니다.");
 	        	            }
 	        	            
 	        	        });
