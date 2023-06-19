@@ -72,7 +72,7 @@ public interface BoardService {
 	// 게시글의 총 갯수 조회
 	int selectfListCount();
 	
-	int selectfListCount(HashMap<String, String> fin);
+	int selectfcListCount(HashMap<String, String> fin);
 	
 	// 게시글 리스트 조회
 	ArrayList<Find> selectfList(PageInfo pi);
@@ -117,12 +117,10 @@ public interface BoardService {
 	// 게시글의 총 갯수 조회
 	int selectiListCount();
 	
-	int selectiListCount(HashMap<String, String> fin);
 	
 	// 게시글 리스트 조회
 	ArrayList<InReview> selectiList(PageInfo pi);
 	
-	ArrayList<InReview> selectiList(PageInfo pi, HashMap<String, String> fin);
 	
 	// 게시글 상세조회 서비스
 	// 게시글 조회수 증가
