@@ -13,6 +13,10 @@
 	form input {width:150px!important;}
 	form button {border:none!important;}
 	.searchForm>form>input, .searchForm>form>div {display:inline-block;}
+	
+	#event-table {
+		text-align : center;
+	}
 </style>
 <c:choose>
 <c:when test="${ not empty loginUser and loginUser.memberId eq ('admin1') }">
@@ -82,7 +86,7 @@
 						                <td class="title">제목</td>
 						                <td class="eventDate">작성일</td>
 						                <td class="eventView">조회수</td>
-						                <td class="eventStatus">이벤트 진행 여부</td>
+						                <td class="eventStatus" style="text-align : center;">이벤트 진행 여부</td>
 					            	</tr>
 					         	</thead>
 					         	<tbody>
@@ -101,7 +105,7 @@
 							                </td>
 							                <td class="createDate"><fmt:formatDate pattern="yyyy-MM-dd" value="${e.eventDate }" /></td>
 							                <td class="eventView">${ e.eventView }</td>
-							                <td class="eventStatus">${ e.eventStatus }</td>
+							                <td class="eventStatus" style="text-align : center;">${ e.eventStatus }</td>
 							            </tr>    
 							            
 					             	</c:forEach>
