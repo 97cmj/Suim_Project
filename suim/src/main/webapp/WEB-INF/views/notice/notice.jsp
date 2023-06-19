@@ -52,38 +52,34 @@
    
     <!--공지사항(Content) 영역 -->
 
-    <div id="noticeDiv" class="container main">
+    <div id="noticeDiv" class="container main" style="margin-top : 150px;">
         <div class="col-lg-12">
     
     
             <div class="table-wrapper">
                 <div id="noticeBold" class="table-title">
-                    	우주 공지사항
+                    	SUIM 공지사항
                 </div>
             
-                <div id="nListSearch" class="search-box">
-                    <form>
-                        <input type="text" placeholder="지역명, 주변명 입력">
-                        <button type="submit">
-                            <i class="fa fa-search" style="color : rgb(249,88,10)"></i>
-                        </button>
-                    </form>
-                </div>
+               
                 		
 				
                 <!-- 공지사항은 관리자만 작성 가능하므로 관리자로 로그인했을 경우에만 버튼이 보이게끔 -->
                 <!-- 클릭 시 insert.no 로 넘어감 -->
                 
                 <%-- <c:if test="${ not empty loginUser and loginUser.memberId eq ('관리자아이디') }"> --%>
-                <c:if test="${ not empty loginUser and loginUser.memberId eq ('admin1') }">
-                <button id="insertNoticeButton" class="btn btn-secondary" type="button" onclick="location.href='enrollForm.no';">글작성</button>
+                <c:if test="${ not empty loginUser and loginUser.memberId eq ('google969548') }">
+                
+                <a class="btn btn-secondary" style="display: inline-block; vertical-align: middle; line-height: 20px; background-color: rgb(250,107,111); height: 20px; text-decoration: none; color: #fff; padding: 0 10px; font-size: medium; margin-left: 1220px;" onclick="location.href='enrollForm.no';">
+		       	 글작성
+	 		</a>
 				 </c:if>
 				
 		
                 <table id="notice-table" class="table">
                     <thead>
                         <tr class="table-header">
-                            <td class="nListNo">No</td>
+                            <td class="nListNo" style="border-bottom-color : green;">No</td>
                             <td class="title">제목</td>
                             <td class="createDate">작성일</td>
                         </tr>
@@ -91,8 +87,8 @@
                     <tbody>
                     	<c:forEach var="n" items="${ list }">
 	                        <tr class="table-row" style="background-color:none;">
-	                            <td class="nListNo, nno">${ n.noticeNo }</td>
-	                            <td class="title">
+	                            <td class="nListNo, nno" style="border-bottom-color : green;">${ n.noticeNo }</td>
+	                            <td class="title" style="text-align : left; padding-left : 50px;">
 	                                ${ n.noticeTitle }
 	                            </td>
 	                            <td class="createDate"><fmt:formatDate pattern="yyyy-MM-dd" value="${n.noticeDate }" /></td>

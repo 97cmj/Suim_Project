@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="/resources/css/common/header.css" />
 
 
+
 <button id="notificationButton" style="display: none;">
 	<i class="fas fa-bell"></i>
 </button>
@@ -39,9 +40,9 @@
 				<li class="nav-item"><a href="/list.ho"
 					class="nav-link nav-text">방 찾기</a></li>
 
-				<li class="nav-item"><a href="#" class="nav-link nav-text">쉼</a>
+				<li class="nav-item"><a href="/suim" class="nav-link nav-text">쉼</a>
 					<ul>
-						<li><a href="">쉼 소개</a></li>
+						<li><a href="/suim">쉼 소개</a></li>
 					</ul></li>
 				<li class="nav-item"><a href="/list.bo"
 					class="nav-link nav-text">커뮤니티</a>
@@ -108,6 +109,7 @@
 			<div class="offcanvas offcanvas-end" tabindex="-1"
 				id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
 				<div class="offcanvas-header">
+				
 					<c:choose>
 						<c:when test="${ empty loginUser }">
 							<div class="offcanvas-title" id="offcanvasNavbarLabel"></div>
@@ -116,6 +118,7 @@
 					<a type="button" class="navbar-toggler-icon text-reset"
 						data-bs-dismiss="offcanvas" aria-label="Close"
 						style="width: 32px; height: 32px"></a>
+						<a class="nav-item"><i class="fa-solid fa-gear fa-spin fa-2xl" style="color: #636669;"></i></a>
 				</div>
 				<div class="offcanvas-body">
 					<c:choose>

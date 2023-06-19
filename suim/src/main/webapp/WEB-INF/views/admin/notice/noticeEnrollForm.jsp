@@ -11,7 +11,7 @@
 <%@ include file="../common/include.jsp" %>
 
 <%-- <c:if test="${ not empty loginUser and loginUser.memberId eq ('관리자아이디') }"> --%>
-<c:if test="${ not empty loginUser and loginUser.memberId eq ('admin1') }">
+<c:if test="${ not empty loginUser and loginUser.memberId eq ('google969548') }">
 <div class="container-xxl position-relative bg-white d-flex p-0">
     <!-- Spinner Start -->
 		
@@ -52,7 +52,7 @@
                 </table>
                 <br>
 
-                <div align="center">
+                <div style="padding-left : 120px;">
                     <button type="submit" class="btn btn-primary">등록하기</button>
                     <button type="reset" class="btn btn-danger">취소하기</button>
                 </div>
