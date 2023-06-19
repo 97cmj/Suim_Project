@@ -54,6 +54,8 @@
 	    	<mapper resource="/mappers/member/email-mapper.xml"/>
 	    	<mapper resource="/mappers/member/mypage-mapper.xml"/>
 	    	<mapper resource="/mappers/common/notification-mapper.xml"/>
+	    	<mapper resource="/mappers/common/main-mapper.xml"/>
+	    	
 	    	
 	    	<mapper resource="/mappers/board/board-mapper.xml"/>
 	    	<mapper resource="/mappers/house/house-mapper.xml"/>
