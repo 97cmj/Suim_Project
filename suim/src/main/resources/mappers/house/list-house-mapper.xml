@@ -163,6 +163,7 @@
 		WHERE MEMBER_ID = #{memberId}
 	</select>
 	
+	
 	<!-- 로그인유저의 셰어하우스 예약 체크 -->
 	<select id="rezChCount" resultType="_int">
 		SELECT COUNT(*)

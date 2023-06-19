@@ -12,20 +12,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Dashboard {
 
-	private ArrayList<Member> selectMemberAll;
-	private ArrayList<Member> selectEnrollMember;
-	private ArrayList<Member> selectMemberGender;
-	private ArrayList<Member> selectMemberHouseTopN; 
-	private ArrayList<Member> selectMemberInreviewTopN;
-	private int selectHouseCount;
-	private int selectReservationCount;
-	private ArrayList<Member> selectReservationRate;
-	private ArrayList<Member> selectEmptyRate;
-	private ArrayList<Member> selectHouseMonth;
-	private ArrayList<Member> selectHouseDate;
-	private ArrayList<Region> selectRegionTopN; 
-	private ArrayList<Member> selectEnrollMemberRate;
-	private ArrayList<Member> selectEnrollMemberMonthRate; 
-	private ArrayList<Member> selectEnrollMemberDate;
-	private ArrayList<Member> selectLeaveMemberRate;
+	private int totalMembers;
+	private String month;
+	private int newMembers;
+	private String gender;
+	private int memberCount;
+	private String memberId;
+	private String memberName;
+	private int reservationCount;
+	private int reviewCount;
+	private int totalRooms;
+	private int reservedRooms;
+	private int reservationRate;
+	private int vacantRooms;
+	private int vacancyRate;
+	private int toatlRevenue;
+	private String houseName;
+	private String houseDate;
+	private String regionName;
+	private int roomCount;
+	private int newMemberPercentage;
+	private String registrationDate;
+	private int leaveMembers;
+	private int leaveRate;
 }

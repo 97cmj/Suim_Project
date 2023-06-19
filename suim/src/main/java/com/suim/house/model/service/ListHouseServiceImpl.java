@@ -68,6 +68,7 @@ public class ListHouseServiceImpl implements ListHouseService{
 		return listHouseDao.memberEmail(sqlSession, memberId);
 	}
 
+	
 	@Override
 	public int rezChCount(Map<String, Object> rezCheck) {
 		return listHouseDao.rezChCount(sqlSession, rezCheck);
