@@ -12,7 +12,7 @@
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
                         <c:choose>
-				        		<c:when test="${not empty m.changeName}">
+				        		<c:when test="${not empty loginUser.changeName}">
                                 	<img class="rounded-circle me-lg-2" src="${loginUser.changeName}" alt="" style="width: 40px;height: 40px;margin-right:unset!important;">
                                	</c:when>
 						        <c:otherwise>
@@ -50,15 +50,16 @@
 				</script>
                 <div class="navbar-nav w-100">
                     <a href="/admin" class="nav-item nav-link ${pageType eq 'admin/index' ? 'active' : ''}"><i class="fa fa-tachometer-alt me-2"></i>대시보드</a>
-                    <a href="list.me" class="nav-item nav-link ${pageType eq 'member/member' ? 'active' : ''}"><i class="fa fa-th me-2"></i>회원 관리</a>
-                    <a href="list.ho" class="nav-item nav-link ${pageType eq 'house/house' ? 'active' : ''}"><i class="fa fa-laptop me-2"></i>쉐어하우스 관리</a>
+       				<a href="/admin/list.me" class="nav-item nav-link ${pageType eq 'member/member' ? 'active' : ''}"><i class="fa fa-th me-2"></i>회원 관리</a>
+                    <a href="/admin/list.ho" class="nav-item nav-link ${pageType eq 'house/house' ? 'active' : ''}"><i class="fa fa-laptop me-2"></i>쉐어하우스 관리</a>
+                    
 
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-keyboard me-2"></i>커뮤니티 관리</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="board.html" class="dropdown-item">자유게시판</a>
-                            <a href="find.html" class="dropdown-item">사람 구해요</a>
-                            <a href="inreview.html" class="dropdown-item">플랫폼 이용후기</a>
+                            <a href="/adminBoardList.bo" class="dropdown-item nav-link ${pageType eq 'board/freeBoard' ? 'active' : ''}">자유게시판</a>
+                            <a href="/adminFindList.bo" class="dropdown-item">사람 구해요</a>
+                            <a href="/adminInReviewList.bo" class="dropdown-item">플랫폼 이용후기</a>
                         </div>
                     </div>
                     <a href="list.re" class="nav-item nav-link ${pageType eq 'report/report' ? 'active' : ''}"><i class="fa fa-chart-bar me-2"></i>신고 관리</a>
@@ -69,6 +70,26 @@
                             <a href="signup.html" class="dropdown-item">Sign Up</a>
                             <a href="404.html" class="dropdown-item">404 Error</a>
                             <a href="blank.html" class="dropdown-item">Blank Page</a>
+                        </div>
+                    </div>
+                    
+                    <!-- 이벤트 관리 -->
+                    
+                     <div class="nav-item dropdown">
+                        <a href="event.ev" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-calendar-event-fill"></i>이벤트 관리</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="event.ev" class="dropdown-item">일반 사용자용 이벤트 목록</a>
+                            <a href="admin.ev" class="dropdown-item">이벤트 관리</a>
+                        </div>
+                    </div>
+                    
+                    <!-- 공지사항 관리 -->
+                    <div class="nav-item dropdown">
+                    	<a href="admin.no" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-megaphone-fill"></i>공지사항 관리</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="notice.no" class="dropdown-item">공지사항 목록 바로가기</a>
+                            <a href="admin.no" class="dropdown-item">공지사항 관리</a>
+                            <a href="enrollForm.no" class="dropdown-item">공지사항 작성</a>
                         </div>
                     </div>
                 </div>

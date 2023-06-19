@@ -18,4 +18,11 @@ public interface EventService {
 	ArrayList<Eattachment> selectEventFile(int eno);
 	
 	Event selectBoard(int eventNo);
+
+	int selectCategoryListCount(String category);
+
+	ArrayList<Event> selectCategoryList(PageInfo pi, String category);
+
+
+	
 }

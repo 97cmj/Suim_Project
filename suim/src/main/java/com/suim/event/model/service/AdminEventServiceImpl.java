@@ -1,5 +1,7 @@
 package com.suim.event.model.service;
 
+
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,11 +39,21 @@ public class AdminEventServiceImpl implements AdminEventService {
 
 	}
 
+	
+	
 	@Override
 	public int deleteEvent(int eno) {
 
 		return adminEventDao.deleteEvent(sqlSession, eno);
 
 	}
+
+	@Override
+	public int deleteEventFile(int eno) {
+		
+		return adminEventDao.deleteEventFile(sqlSession, eno);
+	}
+
+
 
 }

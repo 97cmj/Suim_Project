@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
@@ -18,16 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.suim.common.mail.MailHandler;
+import com.suim.common.main.controller.MainController;
 import com.suim.house.model.service.HouseService;
+import com.suim.house.model.service.ListHouseService;
 import com.suim.house.model.vo.House;
 import com.suim.house.model.vo.Photo;
 import com.suim.house.model.vo.Wish;
 import com.suim.member.model.vo.Member;
 import com.suim.report.model.vo.Report;
-
-import lombok.extern.slf4j.Slf4j;
 
 
 @Controller
@@ -39,16 +39,19 @@ public class HouseController {
 	private HouseService houseService;
 	
 	@Autowired
+	private ListHouseService listHouseService;
+	
+	@Autowired
 	public HouseController(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
 	}
 	
 	@RequestMapping("detail.ho")
-	public ModelAndView selectList(ModelAndView mv, int hno, HttpSession session) {
+	public ModelAndView selectList(ModelAndView mv, int hno, HttpSession session, String admin) {
 		
 	    House h = houseService.selectHouse(hno);
-	    
-	    if (!h.getEnrollStatus().equals("등록완료")) {
+
+	    if (!h.getEnrollStatus().equals("등록완료") && (admin == null)) {
 	    	session.setAttribute("alertMsg", "현재 심사중입니다.");
 	    	mv.setViewName("redirect:/mypage/house");
 	    	return mv;
@@ -61,9 +64,24 @@ public class HouseController {
 	    
 	    int lo = 0;
 	    String Id = "";
+	    int rezChResult = 0;
 	    
 	    if (loginUser != null) {
 	    	Id = loginUser.getMemberId();
+	    	
+	    	 Map<String, Object> rezCheck = new HashMap<>();
+			 rezCheck.put("hno", hno);
+			 rezCheck.put("Id", Id);
+		
+			 rezChResult = listHouseService.rezChCount(rezCheck);
+			    
+			 if(rezChResult > 0) {
+			    	
+				 int loginRno = listHouseService.loginRno(rezCheck);
+				 mv.addObject("loginRno", loginRno);
+			}
+	    	
+	    	
 	    	for(Wish w : list) {
 	    		if(loginUser.getMemberId().equals(w.getId())){
 	    			lo = w.getHno();
@@ -71,6 +89,7 @@ public class HouseController {
 	    	}
 	    }
 	    
+		mv.addObject("rezChResult", rezChResult);
 	    mv.addObject("plist", plist);
 	    mv.addObject("Id", Id);
 	    mv.addObject("lo", lo);
@@ -80,22 +99,23 @@ public class HouseController {
 	}
 	
 	
-	
-	
-	
-	
-	
 	@RequestMapping("heart.ho")
-	public ResponseEntity<String> heart(@RequestParam("hno") int hno, @RequestParam("type") String type, HttpSession session) {;
+	public ResponseEntity<String> heart(@RequestParam("hno") int hno, @RequestParam("type") String type, HttpSession session) {
 	  Member loginUser = (Member) session.getAttribute("loginUser");
-	  String id = loginUser.getMemberId();
+	  String id = "";
+	  if (loginUser != null) {
+	    id = loginUser.getMemberId();
+	  } else {
+	    // 로그인이 필요한 기능이므로 로그인되지 않은 경우 에러 응답을 반환
+	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 후 이용해주세요.");
+	  }
 
 	  if (type.equals("like")) {
 	    houseService.heartLike(id, hno);
 	  } else {
 	    houseService.heartUnlike(id, hno);
 	  }
-	  
+
 	  // 성공적인 응답 반환
 	  return ResponseEntity.ok().body("success");
 	}
@@ -110,6 +130,12 @@ public class HouseController {
 	    h.setMemberId(loginUser.getMemberId());
 	    
 	    MultipartFile[] images = {image1, image2, image3, image4, image5, image6};
+	    
+	    if(h.getHouseAddress() != null) {
+			double[] area = MainController.getCoordinates(h.getHouseAddress());
+			h.setLatitude(area[0]);
+			h.setLongitude(area[1]);
+		}
 	    
 	    int result2 = houseService.enrollHouse(h);
 	    
@@ -137,7 +163,7 @@ public class HouseController {
 	    }
 	    
 	    if(result > 0) { // 게시글 등록 성공 => 게시글 목록보기 요청
-	        session.setAttribute("alertMsg", "성공적으로 방이 등록되었습니다.");
+	        session.setAttribute("alertMsg", "방이 등록되었습니다.");
 	        return "redirect:/mypage/house";
 	    } else { // 게시글 등록 실패 => 에러문구 담아서 에러페이지 포워딩
 	        model.addAttribute("errorMsg", "방 등록에 실패하였습니다.");
@@ -179,6 +205,8 @@ public class HouseController {
 	@RequestMapping("houseEdit.ho")
 	public ModelAndView houseEdit(ModelAndView mv, int hno, HttpSession session) {
 	
+		
+		
 	    House h = houseService.selectHouse(hno);
 	    
 	    if (!h.getEnrollStatus().equals("등록완료")) {
@@ -203,7 +231,14 @@ public class HouseController {
 				
 		int [] photoNos = {photoNo1, photoNo2, photoNo3, photoNo4, photoNo5, photoNo6,};
 	    MultipartFile[] images = {image1, image2, image3, image4, image5, image6};    
+	    
+	    if(h.getHouseAddress() != null) {
+			double[] area = MainController.getCoordinates(h.getHouseAddress());
 
+			h.setLongitude(area[0]);
+			h.setLatitude(area[1]);
+		}
+	    
 	    h.setHouseNo(hno);
 	    Member loginUser = (Member) session.getAttribute("loginUser");
 	    h.setMemberId(loginUser.getMemberId());
@@ -237,7 +272,7 @@ public class HouseController {
 	    }
 
 	    if (result > 0) {
-	        session.setAttribute("alertMsg", "성공적으로 방 정보가 수정되었습니다.");
+	        session.setAttribute("alertMsg", "방 정보가 수정되었습니다.");
 	        return "redirect:/mypage/house";
 	    } else {
 	        model.addAttribute("errorMsg", "방 정보 수정에 실패하였습니다.");
@@ -279,7 +314,7 @@ public class HouseController {
 	    } else {
     	
     	session.setAttribute("alertMsg", "로그인 후 이용해주세요.");
-		mv.setViewName("/member/login");
+		mv.setViewName("redirect:/member/login");
 		return mv;
 	    }
     }

@@ -1,5 +1,10 @@
 package com.suim.admin.model.vo;
 
+import java.util.ArrayList;
+
+import com.suim.house.model.vo.Region;
+import com.suim.member.model.vo.Member;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,18 +12,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Dashboard {
 
-	private int male;
-	private int female;
-	
-	private String enrollDate;
-	
-	private int reportCount_m;
-	private int reportCount_h;
-	private int reportCount_b;
-	private int reportCount_br;
-	private int reportCount_f;
-	private int reportCount_fr;
-	private int reportCount_c;
-	
-	private int boardCount;
+	private int totalMembers;
+	private String month;
+	private int newMembers;
+	private String gender;
+	private int memberCount;
+	private String memberId;
+	private String memberName;
+	private int reservationCount;
+	private int reviewCount;
+	private int totalRooms;
+	private int reservedRooms;
+	private int reservationRate;
+	private int vacantRooms;
+	private int vacancyRate;
+	private int toatlRevenue;
+	private String houseName;
+	private String houseDate;
+	private String regionName;
+	private int roomCount;
+	private int newMemberPercentage;
+	private String registrationDate;
+	private int leaveMembers;
+	private int leaveRate;
 }

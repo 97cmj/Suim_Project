@@ -33,6 +33,7 @@
         <!-- 나중에 한번에 include 할 부분 -->
         <link href="/resources/css/event/event.css" rel="stylesheet" />
    
+   
         
         
 <title>이벤트 게시판</title>
@@ -126,33 +127,61 @@
 		</c:if>
 		        
 
+					<select id="categorySelect" name="categorySelect">
+
+					
+						<!-- 기본적으로 카테고리를 선택 안 할 시 유효한 모든 진행중인 이벤트들을 조회함 -->
+						<option value="">진행중인 이벤트</option>
+        				<option value="자유게시판">자유게시판 이벤트</option>
+        				<option value="house">house 이벤트</option>
+        				<option value="종료된 이벤트">종료된 이벤트</option>
+        			</select>
         <table id="event-table" class="table">
+        
         	<thead>
+        		
+        			
+        		
             	<tr class="table-header">
 	                <td class="eListNo">No</td>
+					<td>카테고리</td>
 	                <td class="title">제목</td>
 	                <td class="eventDate">작성일</td>
 	                <td class="eventView">조회수</td>
             	</tr>
          	</thead>
          	<tbody>
+         	
+         		<!-- 이벤트 카테고리별로 다른 게 나오게 함 -->
          		<c:forEach var="e" items="${ list }">
+         		
 		            <tr class="table-row" style="background-color:none;">
 		            	<td class="eListNo, eno">${ e.eventNo }</td>
+		            	<td>${e.eventCategory }</td>
 		            	<td class="title">
 		                	${ e.eventTitle }
 		                </td>
 		                <td class="createDate"><fmt:formatDate pattern="yyyy-MM-dd" value="${e.eventDate }" /></td>
 		                <td class="eventView">${ e.eventView }</td>
 		            </tr>
+		            
             	</c:forEach>
          	
          </tbody>
          </table>
-	
-	
-       
+	<script>
 
+	
+	$(function() {
+      	$("#event-table>tbody>tr").click(function() {
+      		let eno = $(this).children(".eno").text();
+      		location.href = "detail.ev?eno=" + eno; //
+      	});
+      });
+		        
+
+		</script>
+		
 
 <!-- 페이지네이션 영역 시작 -->
             <div id="pagingArea">
@@ -163,12 +192,12 @@
                 			<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
                 		</c:when>
                 		<c:otherwise>
-                			<li class="page-item"><a class="page-link" href="event.ev?cPage=${ pi.currentPage - 1 }">Previous</a></li>
+                			<li class="page-item"><a class="page-link" href="<c:url value='event.ev?cPage=${ pi.currentPage - 1 }&category=${e.eventCategory}'/>">Previous</a></li>
                 		</c:otherwise>
                 	</c:choose>
                     
                     <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }" step="1">
-                    	<li class="page-item"><a class="page-link" href="event.ev?cPage=${ p }">${ p }</a></li>
+                    	<li class="page-item"><a class="page-link" href="<c:url value='event.ev?cPage=${ p }&category=${e.eventCategory}'/>">${ p }</a></li>
                     </c:forEach>
                     
                     <c:choose>
@@ -177,12 +206,13 @@
                     	</c:when>
                     	
                     	<c:otherwise>
-                    		<li class="page-item"><a class="page-link" href="event.ev?cPage=${ pi.currentPage + 1 }">Next</a></li>
+                    		<li class="page-item"><a class="page-link" href="<c:url value='event.ev?cPage=${ pi.currentPage + 1 }&category=${e.eventCategory}'/>">Next</a></li>
                     	</c:otherwise>
                     </c:choose>
             	</ul>
             </div>
-
+            
+            
    
     
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -202,16 +232,10 @@
         button.addEventListener('mouseout', function() {
         // 애니메이션 클래스를 제거합니다.
         button.classList.remove('hovered');
-        });
-
+               });
+      
          
-         
-         $(function() {
-         	$("#event-table>tbody>tr").click(function() {
-         		let eno = $(this).children(".eno").text();
-         		location.href = "detail.ev?eno=" + eno; //
-         	});
-         });
+        
               
 
             
