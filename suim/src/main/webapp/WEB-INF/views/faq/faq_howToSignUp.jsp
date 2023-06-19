@@ -21,7 +21,7 @@
          <!-- 1:1문의 js -->
          <script src="js/chatbot.js"></script>
          <!-- faq css -->
-         <link href="/resources/css/board/faqDetail.css" rel="stylesheet" />
+         <link href="/resources/css/faq/faqList.css" rel="stylesheet" />
          
  <style>
      
@@ -36,6 +36,18 @@
  }
  footer {
      margin-top: auto;
+ }
+ 
+ #faqDiv {
+	margin-top : 150px;
+ }
+ 
+ #contentHeader {
+ 	border-bottom-color: green;
+ }
+ 
+ .faqTitle {
+ 	text-align: left;
  }
 
  </style>
@@ -73,7 +85,7 @@
                     </thead>
                     <tbody>
                         
-                        <tr id="faqDetailContent">
+                        <tr id="faqDetailContent" style="height : 400px;">
                             <td class="faqAnswer">
                             <!-- 회원가입입력양식 화면 사진을 보여줌-->
                                <img src="/resources/img/faq/FAQ - knowhowMemberSignUp.png" alt="회원가입 입력양식 화면">
@@ -92,13 +104,20 @@
                     </tbody>
                 </table>
                 
-               
                 
                 
 
             </div>
+            
+            <div align="center">
+            	<button class="btn btn-primary btn-block submit-btn">
+            		<a href="faqList">FAQ 목록</a>
+            	</button>
+            </div>
         </div>
         
+       
+                
     </div>
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
