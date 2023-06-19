@@ -34,8 +34,8 @@
                     <a href="/admin/dashboard" class="nav-item nav-link ${pageType eq 'dashboard' ? 'active' : ''}"><i class="fa fa-tachometer-alt me-2"></i>대시보드</a>
        				<a href="/admin/list.me" class="nav-item nav-link ${pageType eq 'member/member' ? 'active' : ''}"><i class="far fa-file-alt me-2"></i>회원 관리</a>
                     <a href="/admin/list.ho" class="nav-item nav-link ${pageType eq 'house/house' ? 'active' : ''}"><i class="fa fa-laptop me-2"></i>쉐어하우스 관리</a>
+                    <a href="/admin/adminRez.ho" class="nav-item nav-link ${pageType eq 'board/reservation' ? 'active' : ''}"><i class="fa fa-calendar me-2"></i>예약 관리</a>
                     
-
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-keyboard me-2"></i>커뮤니티 관리</a>
                         <div class="dropdown-menu bg-transparent border-0">
@@ -51,8 +51,9 @@
                      <div class="nav-item dropdown">
                         <a href="event.ev" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-calendar-event-fill"></i>이벤트 관리</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="event.ev" class="dropdown-item">일반 사용자용 이벤트 목록</a>
-                            <a href="admin.ev" class="dropdown-item">이벤트 관리</a>
+                            <a href="/admin.ev" class="dropdown-item">이벤트 관리</a>
+                        	<a href="/enrollForm.ev" class="dropdown-item">이벤트 게시글 작성</a>
+                            <a href="/event.ev" class="dropdown-item">이벤트 목록 바로가기</a>
                         </div>
                     </div>
                     
@@ -60,9 +61,9 @@
                     <div class="nav-item dropdown">
                     	<a href="admin.no" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-megaphone-fill"></i>공지사항 관리</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="notice.no" class="dropdown-item">공지사항 목록 바로가기</a>
-                            <a href="admin.no" class="dropdown-item">공지사항 관리</a>
-                            <a href="enrollForm.no" class="dropdown-item">공지사항 작성</a>
+                            <a href="/admin.no" class="dropdown-item">공지사항 관리</a>
+                        	<a href="/enrollForm.no" class="dropdown-item">공지사항 게시글 작성</a>
+                            <a href="/notice.no" class="dropdown-item">공지사항 목록 바로가기</a>  
                         </div>
                     </div>
                 </div>

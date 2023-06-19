@@ -86,8 +86,10 @@ public class BoardDao {
 	public int selectfListCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("boardMapper.selectfListCount");
 	}
-	public int selectfListCount(SqlSessionTemplate sqlSession, HashMap<String, String> fin) {
-		return sqlSession.selectOne("boardMapper.selectfListCount" ,fin);
+
+	public int selectfcListCount(SqlSessionTemplate sqlSession, HashMap<String, String> fin) {
+		return sqlSession.selectOne("boardMapper.selectfcListCount");
+
 	}
 	
 	public ArrayList<Find> selectfList(SqlSessionTemplate sqlSession, PageInfo pi) {
@@ -165,9 +167,6 @@ public class BoardDao {
 	//---------------------------이용후기---------------------------------------------
 	public int selectiListCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("boardMapper.selectiListCount");
-	}
-	public int selectiListCount(SqlSessionTemplate sqlSession, HashMap<String, String> fin) {
-		return sqlSession.selectOne("boardMapper.selectiListCount" ,fin);
 	}
 	
 	public ArrayList<InReview> selectiList(SqlSessionTemplate sqlSession, PageInfo pi) {
