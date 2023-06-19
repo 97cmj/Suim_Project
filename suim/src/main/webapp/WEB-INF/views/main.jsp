@@ -281,11 +281,14 @@
 				<button class="slider__next"></button>
 			</div>
 		</div>
+		
 	</section>
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
+
 	<script src="/resources/js/common/main.js"></script>
+
 
 </body>
 </html>
