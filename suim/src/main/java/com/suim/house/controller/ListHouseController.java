@@ -3,6 +3,7 @@ package com.suim.house.controller;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -65,26 +66,47 @@ public class ListHouseController {
 			
 			ArrayList<Region> region = listHouseService.regionSelectList(searchKeyword);
 		    ArrayList<House> list = listHouseService.selectList(minValue,maxValue,genderDivisions,houseType,maxResident,floor,openDate);
-
-		    mv.addObject("list", list);
 		     
 		    if (region.isEmpty()) {
 		        mv.addObject("regionEmpty", true);
+		        
+		        ArrayList<House> centerAd = listHouseService.keyCenterAd(searchKeyword);
+		        		        
+		        if(centerAd.isEmpty()) {
+			        mv.addObject("centerAdEmpty", true);
+		        } else {
+		        	mv.addObject("centerAd", centerAd);
+		        }
+		        
 		    } else {
 		        mv.addObject("region", region);
 		    }
 		    
 		    if(minValue != null ) {
-		       mv.addObject("minValueResult", minValue);
-		    } else {
-		       mv.addObject("minValueResult", 0);
-		    }
+		    	
+		    	// 문자열을 int 타입으로 변환
+		    	int minIn = Integer.parseInt(minValue);
+		    	int maxIn = Integer.parseInt(maxValue);
+
+		    	// int 타입에 10000을 곱함
+		    	int divMin = minIn/10000;
+		    	int divMax = maxIn/10000;
+
+		    	// 다시 String 타입으로 변환
+		    	String minValueResult = String.valueOf(divMin);
+		    	String maxValueResult = String.valueOf(divMax);
+		    	
+		       mv.addObject("minValueResult", minValueResult);
+		       mv.addObject("maxValueResult", maxValueResult);
 		    
-		    if(maxValue != null) {
-		       mv.addObject("maxValueResult", maxValue);
 		    } else {
-			   mv.addObject("maxValueResult", 300);
+		    	
+		       mv.addObject("minValueResult", 0);
+			   mv.addObject("maxValueResult", 500);
 		    }
+		   
+		    mv.addObject("list", list);
+		    mv.addObject("searchKeyword",searchKeyword);
 		    	
 		    mv.setViewName("house/houseMapView"); 
 		    
@@ -97,14 +119,30 @@ public class ListHouseController {
 									HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) {
 
 	    Member loginUser = (Member) session.getAttribute("loginUser");
+	    
+	    String Id = loginUser.getMemberId();
+	    
+		 Map<String, Object> rezCheck = new HashMap<>();
+			 rezCheck.put("hno", houseNo);
+			 rezCheck.put("Id", Id);
+		
+	    int rezChResult = listHouseService.rezChCount(rezCheck);
+	    	    
+	    if(rezChResult > 0) {
+	    	
+	        session.setAttribute("altMsg", "이미 신청중인 예약이 있습니다.");
+	        
+		    return "house/houseReservation";
 
-	    model.addAttribute("houseNo", houseNo);
-	    model.addAttribute("loginUser", loginUser);
-	    model.addAttribute("memberId", memberId);
-	    model.addAttribute("houseName", houseName);
-
-	    return "house/houseReservation";
-
+	    } else {
+	    
+		    model.addAttribute("houseNo", houseNo);
+		    model.addAttribute("loginUser", loginUser);
+		    model.addAttribute("memberId", memberId);
+		    model.addAttribute("houseName", houseName);
+	
+		    return "house/houseReservation";
+	    }
 	}
 	
 	// 예약 신청(등록) 컨트롤러
@@ -137,6 +175,9 @@ public class ListHouseController {
 		int currentPage, @RequestParam(value="houseNo") int houseNo, HttpSession session, HttpServletRequest request) {
 			
 			session.setAttribute("originalUrl", request.getRequestURI());
+			
+			Member loginUser = (Member) session.getAttribute("loginUser");
+			
 	        int pageLimit = 10;
 	        int boardLimit = 10;
 	        int listCount = 0;
@@ -148,9 +189,18 @@ public class ListHouseController {
 			mv.addObject("pi", pi);
 		    mv.addObject("list", list);
 		    mv.addObject("houseNo", houseNo);
-		    mv.setViewName("member/mypage/myHouseReservation");
+		    
+		    if (loginUser == null) {
+				session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
+			    mv.setViewName("redirect:/member/login");
+				return mv;
+				
+			} else {
+		    
+				mv.setViewName("member/mypage/myHouseReservation");
 			
-		    return mv;
+		    	return mv;
+			}
 		   
 		}
 	

@@ -2,6 +2,7 @@ package com.suim.house.model.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -65,6 +66,22 @@ public class ListHouseServiceImpl implements ListHouseService{
 	@Override
 	public String memberEmail(String memberId) {
 		return listHouseDao.memberEmail(sqlSession, memberId);
+	}
+
+	
+	@Override
+	public int rezChCount(Map<String, Object> rezCheck) {
+		return listHouseDao.rezChCount(sqlSession, rezCheck);
+	}
+
+	@Override
+	public int loginRno(Map<String, Object> rezCheck) {
+		return listHouseDao.loginRno(sqlSession, rezCheck);
+	}
+
+	@Override
+	public ArrayList<House> keyCenterAd(String searchKeyword) {
+		return listHouseDao.keyCenterAd(sqlSession, searchKeyword);
 	}
 
 }

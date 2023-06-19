@@ -2,6 +2,7 @@ package com.suim.event.controller;
 
 import java.util.ArrayList;
 
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,12 @@ public class EventController {
 	@Autowired
 	private EventService eventService;
 	
+	
+	/*
 	@RequestMapping("/event.ev")
 	public ModelAndView selectList(
 			@RequestParam(value="cPage", defaultValue="1") int currentPage,
+			@RequestParam(value = "category", required = false) String category,
 			ModelAndView mv) {
 		// 페이징처리를 위한 PageInfo 객체 얻어내기
 		int listCount = eventService.selectListCount();
@@ -42,6 +46,9 @@ public class EventController {
 		
 		
 		ArrayList<Event> list = eventService.selectList(pi);
+		
+		
+		
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
 		  .addObject("p")
@@ -51,6 +58,87 @@ public class EventController {
 
 		return mv;
 	}
+	*/
+	
+	
+	@RequestMapping("/event.ev")
+	public ModelAndView selectList(
+			@RequestParam(value="cPage", defaultValue="1") int currentPage,
+	//		@RequestParam(value = "category", required = false) String category,
+			ModelAndView mv) {
+		
+		
+		// 페이징처리를 위한 PageInfo 객체 얻어내기
+		int listCount = eventService.selectListCount();
+		System.out.println(listCount);
+		
+		int pageLimit = 10;
+		int boardLimit = 5;
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		
+		System.out.println(pi);
+		System.out.println("이벤트컨트롤러에서의 pi 의 값은");
+		System.out.println(pi);
+		System.out.println("입니다.");
+		
+		// 카테고리에 따른 PageInfo 객체 얻어내기
+		// String category = eventService.selectEventCategory(pi, category);
+		
+		
+		ArrayList<Event> list = eventService.selectList(pi);
+	
+		System.out.println("list -------------- ");
+		System.out.println(list);
+		System.out.println("000000000000000000000000000000000000");
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .addObject("p")
+		  .setViewName("event/event");
+		System.out.println("리스트는 " + list);
+		System.out.println(mv);
+
+		return mv;
+	}
+	
+	
+	/*
+	@RequestMapping("/event.ev")
+	public ModelAndView selectList(
+			@RequestParam(value="cPage", defaultValue="1") int currentPage,
+			@RequestParam(value = "category", required = false) String category,
+			ModelAndView mv) {
+		
+		
+		// 페이징처리를 위한 PageInfo 객체 얻어내기
+		int listCount = eventService.selectListCount();
+		System.out.println(listCount);
+		
+		int pageLimit = 10;
+		int boardLimit = 5;
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+		
+		System.out.println(pi);
+		System.out.println("이벤트컨트롤러에서의 pi 의 값은");
+		System.out.println(pi);
+		System.out.println("입니다.");
+		
+		// 카테고리에 따른 PageInfo 객체 얻어내기
+		category = eventService.selectEventCategory(pi, category);
+		
+		
+		ArrayList<Event> list = eventService.selectList(pi);
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .addObject("p")
+		  .setViewName("event/event");
+		System.out.println("리스트는 " + list);
+		System.out.println(mv);
+
+		return mv;
+	}
+	*/
 	
 	@RequestMapping("/detail.ev")
 	public ModelAndView selectBoard(ModelAndView mv, int eno, HttpSession session) {
