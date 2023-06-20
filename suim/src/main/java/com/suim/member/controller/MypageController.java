@@ -309,12 +309,6 @@ public class MypageController {
 		}
 
 		session.setAttribute("originalUrl", request.getRequestURI());
-		
-		Member loginUser = (Member) session.getAttribute("loginUser");
-		if (loginUser == null) {
-			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
-			return "redirect:/member/login";
-		}
 
 		int pageLimit = 5;
 		int boardLimit = 6;
