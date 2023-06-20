@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <style>
 	#houseList {text-align:center;}
 	#houseList>tbody>tr:hover {cursor:pointer;}
@@ -54,9 +54,9 @@
 								<form class="d-md-flex ms-4" action="search.ho">
 									<div class="select">
 					                    <select class="form-select form-select-sm mb-3" name="condition" style="margin-bottom: unset !important; height: 36px;">
-					                        <option value="HOUSE_NAME">이름</option>
-					                        <option value="RES_GENDER">성별</option>
-					                        <option value="RES_TYPE">유형</option>
+					                        <option value="HOUSE_NAME">쉐어하우스 이름</option>
+					                        <option value="RES_GENDER">주거성별</option>
+					                        <option value="RES_TYPE">주거유형</option>
 					                    </select>
 					                </div>
 									<input class="form-control border-0" type="search" placeholder="Search" name="keyword">
@@ -103,6 +103,7 @@
 		                                            <th scope="col">월세</th>
 		                                            <th scope="col">주거성별</th>
 		                                            <th scope="col">주거형태</th>
+		                                            <th scope="col">작성자</th>
 		                                        </tr>
 		                                    </thead>
 		                                    <tbody>
@@ -114,10 +115,31 @@
 				                                            <td class="hno">${ h.houseNo }</td>
 				                                            <td>${ h.houseName }</td>
 				                                            <td>${ h.houseAddress }</td>
-				                                            <td>${ h.deposit }</td>
-				                                            <td>${ h.rent }</td>
+				                                            <td>
+				                                            	<c:choose>
+																	<c:when test="${h.deposit >= 10000000}">
+																		<fmt:formatNumber value="${h.deposit/10000}"
+																			pattern="###,###'천만원'" />
+																	</c:when>
+																	<c:otherwise>
+																		<fmt:formatNumber value="${h.deposit/10000}" pattern="###'만원'" />
+																	</c:otherwise>
+																</c:choose>
+				                                            </td>
+				                                            <td>
+				                                            	<c:choose>
+																	<c:when test="${h.rent >= 10000000}">
+																		<fmt:formatNumber value="${h.rent/10000}"
+																			pattern="###,###'천만원'" />
+																	</c:when>
+																	<c:otherwise>
+																		<fmt:formatNumber value="${h.rent/10000}" pattern="###'만원'" />
+																	</c:otherwise>
+																</c:choose>
+				                                            </td>
 				                                            <td>${ h.resGender }</td>
 				                                            <td>${ h.resType }</td>
+				                                            <td>${ h.memberId }</td>
 				                                        </tr>
 				                                	</c:forEach>
 				                                </c:when>
