@@ -81,7 +81,7 @@
 						                <td class="title">제목</td>
 						                <td class="eventDate">작성일</td>
 						                <td class="eventView">조회수</td>
-						                <td class="eventStatus" style="text-align : center;">유효한 이벤트</td>
+						                <td class="eventStatus" style="text-align : center;">이벤트 진행 여부</td>
 					            	</tr>
 					         	</thead>
 					         	<tbody>
@@ -100,7 +100,16 @@
 							                </td>
 							                <td class="createDate"><fmt:formatDate pattern="yyyy-MM-dd" value="${e.eventDate }" /></td>
 							                <td class="eventView">${ e.eventView }</td>
-							                <td class="eventStatus" style="text-align : center;">${ e.eventStatus }</td>
+							                <td class="eventStatus" style="text-align : center;">
+							                <c:choose>
+							                	<c:when test="${e.eventCategory eq ('종료된 이벤트') }">
+							                		종료
+							                	</c:when>
+							                	<c:otherwise>
+							                		진행
+							                	</c:otherwise>
+							                </c:choose>
+							                </td>
 							            </tr>    
 							            
 					             	</c:forEach>
