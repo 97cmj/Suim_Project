@@ -1,6 +1,6 @@
 package com.suim.house.controller;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +67,7 @@ public class ListHouseController {
 			
 			ArrayList<Region> region = listHouseService.regionSelectList(searchKeyword);
 		    ArrayList<House> list = listHouseService.selectList(minValue,maxValue,genderDivisions,houseType,maxResident,floor,openDate);
-		     
+
 		    if (region.isEmpty()) {
 		        mv.addObject("regionEmpty", true);
 		        
@@ -108,7 +108,7 @@ public class ListHouseController {
 		   
 		    mv.addObject("list", list);
 		    mv.addObject("searchKeyword",searchKeyword);
-		    	
+
 		    mv.setViewName("house/houseMapView"); 
 		    
 		    return mv;
@@ -149,7 +149,8 @@ public class ListHouseController {
 	// 예약 신청(등록) 컨트롤러
 	@RequestMapping("enrollReservation.rez")
 	public String reservationInsert(Model model, HttpServletRequest request, HttpSession session,
-									Date rezDate, String rezHour, int houseNo, String sendMemberId, String recMemberId) {
+									@DateTimeFormat(pattern = "yyyy-MM-dd")Date rezDate, String rezHour, int houseNo,
+									String sendMemberId, String recMemberId) {
 		
 		 Map<String, Object> reservation = new HashMap<>();
 				 reservation.put("rezDate", rezDate);
