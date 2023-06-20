@@ -103,6 +103,7 @@ public class AdminMemberController {
 			list = adminMemberService.selectCategoryMember(pi, memberId, category);
 		}
 		
+
 		mv.addObject("m", m);
 		mv.addObject("list", list);
 		mv.addObject("pi", pi);
