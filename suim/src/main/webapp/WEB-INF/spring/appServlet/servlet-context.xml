@@ -83,6 +83,7 @@
 			<mapping path="/member/verifySuccess"/>
 			<mapping path="/member/findId"/>
 			<mapping path="/member/findPw"/>
+			<mapping path="/member/term"/>
 			
 			<beans:bean class="com.suim.common.interceptor.AuthInterceptor" 
 															id="AuthInterceptor" />
@@ -91,6 +92,10 @@
 	    	<mapping path="/*" />
 	    	<mapping path="/member/*" />
 	    	<beans:bean class="com.suim.common.interceptor.LoginInterceptor" id="LoginInterceptor" />
+		</interceptor>
+		<interceptor>
+	    	<mapping path="/admin/*" />
+	    	<beans:bean class="com.suim.common.interceptor.AdminInterceptor" id="AdminInterceptor" />
 		</interceptor>
 	</interceptors>
 	

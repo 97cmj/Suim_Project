@@ -42,7 +42,7 @@
   
   
     
-    <c:if test="${ not empty loginUser and loginUser.memberId eq ('admin1') }">
+    <c:if test="${ not empty loginUser and loginUser.email eq (('oox14@naver.com') or ('suimm012@gmail.com')) }">
 <div class="container-xxl position-relative bg-white d-flex p-0">
  <%@ include file="../common/sidebar.jsp" %>
 	    <div class="content">

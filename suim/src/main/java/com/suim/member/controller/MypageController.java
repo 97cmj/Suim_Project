@@ -120,6 +120,15 @@ public class MypageController {
 					return "redirect:" + session.getAttribute("originalUrl");
 				}
 			}
+			
+			
+			if(m.getArea() != null && !m.getArea().equals("")) {
+				double[] area = MainController.getCoordinates(m.getArea());
+				if(area != null) {
+				m.setLongitude(area[0]);
+				m.setLatitude(area[1]);
+				}
+			}
 
 			int result = memberService.updateMember(m);
 			session.setAttribute("loginUser", m);
@@ -158,7 +167,8 @@ public class MypageController {
 
 	@GetMapping("board")
 	public String boardList(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam(value = "type", defaultValue = "board") String type, Model model) {
+			@RequestParam(value = "type", defaultValue = "board") String type, Model model, HttpServletRequest request) {
+		session.setAttribute("originalUrl", request.getRequestURI());
 		
 		Member loginUser = (Member) session.getAttribute("loginUser");
 		if (loginUser == null) {
@@ -291,6 +301,12 @@ public class MypageController {
 	@RequestMapping("house")
 	public String mypageHouse(@RequestParam(value = "cPage", defaultValue = "1") int currentPage,
 			HttpServletRequest request, Model model) {
+		
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		if (loginUser == null) {
+			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
+			return "redirect:/member/login";
+		}
 
 		session.setAttribute("originalUrl", request.getRequestURI());
 
@@ -305,7 +321,6 @@ public class MypageController {
 		PageInfo pi = null;
 		
 		
-
 		listCount = mypageService.selectHouseListCount(memberId);
 
 		pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
@@ -323,6 +338,12 @@ public class MypageController {
 									HttpServletRequest request, Model model) {
 		
 		session.setAttribute("originalUrl", request.getRequestURI());
+		
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		if (loginUser == null) {
+			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
+			return "redirect:/member/login";
+		}
 		
 		int pageLimit = 10;
 	    int boardLimit = 10;
@@ -371,12 +392,10 @@ public class MypageController {
 	    
 		 listCount = mypageService.selectPayListCount(memberId);
 		 
-		 System.out.println(listCount);
 		 pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
 		 ArrayList<Pay> list = mypageService.selectPayList(pi, memberId);
 		 
-		 System.out.println(list);
 		 model.addAttribute("pi", pi)
 		      .addAttribute("list", list);
 			

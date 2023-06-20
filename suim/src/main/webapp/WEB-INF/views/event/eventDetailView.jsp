@@ -42,6 +42,20 @@
             footer {
                 margin-top: auto;
             }
+            
+        .contentHeader {
+        	border-bottom-color: green;
+        	border-left-color: green;
+        	border-right-color: green;
+        	border-top-color: green;
+        }
+        
+       
+        
+        
+        
+        
+            
     </style>
 </head>
 <body>
@@ -51,14 +65,14 @@
    
     <!--공지사항(Content) 영역 -->
 
-    <div id="eventDiv" class="container main">
+    <div id="eventDiv" class="container main" style="margin-top:150px;">
         <div class="col-lg-12">
     
     
             <div class="table-wrapper">
             
             <div style="display:inline-block">
-                <div id="eventBold" class="table-title">
+                <div id="eventBold" class="table-title"  style="margin-bottom: 40px;">
                     	SUIM 이벤트
                 </div>
             
@@ -68,10 +82,11 @@
                 <table id="eventDetailTable" class="table">
                     <thead>
                         <tr class="table-header">
-                            <td id="eventNo" class="nListNo contentHeader" hidden>No</td>
-                            <td class="title contentHeader">
-                            	<div style="padding-left: 10%; color: black; font-size: larger;">제목</div>
-                                <div style = "padding-left : 10% ">${e.eventTitle}</div>
+                           <td hidden></td>
+                            <td class="title contentHeader" style="flex; text-align : left;">
+                            
+                            	<div style="color: black; font-size: larger;">제목</div>
+                                <div style="border-bottom-color: green;">${e.eventTitle}</div>
                             </td>              
                             <td class="createDate contentHeader" style="width:15%;">
                                 <div class="text-center">작성일자</div>
@@ -101,7 +116,7 @@
                             
                         </tr>
                         <tr rowspan="3">
-                        	<td class="eventContent">
+                        	<td  colspan="3" class="eventContent">
                           		${ e.eventContent }
                           	</td>
                          </tr>
@@ -128,7 +143,7 @@
                     </tbody>
                 </table>
                 
-               <c:if test="${ not empty loginUser and loginUser.memberId eq ('admin1') }">
+               <c:if test="${ not empty loginUser and loginUser.email eq (('oox14@naver.com') or ('suimm012@gmail.com')) }">
                          	<div align="center" style="display: inline-block;" align="right">
 				                <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
 				                <a class="btn btn-primary" onclick="postFormSubmit(1);">수정하기</a>

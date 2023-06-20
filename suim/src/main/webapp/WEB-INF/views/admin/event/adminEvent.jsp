@@ -13,11 +13,15 @@
 	form input {width:150px!important;}
 	form button {border:none!important;}
 	.searchForm>form>input, .searchForm>form>div {display:inline-block;}
+	
+	#event-table {
+		text-align : center;
+	}
 </style>
-<c:choose>
-<c:when test="${ not empty loginUser and loginUser.memberId eq ('admin1') }">
-	<%@ include file="../common/include.jsp" %>
 
+	<%@ include file="../common/include.jsp" %>
+<c:choose>
+  <c:when test="${ not empty loginUser and loginUser.email eq (('oox14@naver.com') or ('suimm012@gmail.com')) }">
 	<div class="container-xxl position-relative bg-white d-flex p-0">
 	
         <!-- Spinner Start -->
@@ -68,7 +72,7 @@
         
 					        	<thead>
 					        		<tr>
-					        			<c:if test="${ not empty loginUser and loginUser.memberId eq ('admin1') }">
+					        			  <c:if test="${ not empty loginUser and loginUser.email eq (('oox14@naver.com') or ('suimm012@gmail.com')) }">
 					        			<div align="right" style="margin:0px">
 							    					<a class="btn btn-secondary" style="display: inline-block; vertical-align: middle; line-height: 20px; background-color: rgb(250,107,111); height: 20px; text-decoration: none; color: #fff; padding: 0 10px; font-size: medium;" href="enrollForm.ev">
 							       	 					이벤트 글작성
@@ -82,6 +86,7 @@
 						                <td class="title">제목</td>
 						                <td class="eventDate">작성일</td>
 						                <td class="eventView">조회수</td>
+						                <td class="eventStatus" style="text-align : center;">이벤트 진행 여부</td>
 					            	</tr>
 					         	</thead>
 					         	<tbody>
@@ -100,7 +105,8 @@
 							                </td>
 							                <td class="createDate"><fmt:formatDate pattern="yyyy-MM-dd" value="${e.eventDate }" /></td>
 							                <td class="eventView">${ e.eventView }</td>
-							            </tr>
+							                <td class="eventStatus" style="text-align : center;">${ e.eventStatus }</td>
+							            </tr>    
 							            
 					             	</c:forEach>
 							 	  </tbody>

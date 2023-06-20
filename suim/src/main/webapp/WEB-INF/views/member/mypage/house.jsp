@@ -121,28 +121,40 @@ body {
 										<div class="card-body text-center">
 											<h5 class="card-title">${h.houseName}</h5>
 											<p class="card-text">${h.houseAddress}</p>
-											<c:if test="${h.enrollStatus ne '등록완료'}">
-												<p class="card-text">${ h.enrollStatus }</p>
-											</c:if>
-											<c:if test="${h.enrollStatus eq '등록완료'}">
-												<c:choose>
-													<c:when test="${h.deposit == 0}">
-														<p class="card-text">없음 /
-															${(h.rent/10000).intValue()}만원</p>
-													</c:when>
+									<c:choose>
+									    <c:when test="${h.enrollStatus eq '등록완료'}">
+									        <c:choose>
 													<c:when test="${h.rent == 0}">
 														<p class="card-text">${(h.deposit/10000).intValue()}만원
 															/ 없음</p>
-													</c:when>
-													<c:when test="${h.deposit == 0} && ${h.rent == 0}">
-														<p class="card-text">없음 / 없음</p>
 													</c:when>
 													<c:otherwise>
 														<p class="card-text">${(h.deposit/10000).intValue()}만원
 															/ ${(h.rent/10000).intValue()}만원</p>
 													</c:otherwise>
 												</c:choose>
-											</c:if>
+									    </c:when>
+									    <c:otherwise>
+									        <c:choose>
+									            <c:when test="${h.enrollStatus eq '심사완료' && h.age > 0}">
+									                <c:choose>
+									                    <c:when test="${h.deposit == 0}">
+									                        <p class="card-text">없음 / ${(h.rent/10000).intValue()}만원</p>
+									                    </c:when>
+									                    <c:otherwise>
+									                        <p class="card-text">${(h.deposit/10000).intValue()}만원 / ${(h.rent/10000).intValue()}만원</p>
+									                    </c:otherwise>
+									                </c:choose>
+									            </c:when>
+									            <c:when test="${h.enrollStatus eq '심사완료' && h.deposit == 0}">
+									                <p class="card-text">없음 / ${(h.rent/10000).intValue()}만원</p>
+									            </c:when>
+									            <c:otherwise>
+									                <p class="card-text">${h.enrollStatus}</p>
+									            </c:otherwise>
+									        </c:choose>
+									    </c:otherwise>
+									</c:choose>
 											<p class="card-text">${ h.houseDate }</p>
 											<div class="card-form">
 												<form action="/myhouseRez.ho" method="post">
@@ -152,6 +164,9 @@ body {
 													</c:if>
 													<c:if test="${h.enrollStatus eq '심사완료'}">
 														<c:choose>
+															<c:when test="${h.age > 0}">
+																<button type="submit" class="btn btn-primary btn-sm">예약확인</button>
+															</c:when>	
 															<c:when test="${h.deposit == 0}">
 																<button type="submit" class="btn btn-primary btn-sm">예약확인</button>
 															</c:when>

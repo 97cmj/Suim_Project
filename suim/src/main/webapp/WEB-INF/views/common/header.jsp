@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="/resources/css/common/header.css" />
 
 
+
 <button id="notificationButton" style="display: none;">
 	<i class="fas fa-bell"></i>
 </button>
@@ -39,9 +40,9 @@
 				<li class="nav-item"><a href="/list.ho"
 					class="nav-link nav-text">방 찾기</a></li>
 
-				<li class="nav-item"><a href="#" class="nav-link nav-text">쉼</a>
+				<li class="nav-item"><a href="/suim" class="nav-link nav-text">쉼</a>
 					<ul>
-						<li><a href="">쉼 소개</a></li>
+						<li><a href="/suim">쉼 소개</a></li>
 					</ul></li>
 				<li class="nav-item"><a href="/list.bo"
 					class="nav-link nav-text">커뮤니티</a>
@@ -87,10 +88,18 @@
 				<li class="nav-item" style="padding: 1.6rem 0rem 2rem 2rem;">
 					<button
 						style="width: 90px; height: 40px; background: transparent; border-radius: 50px;"
-						onclick="location.href='Write.ho'">
+						onclick="location.href='/Write.ho'">
 						방 등록 <i class="fa-solid fa-right-from-bracket"></i>
 					</button>
 				</li>
+				
+				<c:choose>
+					<c:when test="${ loginUser ne null and loginUser.adminAuth eq 1 }">
+						<li class="nav-item" style="margin-top: 35px;margin-left: 10px;">
+							<a href="/admin/dashboard"><i class="fa-solid fa-gear fa-spin fa-2xl" style="color: #636669;"></i></a>
+						</li>
+					</c:when>
+				</c:choose>
 			</ul>
 
 			<button class="navbar-toggler" type="button"
@@ -101,6 +110,7 @@
 			<div class="offcanvas offcanvas-end" tabindex="-1"
 				id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
 				<div class="offcanvas-header">
+					
 					<c:choose>
 						<c:when test="${ empty loginUser }">
 							<div class="offcanvas-title" id="offcanvasNavbarLabel"></div>
@@ -109,6 +119,13 @@
 					<a type="button" class="navbar-toggler-icon text-reset"
 						data-bs-dismiss="offcanvas" aria-label="Close"
 						style="width: 32px; height: 32px"></a>
+						<c:choose>
+					<c:when test="${ loginUser ne null and loginUser.adminAuth eq 1 }">
+						<li class="nav-item">
+							<a href="/admin/dashboard"><i class="fa-solid fa-gear fa-spin fa-2xl" style="color: #636669;"></i></a>
+						</li>
+					</c:when>
+				</c:choose>
 				</div>
 				<div class="offcanvas-body">
 					<c:choose>
@@ -158,7 +175,7 @@
 						</c:if>
 
 						<li class="nav-item offcanvas-text m-4"><a class="side-black"
-							aria-current="page" href="">방 찾기</a></li>
+							aria-current="page" href="/list.ho">방 찾기</a></li>
 
 						<li class="nav-item dropdown m-4"><a class="side-black"
 							href="#" id="offcanvasNavbarDropdown1" role="button"

@@ -27,7 +27,7 @@
 <%@ include file="../common/include.jsp" %>
 
 <%-- <c:if test="${ not empty loginUser and loginUser.memberId eq ('관리자아이디') }"> --%>
-<c:if test="${ not empty loginUser and loginUser.memberId eq ('admin1') }">
+ <c:if test="${ not empty loginUser and loginUser.email eq (('oox14@naver.com') or ('suimm012@gmail.com')) }">
 <div class="container-xxl position-relative bg-white d-flex p-0">
     <!-- Spinner Start -->
 		
@@ -63,8 +63,8 @@
                     	<th><label for="category">이벤트 카테고리</label></th>
                     	<td>
                     		<select id="category" name="eventCategory" required>
-					            <option value="자유게시판">자유게시판 이벤트</option>
-					            <option value="house">house 이벤트</option>
+					            <option value="진행중인 이벤트">진행중인 이벤트</option>
+					            <option value="종료된 이벤트">house 이벤트</option>
 					            <option value="테스트 작성용 카테고리">테스트 작성용 이벤트 카테고리</option>
 					        </select>
 					    </td>

@@ -14,9 +14,9 @@
 	form button {border:none!important;}
 	.searchForm>form>input, .searchForm>form>div {display:inline-block;}
 </style>
-
+<c:if test="${ not empty loginUser and loginUser.email eq (('oox14@naver.com') or ('suimm012@gmail.com')) }">
 	<%@ include file="../common/include.jsp" %>
-
+ 
 	<div class="container-xxl position-relative bg-white d-flex p-0">
 	
         <!-- Spinner Start -->
@@ -43,7 +43,7 @@
                     
                     <div class="col-12">
                         <div class="bg-light rounded h-100 p-4" width="">
-                            <h6 class="mb-4">이벤트 관리</h6>
+                            <h6 class="mb-4">공지사항 관리</h6>
 
 							<ul class="nav nav-tabs">
 								<li class="nav-item"><a
@@ -65,6 +65,13 @@
 							         <div class="table-responsive">			
 					        <table id="notice-table" class="table">
 			                    <thead>
+			                    	<tr>
+			                    		<div align="right" style="margin:0px">
+							    					<a class="btn btn-secondary" style="display: inline-block; vertical-align: middle; line-height: 20px; background-color: rgb(250,107,111); height: 20px; text-decoration: none; color: #fff; padding: 0 10px; font-size: medium;" href="enrollForm.no">
+							       	 					공지사항 글작성
+						 							</a>
+						 				</div>
+						 			</tr>
 			                        <tr class="table-header">
 			                            <td class="nListNo">No</td>
 			                            <td class="title">제목</td>
@@ -114,9 +121,9 @@
 		        });
 		         
 		         $(function() {
-		          	$("#event-table>tbody>tr").click(function() {
-		          		let eno = $(this).children(".eno").text();
-		          		location.href = "admin/detail.ev?eno=" + eno; //
+		          	$("#notice-table>tbody>tr").click(function() {
+		          		let nno = $(this).children(".nno").text();
+		          		location.href = "admin/detail.no?nno=" + nno; //
 		          	});
 		          });
 		</script>
@@ -127,15 +134,15 @@
 			<nav id="pagingArea" style="margin-top: 30px; margin-bottom: 30px;">
 				<ul class="pagination justify-content-center">
 					<li class="page-item ${pi.currentPage == 1 ? 'disabled' : ''}">
-						<a class="page-link" href="<c:url value='/admin.ev?cPage=${pi.currentPage - 1}&category=${category}'/>">&lt;</a>
+						<a class="page-link" href="<c:url value='/admin.no?cPage=${pi.currentPage - 1}&category=${category}'/>">&lt;</a>
 					</li>
 					<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}" step="1">
 						<li class="page-item ${pi.currentPage == p ? 'active' : ''}">
-							<a class="page-link" href="<c:url value='/admin.ev?cPage=${p}&category=${category}'/>">${p}</a>
+							<a class="page-link" href="<c:url value='/admin.no?cPage=${p}&category=${category}'/>">${p}</a>
 						</li>
 					</c:forEach>
 					<li class="page-item ${pi.currentPage == pi.maxPage || pi.listCount == 0 ? 'disabled' : ''}">
-						<a class="page-link" href="<c:url value='/admin.ev?cPage=${pi.currentPage + 1}&category=${category}'/>">&gt;</a>
+						<a class="page-link" href="<c:url value='/admin.no?cPage=${pi.currentPage + 1}&category=${category}'/>">&gt;</a>
 					</li>
 				</ul>
 			</nav>
@@ -151,3 +158,4 @@
         <!-- Content End -->
 
 	</div>
+</c:if>

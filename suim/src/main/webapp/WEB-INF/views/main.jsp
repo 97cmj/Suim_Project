@@ -14,12 +14,33 @@
 	href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
 <link rel="stylesheet"
 	href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-<link rel="stylesheet" href="resources/css/common/main.css" />
+<link rel="stylesheet" href="/resources/css/common/main.css" />
 
 </head>
 
 <c:set var="currentPath" value="${pageContext.request.servletPath}" />
+<style>
+.shareBtn {
+	padding: 6px;
+	height: 20px;
+	background: rgb(250, 107, 111);
+	border: rgb(250, 107, 111);
+	border-radius: 2px;
+	font-style: normal;
+	font-size: 12px;
+	font-weight: 500;
+	color: #fff;
+	line-height: 9px;
+	margin-right: 14px;
+}
 
+.share-content {
+	font-style: normal;
+	font-weight: 400;
+	font-size: 12px;
+	color: #828282;
+}
+</style>
 
 
 <body>
@@ -154,7 +175,7 @@
 	<div class="container" style="margin-top: 50px;">
 
 		<div class="main-title">
-			<div class="main-title__title">추천 셰어하우스</div>
+			<div class="main-title__title text-center">추천 셰어하우스</div>
 			<p class="main-title__text">
 				<c:if test="${loginUser ne null}">
 					<c:if test="${loginUser.area ne null }">
@@ -185,14 +206,17 @@
 							<img src="resources/img/house/uploadFiles/${house.changeName}"
 								alt="">
 						</div>
-						<div class="txt-bx">
-							<div class="title" style="margin-top: 10px;">${house.houseName}</div>
-							<div class="txt em">쉐어하우스(${house.resGender})</div>
+						<div class="txt-bx" style="padding-top: 16px;">
+
+							<button class="shareBtn">셰어하우스</button>
+							<span class="share-content">${house.resGender}</span>
+							<div class="title">${house.houseName}</div>
+
 
 							<c:set var="deposit" value="${house.deposit}" />
 							<c:set var="rent" value="${house.rent}" />
 
-							<div class="txt">
+							<div class="txt share-content">
 								보증금
 								<c:choose>
 									<c:when test="${deposit >= 10000000}">
@@ -228,7 +252,7 @@
 
 	</div>
 
-	<section style="height: 250px; margin-bottom: 150px; margin-top : 50px;">
+	<section style="height: 250px; margin-bottom: 150px; margin-top: 50px;">
 		<div class="container">
 			<div class="text-center"
 				style="font-size: 32px; margin-bottom: 30px;">
@@ -257,11 +281,14 @@
 				<button class="slider__next"></button>
 			</div>
 		</div>
+		
 	</section>
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
+
 	<script src="/resources/js/common/main.js"></script>
+
 
 </body>
 </html>

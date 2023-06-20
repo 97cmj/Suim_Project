@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>셰어하우스 리스트</title>
 <link rel="icon" type="image/x-icon" href="/resources/img/common/favicon.png" />
 
         <!-- 나중에 한번에 include 할 부분 -->
@@ -228,7 +228,7 @@
 		if ("${searchKeyword}" == "") {
 			
 			var map = new kakao.maps.Map(document.getElementById('map'), {
-	            center: new kakao.maps.LatLng("37.5666805", "126.9784147"),
+	            center: new kakao.maps.LatLng("37.5339677", "126.897079"),
 	            level: 5
 	        });
 		} else {
@@ -237,7 +237,7 @@
 				 
 				 if ("${centerAdEmpty}" === "true") {
 					 var map = new kakao.maps.Map(document.getElementById('map'), {
-				            center: new kakao.maps.LatLng("37.5666805", "126.9784147"),
+				            center: new kakao.maps.LatLng("37.5339677", "126.897079"),
 				            level: 5
 				     	});
 					 	alert("검색 결과가 없습니다.");
@@ -297,6 +297,7 @@
 
 		  // 0.5초 후에 loadMarkers 함수를 실행합니다.
 		  timeoutId = setTimeout(function() {
+
 		    loadMarkers();
 		  }, 500);
 		  
@@ -621,7 +622,7 @@
 	    var clusterer = new kakao.maps.MarkerClusterer({
 	        map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
 	        averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-	        minLevel: 7, // 클러스터 할 최소 지도 레벨 
+	        minLevel: 8, // 클러스터 할 최소 지도 레벨 
 	    });	
 		
 		}
@@ -742,14 +743,14 @@
                                                 <!--입주일 선택-->
                                                	<div class="dateWrap">
                                                   <h5 class="filterTitle"><strong>입주예정일</strong></h5>
-                                                   <input type="date" class="text-input" name="openDate" max="2099-12-31" placeholder="ex)2023-06-01">
+                                                   <input type="date" id="openDate" class="text-input" name="openDate" max="2099-12-31" placeholder="ex)2023-06-01">
                                                 </div>
                                                 <!--입주일 선택 끝-->
                                             </div>
                                         </fieldset>
                                         <hr>
                                         <div class="applyWrap">
-                                            <input type="reset" id="reset" value="초기화">       
+                                            <input type="reset" id="reset" value="초기화" onclick="resetAndSearch()">       
                                             <input type="button" id="close" value="닫기" onClick="toggleContent()">                               
                                         </div>
                                     </div>
@@ -823,6 +824,35 @@
             }
         }
     </script>
+    
+    <!-- 오늘날짜 이전 날짜 선택 막기 -->
+    <script>
+		function updateMinDate() {
+			  var now = Date.now();
+			  var timeOff = new Date().getTimezoneOffset() * 60000;
+			  var today = new Date(now - timeOff).toISOString().split("T")[0];
+	
+			  document.getElementById("openDate").setAttribute("min", today);
+			}
+	
+			document.getElementById("openDate").addEventListener("change", updateMinDate);
+	
+			// 페이지 로드 시 최소값 업데이트
+			updateMinDate();
+	
+			// 매일 자정마다 최소값 업데이트
+		setInterval(updateMinDate, 24 * 60 * 60 * 1000);
+	</script>
+	<!-- 초기화 이후 검색효과 -->
+	<script>
+      function resetAndSearch() {
+    	  
+        localStorage.clear();
+  
+        window.location.href = 'list.ho';
+      }
+    </script>
+	
 	
 	
 	

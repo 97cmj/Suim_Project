@@ -121,7 +121,7 @@ public class payController {
 	                    ArrayList<Pay> pi = payService.selectPay(p);
 	                    Pay latestPay = pi.get(pi.size() - 1); // 가장 최근에 추가된 Pay 객체를 가져옵니다.
 	                    int pno = latestPay.getPaymentNo(); // pno 값을 가져옵니다.
-	                    
+
 	                   
 	                } else { // 실패 => 에러 메시지를 모델에 추가하고 에러 페이지로 이동합니다.
 	                    model.addAttribute("errorMsg", "결제 실패");
