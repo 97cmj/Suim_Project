@@ -377,8 +377,10 @@
 			</script>
 
             <br>
+
             <c:choose>
 				<c:when test="${listCount ne 0}">
+
 					<nav id="pagingArea" style="margin-top: 30px; margin-bottom: 30px;">
 						<ul class="pagination justify-content-center">
 							<li class="page-item ${pi.currentPage == 1 ? 'disabled' : ''}">
@@ -394,8 +396,10 @@
 							</li>
 						</ul>
 					</nav>
+
 				</c:when>
 			</c:choose>
+
 
             <br clear="both"><br>
             
