@@ -54,11 +54,22 @@
 
 	        ws.onmessage = function(event) {
 	            var message = event.data;
+	            console.log(event);
 	            if (message === "다중 로그인이 감지되어 로그아웃 됩니다.") {
 	                // Handle the alert message
 	                alert(message);
 	                location.href = location.href;
-	            } else {
+	            }
+	            
+	            var data = JSON.parse(event.data);
+	            var role = data.role; 
+	            var messages = data.message; 
+	       
+	            if (role === "admin" && ${loginUser.adminAuth} != 1) {
+	                toastr.info(messages);
+	              }
+	            
+	            else {
 	                // Handle other messages
 	                addMessageToNotificationList(message);
 	                if (!isFirstLoad && !isUpdatingNotification && !isVibrating) {
@@ -173,7 +184,7 @@
 		    notificationListElement.prepend(notificationItem);
 		    
 		    
-		    var countElement = $('<span style="font-size: 14px; ">').addClass('notification-count').text(listCount);
+		    var countElement = $('<span style="font-size: 10px; ">').addClass('notification-count').text(listCount);
 		      $('#notificationButton .notification-count').remove();
 		      $('#notificationButton').append(countElement);
 		      createPagination(pi.startPage, pi.endPage, pi.currentPage, pi.maxPage);

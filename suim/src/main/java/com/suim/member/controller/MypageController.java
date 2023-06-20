@@ -120,6 +120,15 @@ public class MypageController {
 					return "redirect:" + session.getAttribute("originalUrl");
 				}
 			}
+			
+			
+			if(m.getArea() != null && !m.getArea().equals("")) {
+				double[] area = MainController.getCoordinates(m.getArea());
+				if(area != null) {
+				m.setLongitude(area[0]);
+				m.setLatitude(area[1]);
+				}
+			}
 
 			int result = memberService.updateMember(m);
 			session.setAttribute("loginUser", m);
@@ -158,7 +167,8 @@ public class MypageController {
 
 	@GetMapping("board")
 	public String boardList(@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam(value = "type", defaultValue = "board") String type, Model model) {
+			@RequestParam(value = "type", defaultValue = "board") String type, Model model, HttpServletRequest request) {
+		session.setAttribute("originalUrl", request.getRequestURI());
 		
 		Member loginUser = (Member) session.getAttribute("loginUser");
 		if (loginUser == null) {
@@ -299,6 +309,12 @@ public class MypageController {
 		}
 
 		session.setAttribute("originalUrl", request.getRequestURI());
+		
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		if (loginUser == null) {
+			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
+			return "redirect:/member/login";
+		}
 
 		int pageLimit = 5;
 		int boardLimit = 6;
@@ -311,7 +327,6 @@ public class MypageController {
 		PageInfo pi = null;
 		
 		
-
 		listCount = mypageService.selectHouseListCount(memberId);
 
 		pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
@@ -329,6 +344,12 @@ public class MypageController {
 									HttpServletRequest request, Model model) {
 		
 		session.setAttribute("originalUrl", request.getRequestURI());
+		
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		if (loginUser == null) {
+			session.setAttribute("alertMsg", "로그인 후 이용 가능합니다.");
+			return "redirect:/member/login";
+		}
 		
 		int pageLimit = 10;
 	    int boardLimit = 10;
