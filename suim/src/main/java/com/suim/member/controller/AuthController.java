@@ -511,6 +511,7 @@ public class AuthController {
 		member.setNickName(nickName);
 		member.setMemberPwd(encPwd);
 		
+		
 		if(member.getArea() != null && !member.getArea().equals("")) {
 			double[] area = MainController.getCoordinates(member.getArea());
 			if(area != null) {
