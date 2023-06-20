@@ -21,26 +21,12 @@
                                 <i class="fa fa-bell me-lg-2"></i>
                                 <span class="d-none d-lg-inline-flex">알림</span>
                             </a>
+                            <!-- 
                             <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                                <a href="#" class="dropdown-item">
-                                    <h6 class="fw-normal mb-0">Profile updated</h6>
-                                    <small>15 minutes ago</small>
-                                </a>
-                                <hr class="dropdown-divider">
-                                <a href="#" class="dropdown-item">
-                                    <h6 class="fw-normal mb-0">New user added</h6>
-                                    <small>15 minutes ago</small>
-                                </a>
-                                <hr class="dropdown-divider">
-                                <a href="#" class="dropdown-item">
-                                    <h6 class="fw-normal mb-0">Password changed</h6>
-                                    <small>15 minutes ago</small>
-                                </a>
-                                <hr class="dropdown-divider">
-                                <a href="#" class="dropdown-item text-center">See all notifications</a>
+                                 <a href="#" class="dropdown-item" id="sendNotificationBtn">알림보내기</a>                  
                             </div>
+                            -->
                         </div>
-                        -->
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <c:choose>
@@ -55,7 +41,6 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                                 <a href="#" class="dropdown-item" onclick="event.preventDefault(); logout();">로그아웃</a>
-                                <a href="#" class="dropdown-item" id="sendNotificationBtn">알림보내기</a>
                             </div>
                             
                             <script>

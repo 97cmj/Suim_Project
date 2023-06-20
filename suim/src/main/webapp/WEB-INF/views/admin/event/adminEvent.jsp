@@ -81,7 +81,7 @@
 						                <td class="title">제목</td>
 						                <td class="eventDate">작성일</td>
 						                <td class="eventView">조회수</td>
-						                <td class="eventStatus" style="text-align : center;">이벤트 진행 여부</td>
+						                <td class="eventStatus" style="text-align : center;">유효한 이벤트</td>
 					            	</tr>
 					         	</thead>
 					         	<tbody>
