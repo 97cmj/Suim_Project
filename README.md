@@ -1,6 +1,5 @@
 # :house: 셰어하우스에 대한 모든 정보, "쉼"
-
-
+<img src="https://user-images.githubusercontent.com/115520750/257212034-8525ea87-490e-4225-a47e-dbb678f8bb31.png">
 
 # :one: 설명
 
