@@ -48,28 +48,28 @@
   </thead>
   <tbody>
    <tr>
-     <td> <a href="/Jeong-JaeHoon1/PetSisters/blob/main">최명진</a> </td>
-     <td> <g-emoji class="g-emoji" alias="white_flag" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f3f3.png">🏳️</g-emoji> 회원 관리</td>
+     <td> <a href="https://github.com/97cmj">최명진</a> </td>
+     <td> :blush: 회원 관리</td>
    </tr>
    <tr>
-     <td> <a href="https://github.com/jo-seungho">이승은</a> </td>
-     <td> <g-emoji class="g-emoji" alias="black_flag" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f3f4.png">🏴</g-emoji> 관리자 </td>
+     <td> <a href="https://github.com/tmddms000">이승은</a> </td>
+     <td> :cop: 관리자 </td>
    </tr>
    <tr>
-     <td> <a href="/Jeong-JaeHoon1/PetSisters/blob/main">이태화</a> </td>
-     <td> 🏴 게시판 </td>
+     <td> <a href="https://github.com/e-taehwa">이태화</a> </td>
+     <td> :scroll: 게시판 </td>
    </tr>
    <tr>
-     <td> <a href="/Jeong-JaeHoon1/PetSisters/blob/main">조민수</a> </td>
-     <td> <g-emoji class="g-emoji" alias="black_flag" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f3f4.png">🏴</g-emoji> 셰어하우스 상세 </td>
+     <td> <a href="https://github.com/Cho-Min-Su">조민수</a> </td>
+     <td> :house: 셰어하우스 상세 </td>
    </tr>
     <tr>
-     <td> <a href="/Jeong-JaeHoon1/PetSisters/blob/main">이지환</a> </td>
-     <td> <g-emoji class="g-emoji" alias="black_flag" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f3f4.png">🏴</g-emoji> 공지사항 </td>
+     <td> <a href="https://github.com/LEEJH9713">이지환</a> </td>
+     <td> :page_facing_up: 공지사항 </td>
    </tr>
      <tr>
-     <td> <a href="/Jeong-JaeHoon1/PetSisters/blob/main">유홍재</a> </td>
-     <td> 🏴 셰어하우스 지도 </td>
+     <td> <a href="https://github.com/93goldbox">유홍재</a> </td>
+     <td> :airplane: 셰어하우스 지도 </td>
    </tr>
   </tbody>
 </table>
