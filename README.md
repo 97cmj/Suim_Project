@@ -1,5 +1,4 @@
 # :house: 셰어하우스에 대한 모든 정보, "쉼"
-![image](https://github.com/97cmj/Suim_Project/assets/115520750/6a117c37-6535-4b16-9bb0-0cf406781395)
 
 
 
